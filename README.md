@@ -24,7 +24,7 @@
 
 ```bash
 # Клонирование репозитория
-git clone https://github.com/yourusername/nuanu-guide.git
+git clone https://github.com/undergnarly/nuanu-guide.git
 
 # Переход в директорию проекта
 cd nuanu-guide
