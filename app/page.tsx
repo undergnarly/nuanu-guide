@@ -1,153 +1,268 @@
+"use client"
+
+import { motion } from "framer-motion"
+import { Calendar, Sparkles, TrendingUp, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, MapPin, Calendar, Headphones, Smartphone, Compass } from "lucide-react"
+import { ArrowRight, MapPin, Headphones, Smartphone, Compass } from "lucide-react"
 import ThemeToggle from "@/components/theme-toggle"
+
+const featuredEvents = [
+  {
+    id: 1,
+    title: "Выставка современного искусства",
+    description: "Погрузитесь в мир современного искусства на нашей новой выставке.",
+    image: "https://images.unsplash.com/photo-1561488111-5d800fd56b8a?q=80&w=1000",
+    date: "24 марта",
+    time: "19:00",
+    price: "Бесплатно",
+    category: "art",
+    rating: 4.8,
+    reviews: 47
+  },
+  {
+    id: 2,
+    title: "Джазовый вечер под открытым небом",
+    description: "Живая джазовая музыка в уютной атмосфере нашего сада.",
+    image: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?q=80&w=1000",
+    date: "26 марта",
+    time: "20:00",
+    price: "350.000 IDR",
+    category: "music",
+    rating: 4.9,
+    reviews: 89
+  }
+]
+
+const trendingEvents = [
+  {
+    id: 3,
+    title: "Кулинарный мастер-класс",
+    description: "Научитесь готовить аутентичные балийские блюда.",
+    image: "https://images.unsplash.com/photo-1540648639573-8c848de23f0a?q=80&w=1000",
+    date: "28 марта",
+    price: "500.000 IDR",
+    category: "food",
+    rating: 4.7,
+    reviews: 124
+  },
+  {
+    id: 4,
+    title: "Мастер-класс по гончарному искусству",
+    description: "Создайте свое уникальное керамическое изделие.",
+    image: "https://images.unsplash.com/photo-1532570204726-d10d25a9ce47?q=80&w=1000",
+    date: "30 марта",
+    price: "400.000 IDR",
+    category: "workshops",
+    rating: 4.9,
+    reviews: 67
+  }
+]
+
+const stats = [
+  { label: "Мероприятий", value: "150+", icon: Calendar },
+  { label: "Участников", value: "10k+", icon: Users },
+  { label: "Рейтинг", value: "4.9", icon: Sparkles },
+]
 
 export default function Home() {
   return (
-    <div className="container p-4">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-4xl font-serif font-bold">
-          Nuanu
-        </h1>
-        <ThemeToggle />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Видео-хедер */}
+      <div className="relative h-[70vh] overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          poster="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2000"
+        >
+          <source src="https://static.videezy.com/system/resources/previews/000/021/644/original/abstract-flowing-lines-4k-motion-background.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 to-gray-900/90" />
+        <div className="relative h-full flex items-center justify-center text-center px-4">
+          <div className="max-w-3xl">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-4xl md:text-6xl font-serif font-bold text-white mb-6"
+            >
+              Добро пожаловать в Nuanu
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-xl text-white/90 mb-8"
+            >
+              Откройте для себя уникальные события и мероприятия, созданные специально для вас
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 bg-purple-500 text-white px-8 py-3 rounded-full font-medium hover:bg-purple-600 transition-colors"
+              >
+                Исследовать события
+                <TrendingUp className="w-5 h-5" />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
       </div>
-      
-      <div className="flex flex-col min-h-screen">
-        {/* Hero Section */}
-        <div className="relative h-[40vh] w-full">
-          <Image
-            src="/images/nuanu-hero.png"
-            alt="Nuanu Creative City"
-            fill
-            className="object-cover brightness-75"
-            priority
-          />
-          <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
-            <h1 className="text-4xl font-serif font-bold">Nuanu Creative City</h1>
-            <p className="mt-2 text-lg font-sans font-light">Where Art, Technology & Nature Converge</p>
+
+      {/* Статистика */}
+      <div className="bg-white dark:bg-gray-800 py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col items-center text-center mb-12">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl">
+              Nuanu — это творческое пространство, где каждый день происходят уникальные события. 
+              Здесь вы найдете выставки современного искусства, музыкальные вечера, кулинарные мастер-классы 
+              и множество других интересных мероприятий.
+            </p>
+          </div>
+          <div className="flex justify-center items-center divide-x divide-gray-200 dark:divide-gray-700">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="px-8 flex items-center gap-3"
+              >
+                <stat.icon className="w-6 h-6 text-purple-500 flex-shrink-0" />
+                <div className="text-left">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
+      </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-4 gap-2 p-4 -mt-6 bg-white dark:bg-gray-950 rounded-t-3xl">
-          <Link href="/map" className="flex flex-col items-center">
-            <div className="flex items-center justify-center w-12 h-12 mb-1 rounded-full bg-purple-100 dark:bg-purple-900/20">
-              <MapPin className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            <span className="text-xs font-medium text-center">Map</span>
-          </Link>
-          <Link href="/explore" className="flex flex-col items-center">
-            <div className="flex items-center justify-center w-12 h-12 mb-1 rounded-full bg-blue-100 dark:bg-blue-900/20">
-              <Compass className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            <span className="text-xs font-medium text-center">Explore</span>
-          </Link>
-          <Link href="/events" className="flex flex-col items-center">
-            <div className="flex items-center justify-center w-12 h-12 mb-1 rounded-full bg-pink-100 dark:bg-pink-900/20">
-              <Calendar className="w-5 h-5 text-pink-600 dark:text-pink-400" />
-            </div>
-            <span className="text-xs font-medium text-center">Events</span>
-          </Link>
-          <Link href="/guides" className="flex flex-col items-center">
-            <div className="flex items-center justify-center w-12 h-12 mb-1 rounded-full bg-amber-100 dark:bg-amber-900/20">
-              <Headphones className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-            </div>
-            <span className="text-xs font-medium text-center">Audio</span>
-          </Link>
-        </div>
-
-        {/* Featured Experiences */}
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-serif font-bold">Featured Experiences</h2>
-            <Link href="/explore" className="text-sm text-purple-600 dark:text-purple-400 flex items-center font-medium">
-              View all <ArrowRight className="w-4 h-4 ml-1" />
+      {/* События сегодня */}
+      <div className="py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-serif font-bold text-gray-900 dark:text-white">
+              События сегодня
+            </h2>
+            <Link 
+              href="/events" 
+              className="text-purple-500 hover:text-purple-600 transition-colors flex items-center gap-2"
+            >
+              Все события
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-
-          <div className="grid gap-4">
-            <Card className="overflow-hidden border-none shadow-md">
-              <div className="relative h-40">
-                <Image src="/images/art-exhibition.png" alt="Art Exhibition" fill className="object-cover" />
-                <Badge className="absolute top-2 right-2 bg-purple-500">Featured</Badge>
-              </div>
-              <CardContent className="p-3">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-serif font-semibold">Contemporary Art Gallery</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Interactive installations & digital art</p>
-                  </div>
-                  <Badge variant="outline" className="ml-2">
-                    <Smartphone className="w-3 h-3 mr-1" /> AR
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden border-none shadow-md">
-              <div className="relative h-40">
-                <Image src="/images/design-workshop.png" alt="Design Workshop" fill className="object-cover" />
-              </div>
-              <CardContent className="p-3">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-serif font-semibold">Innovation Hub</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Creative technology workshops</p>
-                  </div>
-                  <Badge variant="outline" className="ml-2">
-                    <Headphones className="w-3 h-3 mr-1" /> Audio
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="relative">
+            <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
+              {featuredEvents.map((event) => (
+                <Link key={event.id} href={`/events/${event.id}`} className="flex-none w-[350px] snap-start">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="group relative rounded-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg h-full"
+                  >
+                    <div className="aspect-[16/9] relative">
+                      <Image
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-purple-500">
+                          {event.date}
+                        </span>
+                        <div className="flex items-center gap-1 text-yellow-500">
+                          <Sparkles className="w-4 h-4" />
+                          <span className="text-sm">{event.rating}</span>
+                          <span className="text-sm text-gray-500">({event.reviews})</span>
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        {event.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4">
+                        {event.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-500 font-medium">{event.price}</span>
+                        <span className="text-sm text-gray-500">{event.time}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Upcoming Events */}
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-serif font-bold">Upcoming Events</h2>
-            <Link href="/events" className="text-sm text-purple-600 dark:text-purple-400 flex items-center font-medium">
-              View all <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
-          </div>
-
-          <div className="space-y-3">
-            <Card className="overflow-hidden border-none shadow-sm">
-              <CardContent className="p-3 flex">
-                <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 mr-3 rounded-lg bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
-                  <span className="text-sm font-bold">24</span>
-                  <span className="text-xs">APR</span>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-serif font-semibold">Digital Art Festival</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Main Square, 6:00 PM</p>
-                </div>
-                <Button variant="ghost" size="icon" className="ml-2">
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="overflow-hidden border-none shadow-sm">
-              <CardContent className="p-3 flex">
-                <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 mr-3 rounded-lg bg-pink-100 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400">
-                  <span className="text-sm font-bold">26</span>
-                  <span className="text-xs">APR</span>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-serif font-semibold">Creative Tech Meetup</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Innovation Hub, 7:30 PM</p>
-                </div>
-                <Button variant="ghost" size="icon" className="ml-2">
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </CardContent>
-            </Card>
+      {/* Популярные события */}
+      <div className="py-16 px-4 bg-gray-100 dark:bg-gray-800/50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-serif font-bold text-gray-900 dark:text-white mb-8">
+            Популярные события
+          </h2>
+          <div className="relative">
+            <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
+              {trendingEvents.map((event) => (
+                <Link key={event.id} href={`/events/${event.id}`} className="flex-none w-[350px] snap-start">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="group relative rounded-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg h-full"
+                  >
+                    <div className="aspect-[16/9] relative">
+                      <Image
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-purple-500">
+                          {event.date}
+                        </span>
+                        <div className="flex items-center gap-1 text-yellow-500">
+                          <Sparkles className="w-4 h-4" />
+                          <span className="text-sm">{event.rating}</span>
+                          <span className="text-sm text-gray-500">({event.reviews})</span>
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        {event.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4">
+                        {event.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-purple-500 font-medium">{event.price}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
