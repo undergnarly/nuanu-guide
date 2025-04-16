@@ -55,13 +55,13 @@ export default function BottomNavigation() {
   ]
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around h-16 px-4 bg-white border-t border-gray-200 dark:bg-gray-950 dark:border-gray-800">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around h-16 px-4 bg-white/95 backdrop-blur-sm border-t border-gray-200 dark:bg-gray-950/95 dark:border-gray-800">
       {navItems.map((item) => (
         <Link
           key={item.name}
           href={item.href}
           className={cn(
-            "flex flex-col items-center justify-center flex-1 h-full",
+            "flex flex-col items-center justify-center flex-1 h-full relative",
             pathname === item.href ? "text-purple-600 dark:text-purple-400" : "text-gray-500 dark:text-gray-400",
           )}
         >

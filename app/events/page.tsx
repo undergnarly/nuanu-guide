@@ -2,8 +2,9 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Heart, Bookmark, Share2, User } from "lucide-react"
+import { Heart, Bookmark, Share2, User, Star, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 const categories = [
   { id: "all", label: "Все" },
@@ -24,7 +25,9 @@ const events = [
     time: "19:00",
     likes: 128,
     author: "Мария Артова",
-    bgColor: "from-purple-900/80 to-purple-800/20",
+    price: "Бесплатно",
+    rating: 4.8,
+    reviews: 47,
   },
   {
     id: 2,
@@ -36,7 +39,9 @@ const events = [
     time: "20:00",
     likes: 256,
     author: "Джон Смит",
-    bgColor: "from-blue-900/80 to-blue-800/20",
+    price: "350.000 IDR",
+    rating: 4.9,
+    reviews: 89,
   },
   {
     id: 3,
@@ -48,7 +53,51 @@ const events = [
     time: "12:00",
     likes: 189,
     author: "Вайан Путу",
-    bgColor: "from-orange-900/80 to-orange-800/20",
+    price: "500.000 IDR",
+    rating: 4.7,
+    reviews: 124,
+  },
+  {
+    id: 4,
+    title: "Мастер-класс по гончарному искусству",
+    description: "Создайте свое уникальное керамическое изделие под руководством опытного мастера. Все материалы включены в стоимость, подходит для начинающих.",
+    image: "https://images.unsplash.com/photo-1532570204726-d10d25a9ce47?q=80&w=1000",
+    category: "workshops",
+    date: "30 марта",
+    time: "15:00",
+    likes: 145,
+    author: "Анна Керамика",
+    price: "400.000 IDR",
+    rating: 4.9,
+    reviews: 67,
+  },
+  {
+    id: 5,
+    title: "Электронная вечеринка на пляже",
+    description: "Танцуйте до рассвета под звуки электронной музыки от известных диджеев. Специальные световые эффекты и незабываемая атмосфера на берегу океана.",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000",
+    category: "music",
+    date: "1 апреля",
+    time: "22:00",
+    likes: 312,
+    author: "DJ Волна",
+    price: "250.000 IDR",
+    rating: 4.6,
+    reviews: 156,
+  },
+  {
+    id: 6,
+    title: "Выставка цифрового искусства",
+    description: "Погрузитесь в мир NFT и цифрового искусства. Интерактивные инсталляции, VR-экспонаты и встречи с художниками нового поколения.",
+    image: "https://images.unsplash.com/photo-1573152958734-1922c188fba3?q=80&w=1000",
+    category: "art",
+    date: "3 апреля",
+    time: "11:00",
+    likes: 220,
+    author: "Крипто Арт",
+    price: "150.000 IDR",
+    rating: 4.7,
+    reviews: 89,
   },
 ]
 
@@ -81,64 +130,124 @@ export default function EventsPage() {
       </div>
 
       {/* События */}
-      <div className="space-y-6 p-4">
-        <AnimatePresence mode="wait">
-          {filteredEvents.map((event) => (
-            <motion.div
-              key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="relative rounded-[2rem] overflow-hidden bg-white dark:bg-gray-800 shadow-xl"
-            >
-              <div className="aspect-[3/4] sm:aspect-[2/1] relative">
-                <Image
-                  src={event.image}
-                  alt={event.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-                <div className={`absolute inset-0 bg-gradient-to-t ${event.bgColor}`} />
-              </div>
-              
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-3 text-sm">
-                      <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                        <User className="w-4 h-4" />
+      <div className="h-[calc(100vh-8rem)] overflow-y-auto">
+        <div className="px-4 py-4">
+          <div className="space-y-4">
+            <AnimatePresence mode="wait">
+              {filteredEvents.map((event) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 100, 
+                    damping: 15,
+                    mass: 1
+                  }}
+                  className="relative max-w-xl mx-auto"
+                >
+                  <div 
+                    className="relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
+                    style={{
+                      background: `linear-gradient(to bottom, 
+                        ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
+                        event.category === 'music' ? 'rgb(30, 58, 138)' : 
+                        event.category === 'food' ? 'rgb(124, 45, 18)' : 
+                        'rgb(88, 28, 135)'} 0%,
+                        ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
+                        event.category === 'music' ? 'rgb(59, 130, 246)' : 
+                        event.category === 'food' ? 'rgb(234, 88, 12)' : 
+                        'rgb(126, 34, 206)'} 100%)`
+                    }}
+                  >
+                    <Link href={`/events/${event.id}`} className="block">
+                      {/* Изображение */}
+                      <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
+                        <Image
+                          src={event.image}
+                          alt={event.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
                       </div>
-                      <span className="opacity-90">{event.author}</span>
-                    </div>
-                    <h3 className="text-2xl font-serif font-bold mb-2 leading-tight">
-                      {event.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-sm opacity-90 mb-3">
-                      <span>{event.date}</span>
-                      <span>•</span>
-                      <span>{event.time}</span>
-                    </div>
-                    <p className="text-base opacity-90 line-clamp-3 leading-relaxed">
-                      {event.description}
-                    </p>
+                      
+                      {/* Контент */}
+                      <div className="relative mt-4 px-2">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-3 text-sm">
+                              <div className="w-6 h-6 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center">
+                                <User className="w-4 h-4 text-white" />
+                              </div>
+                              <span className="text-white/90">{event.author}</span>
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                                <span className="text-white">{event.rating}</span>
+                                <span className="text-white/60">({event.reviews})</span>
+                              </div>
+                            </div>
+                            <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
+                              {event.title}
+                            </h3>
+                            <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
+                              <span>{event.date}</span>
+                              <span>•</span>
+                              <span>{event.time}</span>
+                              <span>•</span>
+                              <span className="text-white">{event.price}</span>
+                            </div>
+                            <p className="text-base text-white/80 line-clamp-3 leading-relaxed mb-4">
+                              {event.description}
+                            </p>
+                            <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
+                              <span>Подробнее</span>
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-center gap-3 ml-4">
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Heart className="w-6 h-6 text-white" />
+                            </button>
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Bookmark className="w-6 h-6 text-white" />
+                            </button>
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Share2 className="w-6 h-6 text-white" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
-                  <div className="flex flex-col items-center gap-3 ml-4">
-                    <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                      <Heart className="w-6 h-6" />
-                    </button>
-                    <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                      <Bookmark className="w-6 h-6" />
-                    </button>
-                    <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                      <Share2 className="w-6 h-6" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        .overflow-y-auto {
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+
+      {/* Индикатор скролла */}
+      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 flex gap-1">
+        {filteredEvents.map((_, index) => (
+          <div
+            key={index}
+            className="w-1.5 h-1.5 rounded-full bg-white/30"
+          />
+        ))}
       </div>
     </div>
   )

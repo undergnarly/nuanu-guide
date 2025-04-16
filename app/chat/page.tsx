@@ -1,142 +1,177 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { Send, Bot, User } from "lucide-react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { User, Bot, Send, Image as ImageIcon } from "lucide-react"
+import Image from "next/image"
 
-interface Message {
-  id: string
-  content: string
-  role: "user" | "assistant"
-  timestamp: Date
+const communityMessages = [
+  {
+    id: 1,
+    author: "Анна",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100",
+    message: "Привет всем! Кто-нибудь был на мастер-классе по гончарному искусству? Стоит идти?",
+    time: "14:30",
+    likes: 3,
+  },
+  {
+    id: 2,
+    author: "Михаил",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100",
+    message: "Да, был на прошлой неделе! Очень круто, преподаватель супер. Получил свою первую вазу 😊",
+    time: "14:35",
+    likes: 5,
+    image: "https://images.unsplash.com/photo-1532570204726-d10d25a9ce47?q=80&w=300",
+  },
+  {
+    id: 3,
+    author: "Елена",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=100",
+    message: "Присоединяюсь к вопросу! Тоже хочу записаться на ближайший.",
+    time: "14:40",
+    likes: 2,
+  },
+  {
+    id: 4,
+    author: "Nuanu Team",
+    avatar: "/logo.png",
+    message: "Друзья, следующий мастер-класс состоится 30 марта. Успевайте записаться, осталось всего 5 мест!",
+    time: "14:42",
+    likes: 8,
+  },
+]
+
+const aiStartMessage = {
+  id: 0,
+  message: "Привет! Я Nuanu AI, ваш персональный помощник. Я могу помочь вам найти интересные события, забронировать места и ответить на ваши вопросы о мероприятиях. Что вас интересует?",
+  time: "14:00"
 }
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([])
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: input,
-      role: "user",
-      timestamp: new Date(),
-    }
-
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
-    setIsLoading(true)
-
-    // Здесь будет интеграция с API ИИ
-    // Временная имитация ответа
-    setTimeout(() => {
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: "Это временный ответ. В будущем здесь будет интеграция с реальным ИИ.",
-        role: "assistant",
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, assistantMessage])
-      setIsLoading(false)
-    }, 1000)
-  }
+  const [activeTab, setActiveTab] = useState<"ai" | "community">("ai")
+  const [message, setMessage] = useState("")
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-900 flex flex-col">
+      {/* Хедер */}
+      <div className="sticky top-0 z-10 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
+        <div className="flex justify-center gap-2 p-4">
+          <button
+            onClick={() => setActiveTab("ai")}
+            className={`px-6 py-2 rounded-full whitespace-nowrap transition-all flex items-center gap-2 ${
+              activeTab === "ai"
+                ? "bg-purple-500 text-white scale-105"
+                : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            }`}
+          >
+            <Bot className="w-4 h-4" />
+            Nuanu AI
+          </button>
+          <button
+            onClick={() => setActiveTab("community")}
+            className={`px-6 py-2 rounded-full whitespace-nowrap transition-all flex items-center gap-2 ${
+              activeTab === "community"
+                ? "bg-purple-500 text-white scale-105"
+                : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            }`}
+          >
+            <User className="w-4 h-4" />
+            Community
+          </button>
+        </div>
+      </div>
+
+      {/* Чат */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        <AnimatePresence>
-          {messages.map((message) => (
+        <AnimatePresence mode="wait">
+          {activeTab === "ai" ? (
             <motion.div
-              key={message.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+              className="space-y-4"
             >
-              <div
-                className={`flex items-start max-w-[80%] space-x-2 ${
-                  message.role === "user" ? "flex-row-reverse space-x-reverse" : ""
-                }`}
-              >
-                <div
-                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                    message.role === "user"
-                      ? "bg-purple-500 text-white"
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-                  }`}
-                >
-                  {message.role === "user" ? <User size={16} /> : <Bot size={16} />}
+              <div className="flex gap-3">
+                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-5 h-5 text-white" />
                 </div>
-                <div
-                  className={`rounded-2xl px-4 py-2 ${
-                    message.role === "user"
-                      ? "bg-purple-500 text-white rounded-tr-none"
-                      : "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-tl-none"
-                  }`}
-                >
-                  <p className="text-sm">{message.content}</p>
-                  <span className="text-xs opacity-50 mt-1 block">
-                    {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </span>
+                <div className="flex-1 bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none p-4 shadow-sm">
+                  <p className="text-gray-900 dark:text-gray-100">{aiStartMessage.message}</p>
+                  <span className="text-xs text-gray-500 mt-2 block">{aiStartMessage.time}</span>
                 </div>
               </div>
             </motion.div>
-          ))}
-        </AnimatePresence>
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-start"
-          >
-            <div className="flex items-start space-x-2">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <Bot size={16} className="text-gray-700 dark:text-gray-200" />
-              </div>
-              <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none px-4 py-2">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-4"
+            >
+              {communityMessages.map((msg) => (
+                <div key={msg.id} className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={msg.avatar}
+                      alt={msg.author}
+                      width={32}
+                      height={32}
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none p-4 shadow-sm">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="font-medium text-gray-900 dark:text-gray-100">{msg.author}</span>
+                        <span className="text-xs text-gray-500">{msg.time}</span>
+                      </div>
+                      <p className="text-gray-900 dark:text-gray-100">{msg.message}</p>
+                      {msg.image && (
+                        <div className="mt-3 rounded-xl overflow-hidden">
+                          <Image
+                            src={msg.image}
+                            alt="Attached image"
+                            width={300}
+                            height={200}
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button className="text-sm text-gray-500 hover:text-purple-500 transition-colors">
+                        Нравится ({msg.likes})
+                      </button>
+                      <button className="text-sm text-gray-500 hover:text-purple-500 transition-colors">
+                        Ответить
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-        <div ref={messagesEndRef} />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 dark:border-gray-800">
-        <div className="flex items-center space-x-2">
+      {/* Ввод сообщения */}
+      <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-4">
+        <div className="max-w-4xl mx-auto flex gap-2">
+          <button className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-purple-500 transition-colors">
+            <ImageIcon className="w-5 h-5" />
+          </button>
           <input
             type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Введите сообщение..."
-            className="flex-1 px-4 py-2 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={activeTab === "ai" ? "Задайте вопрос Nuanu AI..." : "Напишите сообщение..."}
+            className="flex-1 bg-white dark:bg-gray-800 rounded-full px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
-          <button
-            type="submit"
-            disabled={!input.trim() || isLoading}
-            className="p-2 rounded-full bg-purple-500 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-purple-600 transition-colors"
-          >
-            <Send size={20} />
+          <button className="p-3 rounded-full bg-purple-500 text-white hover:bg-purple-600 transition-colors">
+            <Send className="w-5 h-5" />
           </button>
         </div>
-      </form>
+      </div>
     </div>
   )
 } 

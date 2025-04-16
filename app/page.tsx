@@ -70,7 +70,7 @@ const stats = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
       {/* Видео-хедер */}
       <div className="relative h-[70vh] overflow-hidden">
         <video
@@ -109,10 +109,10 @@ export default function Home() {
             >
               <Link
                 href="/events"
-                className="inline-flex items-center gap-2 bg-purple-500 text-white px-8 py-3 rounded-full font-medium hover:bg-purple-600 transition-colors"
+                className="inline-flex items-center gap-2 bg-purple-500 text-white px-6 py-2.5 rounded-full font-medium hover:bg-purple-600 transition-colors text-sm sm:text-base sm:px-8 sm:py-3"
               >
                 Исследовать события
-                <TrendingUp className="w-5 h-5" />
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
             </motion.div>
           </div>
@@ -120,31 +120,33 @@ export default function Home() {
       </div>
 
       {/* Статистика */}
-      <div className="bg-white dark:bg-gray-800 py-12">
+      <div className="bg-white dark:bg-gray-800 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col items-center text-center mb-12">
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl">
+          <div className="flex flex-col items-center text-center mb-8 sm:mb-12">
+            <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl">
               Nuanu — это творческое пространство, где каждый день происходят уникальные события. 
               Здесь вы найдете выставки современного искусства, музыкальные вечера, кулинарные мастер-классы 
               и множество других интересных мероприятий.
             </p>
           </div>
-          <div className="flex justify-center items-center divide-x divide-gray-200 dark:divide-gray-700">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="px-8 flex items-center gap-3"
-              >
-                <stat.icon className="w-6 h-6 text-purple-500 flex-shrink-0" />
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="overflow-x-auto pb-4 -mx-4 px-4">
+            <div className="flex justify-start sm:justify-center items-center divide-x divide-gray-200 dark:divide-gray-700 min-w-max">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="px-4 sm:px-8 flex items-center gap-2 sm:gap-3"
+                >
+                  <stat.icon className="w-4 h-4 sm:w-6 sm:h-6 text-purple-500 flex-shrink-0" />
+                  <div className="text-left">
+                    <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

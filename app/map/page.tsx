@@ -23,7 +23,7 @@ export default function MapPage() {
   }
 
   return (
-    <div className="relative h-[calc(100vh-4rem)]">
+    <div className="relative h-[calc(100vh-4rem)] w-full overflow-hidden">
       {/* Карта */}
       <iframe
         src="https://dreamy-churros-6cc5f3.netlify.app/"
