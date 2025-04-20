@@ -101,17 +101,72 @@ const events = [
   },
 ]
 
+const experiences = [
+  { id: 1, title: "Girl Power Yoga", day: "Monday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 2, title: "Multi-Media Installations", day: "Everyday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 3, title: "Kids Gambelan", day: "Monday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 4, title: "THK Tower Light Show", day: "Everyday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 5, title: "Earth Sentinels Projection Mapping", day: "Everyday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 6, title: "Sunset Yoga with Desak Henny", day: "Wednesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 7, title: "Kids Bamboo Stick Architecture", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 8, title: "Kids Balinese Dance", day: "Wednesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 9, title: "Beach + Mangrove Clean Up", day: "Thursday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 10, title: "Kids Art Class", day: "Thursday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 11, title: "Kids English Class", day: "Friday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 12, title: "Canang Making Workshop with Diah", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 13, title: "Bachata Dance", day: "Friday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 14, title: "Kartini Kreatif Day", day: "Saturday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 15, title: "High Heels Dance Free Class", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 16, title: "Lady Style Dance Free Lesson", day: "Wednesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 17, title: "Body Conditioning with Dewa", day: "Monday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 18, title: "Family Day", day: "Saturday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 19, title: "Penjor Making Workshop with Beraban Youth", day: "Sunday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 20, title: "Sunrise Yoga with Desak Henny", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+]
+
 export default function EventsPage() {
   const [activeCategory, setActiveCategory] = useState("all")
+  const [activeType, setActiveType] = useState<'events' | 'experiences'>('events')
 
-  const filteredEvents = activeCategory === "all" 
-    ? events 
+  const filteredEvents = activeCategory === "all"
+    ? events
     : events.filter(event => event.category === activeCategory)
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900">
+      {/* Селектор Events/Experiences — sliding radio button */}
+      <div className="flex justify-center pt-6 pb-2">
+        <div className="relative flex bg-white dark:bg-gray-900 rounded-full shadow-md border border-gray-200 dark:border-gray-700 w-[370px] h-12">
+          <motion.div
+            layout
+            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+            className="absolute top-1 rounded-full z-0 h-10 w-[calc(50%-8px)]"
+            style={{
+              background: '#111',
+              left: activeType === 'events' ? '4px' : 'calc(50% + 4px)',
+              transition: 'left 0.3s cubic-bezier(.4,2,.6,1)',
+            }}
+          />
+          <button
+            className={`relative z-10 px-8 py-2 h-12 rounded-full font-semibold text-lg transition-all duration-200
+              ${activeType === 'events' ? 'text-white' : 'text-gray-400'}`}
+            style={{ background: 'transparent' }}
+            onClick={() => setActiveType('events')}
+          >
+            Events
+          </button>
+          <button
+            className={`relative z-10 pr-8 py-2 h-12 rounded-full font-semibold text-lg transition-all duration-200
+              ${activeType === 'experiences' ? 'text-white' : 'text-gray-400'}`}
+            style={{ background: 'transparent', paddingLeft: '5.5rem' }}
+            onClick={() => setActiveType('experiences')}
+          >
+            Experiences
+          </button>
+        </div>
+      </div>
       {/* Категории */}
-      <div className="sticky top-0 z-10 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-lg">
+      <div className="sticky top-0 z-10 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-md">
         <div className="flex overflow-x-auto no-scrollbar gap-2 p-4">
           {categories.map((category) => (
             <button
@@ -119,8 +174,8 @@ export default function EventsPage() {
               onClick={() => setActiveCategory(category.id)}
               className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
                 activeCategory === category.id
-                  ? "bg-purple-500 text-white scale-105"
-                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  ? "bg-black text-white scale-105"
+                  : "bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 hover:bg-white/90 dark:hover:bg-gray-800/90"
               }`}
             >
               {category.label}
@@ -130,104 +185,166 @@ export default function EventsPage() {
       </div>
 
       {/* События */}
-      <div className="h-[calc(100vh-8rem)] overflow-y-auto">
-        <div className="px-4 py-4">
-          <div className="space-y-4">
-            <AnimatePresence mode="wait">
-              {filteredEvents.map((event) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 100, 
-                    damping: 15,
-                    mass: 1
-                  }}
-                  className="relative max-w-xl mx-auto"
-                >
-                  <div 
-                    className="relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
-                    style={{
-                      background: `linear-gradient(to bottom, 
-                        ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
-                        event.category === 'music' ? 'rgb(30, 58, 138)' : 
-                        event.category === 'food' ? 'rgb(124, 45, 18)' : 
-                        'rgb(88, 28, 135)'} 0%,
-                        ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
-                        event.category === 'music' ? 'rgb(59, 130, 246)' : 
-                        event.category === 'food' ? 'rgb(234, 88, 12)' : 
-                        'rgb(126, 34, 206)'} 100%)`
+      {activeType === 'events' ? (
+        <div className="h-[calc(100vh-8rem)] overflow-y-auto">
+          <div className="px-4 py-4">
+            <div className="space-y-4">
+              <AnimatePresence mode="wait">
+                {filteredEvents.map((event) => (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 100, 
+                      damping: 15,
+                      mass: 1
                     }}
+                    className="relative max-w-xl mx-auto"
                   >
-                    <Link href={`/events/${event.id}`} className="block">
+                    <div 
+                      className="relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
+                      style={{
+                        background: `linear-gradient(to bottom, 
+                          ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
+                          event.category === 'music' ? 'rgb(30, 58, 138)' : 
+                          event.category === 'food' ? 'rgb(124, 45, 18)' : 
+                          'rgb(88, 28, 135)'} 0%,
+                          ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
+                          event.category === 'music' ? 'rgb(59, 130, 246)' : 
+                          event.category === 'food' ? 'rgb(234, 88, 12)' : 
+                          'rgb(126, 34, 206)'} 100%)`
+                      }}
+                    >
+                      <Link href={`/events/${event.id}`} className="block">
+                        {/* Изображение */}
+                        <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
+                          <Image
+                            src={event.image}
+                            alt={event.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        </div>
+                        
+                        {/* Контент */}
+                        <div className="relative mt-4 px-2">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-3 text-sm">
+                                <div className="w-6 h-6 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center">
+                                  <User className="w-4 h-4 text-white" />
+                                </div>
+                                <span className="text-white/90">{event.author}</span>
+                                <div className="flex items-center gap-1">
+                                  <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                                  <span className="text-white">{event.rating}</span>
+                                  <span className="text-white/60">({event.reviews})</span>
+                                </div>
+                              </div>
+                              <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
+                                {event.title}
+                              </h3>
+                              <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
+                                <span>{event.date}</span>
+                                <span>•</span>
+                                <span>{event.time}</span>
+                                <span>•</span>
+                                <span className="text-white">{event.price}</span>
+                              </div>
+                              <p className="text-base text-white/80 line-clamp-3 leading-relaxed mb-4">
+                                {event.description}
+                              </p>
+                              <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
+                                <span>Подробнее</span>
+                                <ArrowRight className="w-4 h-4" />
+                              </div>
+                            </div>
+                            <div className="flex flex-col items-center gap-3 ml-4">
+                              <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                                <Heart className="w-6 h-6 text-white" />
+                              </button>
+                              <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                                <Bookmark className="w-6 h-6 text-white" />
+                              </button>
+                              <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                                <Share2 className="w-6 h-6 text-white" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="h-[calc(100vh-8rem)] overflow-y-auto">
+          <div className="px-4 py-4">
+            <div className="space-y-4">
+              <AnimatePresence mode="wait">
+                {experiences.map((exp) => (
+                  <motion.div
+                    key={exp.id}
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 100, 
+                      damping: 15,
+                      mass: 1
+                    }}
+                    className="relative max-w-xl mx-auto"
+                  >
+                    <a
+                      href={exp.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
+                      style={{
+                        background: 'linear-gradient(to bottom, rgb(30,30,30) 0%, rgb(60,60,60) 100%)'
+                      }}
+                    >
                       {/* Изображение */}
                       <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
-                        <Image
-                          src={event.image}
-                          alt={event.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        <img
+                          src={exp.image}
+                          alt={exp.title}
+                          className="object-cover w-full h-full"
                         />
                       </div>
-                      
                       {/* Контент */}
                       <div className="relative mt-4 px-2">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-3 text-sm">
-                              <div className="w-6 h-6 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center">
-                                <User className="w-4 h-4 text-white" />
-                              </div>
-                              <span className="text-white/90">{event.author}</span>
-                              <div className="flex items-center gap-1">
-                                <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                                <span className="text-white">{event.rating}</span>
-                                <span className="text-white/60">({event.reviews})</span>
-                              </div>
-                            </div>
                             <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
-                              {event.title}
+                              {exp.title}
                             </h3>
                             <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
-                              <span>{event.date}</span>
-                              <span>•</span>
-                              <span>{event.time}</span>
-                              <span>•</span>
-                              <span className="text-white">{event.price}</span>
+                              <span>{exp.day}</span>
                             </div>
-                            <p className="text-base text-white/80 line-clamp-3 leading-relaxed mb-4">
-                              {event.description}
-                            </p>
                             <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
                               <span>Подробнее</span>
                               <ArrowRight className="w-4 h-4" />
                             </div>
                           </div>
-                          <div className="flex flex-col items-center gap-3 ml-4">
-                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                              <Heart className="w-6 h-6 text-white" />
-                            </button>
-                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                              <Bookmark className="w-6 h-6 text-white" />
-                            </button>
-                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                              <Share2 className="w-6 h-6 text-white" />
-                            </button>
-                          </div>
                         </div>
                       </div>
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                    </a>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <style jsx global>{`
         .overflow-y-auto {

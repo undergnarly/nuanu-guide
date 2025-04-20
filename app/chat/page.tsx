@@ -52,7 +52,7 @@ export default function ChatPage() {
   const [message, setMessage] = useState("")
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Хедер */}
       <div className="sticky top-0 z-10 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
         <div className="flex justify-center gap-2 p-4">

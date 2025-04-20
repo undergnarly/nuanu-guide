@@ -28,6 +28,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.variable} ${playfair.variable} font-sans antialiased overflow-x-hidden`}>
+        {/* Bottom blur gradient */}
+        <div className="blur-overlay" style={{bottom: 0, top: 'auto', height: '15vh', maskImage: 'linear-gradient(to top, black, transparent)', WebkitMaskImage: 'linear-gradient(to top, black, transparent)'}} />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

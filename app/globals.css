@@ -66,3 +66,13 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.blur-overlay {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 50;
+}
