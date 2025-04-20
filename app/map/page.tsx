@@ -23,7 +23,7 @@ export default function MapPage() {
   }
 
   return (
-    <div className="min-h-screen pb-16 w-full flex flex-col overflow-hidden">
+    <div className="min-h-screen h-screen w-full flex flex-col flex-1 overflow-hidden">
       <div className="flex-1 relative">
         <iframe
           src="https://dreamy-churros-6cc5f3.netlify.app/"

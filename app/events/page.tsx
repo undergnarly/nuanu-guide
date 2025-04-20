@@ -102,26 +102,26 @@ const events = [
 ]
 
 const experiences = [
-  { id: 1, title: "Girl Power Yoga", day: "Monday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 2, title: "Multi-Media Installations", day: "Everyday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 3, title: "Kids Gambelan", day: "Monday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 4, title: "THK Tower Light Show", day: "Everyday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 5, title: "Earth Sentinels Projection Mapping", day: "Everyday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 6, title: "Sunset Yoga with Desak Henny", day: "Wednesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 7, title: "Kids Bamboo Stick Architecture", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 8, title: "Kids Balinese Dance", day: "Wednesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 9, title: "Beach + Mangrove Clean Up", day: "Thursday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 10, title: "Kids Art Class", day: "Thursday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 11, title: "Kids English Class", day: "Friday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 12, title: "Canang Making Workshop with Diah", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 13, title: "Bachata Dance", day: "Friday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 14, title: "Kartini Kreatif Day", day: "Saturday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 15, title: "High Heels Dance Free Class", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 16, title: "Lady Style Dance Free Lesson", day: "Wednesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 17, title: "Body Conditioning with Dewa", day: "Monday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 18, title: "Family Day", day: "Saturday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 19, title: "Penjor Making Workshop with Beraban Youth", day: "Sunday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
-  { id: 20, title: "Sunrise Yoga with Desak Henny", day: "Tuesday", description: "", image: "/images/experience-placeholder.jpg", link: "https://www.nuanu.com/visit/experience" },
+  { id: 1, title: "Girl Power Yoga", day: "Monday", description: "", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 2, title: "Multi-Media Installations", day: "Everyday", description: "", image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 3, title: "Kids Gambelan", day: "Monday", description: "", image: "https://images.unsplash.com/photo-1503676382389-4809596d5290?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 4, title: "THK Tower Light Show", day: "Everyday", description: "", image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 5, title: "Earth Sentinels Projection Mapping", day: "Everyday", description: "", image: "https://images.unsplash.com/photo-1465101178521-c1a9136a3c8b?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 6, title: "Sunset Yoga with Desak Henny", day: "Wednesday", description: "", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 7, title: "Kids Bamboo Stick Architecture", day: "Tuesday", description: "", image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 8, title: "Kids Balinese Dance", day: "Wednesday", description: "", image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 9, title: "Beach + Mangrove Clean Up", day: "Thursday", description: "", image: "https://images.unsplash.com/photo-1465101178521-c1a9136a3c8b?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 10, title: "Kids Art Class", day: "Thursday", description: "", image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 11, title: "Kids English Class", day: "Friday", description: "", image: "https://images.unsplash.com/photo-1503676382389-4809596d5290?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 12, title: "Canang Making Workshop with Diah", day: "Tuesday", description: "", image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 13, title: "Bachata Dance", day: "Friday", description: "", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 14, title: "Kartini Kreatif Day", day: "Saturday", description: "", image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 15, title: "High Heels Dance Free Class", day: "Tuesday", description: "", image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 16, title: "Lady Style Dance Free Lesson", day: "Wednesday", description: "", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 17, title: "Body Conditioning with Dewa", day: "Monday", description: "", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 18, title: "Family Day", day: "Saturday", description: "", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 19, title: "Penjor Making Workshop with Beraban Youth", day: "Sunday", description: "", image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
+  { id: 20, title: "Sunrise Yoga with Desak Henny", day: "Tuesday", description: "", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
 ]
 
 export default function EventsPage() {
@@ -135,30 +135,24 @@ export default function EventsPage() {
   return (
     <div className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900">
       {/* Селектор Events/Experiences — sliding radio button */}
-      <div className="flex justify-center pt-6 pb-2">
-        <div className="relative flex bg-white dark:bg-gray-900 rounded-full shadow-md border border-gray-200 dark:border-gray-700 w-[370px] h-12">
-          <motion.div
-            layout
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="absolute top-1 rounded-full z-0 h-10 w-[calc(50%-8px)]"
-            style={{
-              background: '#111',
-              left: activeType === 'events' ? '4px' : 'calc(50% + 4px)',
-              transition: 'left 0.3s cubic-bezier(.4,2,.6,1)',
-            }}
-          />
+      <div className="flex justify-center pt-6 pb-2 bg-transparent">
+        <div className="inline-flex items-center justify-center rounded-full bg-muted p-1 text-muted-foreground shadow-md border border-gray-200 dark:border-gray-700">
           <button
-            className={`relative z-10 px-8 py-2 h-12 rounded-full font-semibold text-lg transition-all duration-200
-              ${activeType === 'events' ? 'text-white' : 'text-gray-400'}`}
-            style={{ background: 'transparent' }}
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-6 py-2 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
+              activeType === 'events'
+                ? 'bg-black text-white shadow-sm'
+                : 'bg-muted text-muted-foreground'
+            }`}
             onClick={() => setActiveType('events')}
           >
             Events
           </button>
           <button
-            className={`relative z-10 pr-8 py-2 h-12 rounded-full font-semibold text-lg transition-all duration-200
-              ${activeType === 'experiences' ? 'text-white' : 'text-gray-400'}`}
-            style={{ background: 'transparent', paddingLeft: '5.5rem' }}
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-6 py-2 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
+              activeType === 'experiences'
+                ? 'bg-black text-white shadow-sm'
+                : 'bg-muted text-muted-foreground'
+            }`}
             onClick={() => setActiveType('experiences')}
           >
             Experiences

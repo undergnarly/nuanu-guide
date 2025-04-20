@@ -100,11 +100,11 @@ function GuideCard({
   onTogglePlay,
 }: { guide: any; type: "audio" | "ar"; isActive?: boolean; onTogglePlay?: () => void }) {
   return (
-    <Card className={`overflow-hidden border-none shadow-md ${isActive ? "border-2 border-purple-500" : ""}`}>
+    <Card className={`overflow-hidden border-none shadow-md ${isActive ? "border-2 border-black" : ""}`}>
       <div className="flex">
         <div className="relative w-1/3 h-32">
           <Image src={guide.image || "/placeholder.svg"} alt={guide.title} fill className="object-cover" />
-          <Badge className="absolute top-2 left-2 bg-purple-500">
+          <Badge className="absolute top-2 left-2 bg-black">
             {type === "audio" ? <Headphones className="w-3 h-3 mr-1" /> : <Smartphone className="w-3 h-3 mr-1" />}
             {guide.duration}
           </Badge>
@@ -117,11 +117,11 @@ function GuideCard({
             </div>
             <div className="flex justify-end mt-2">
               {type === "audio" ? (
-                <Button size="sm" className="h-8 rounded-full w-8 p-0" onClick={onTogglePlay}>
+                <Button size="sm" className="h-8 rounded-full w-8 p-0 bg-black text-white hover:bg-neutral-800" onClick={onTogglePlay}>
                   {isActive ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                 </Button>
               ) : (
-                <Button size="sm" className="h-8">
+                <Button size="sm" className="h-8 bg-black text-white hover:bg-neutral-800">
                   Start AR
                 </Button>
               )}
@@ -154,13 +154,13 @@ function AudioPlayer({ onTogglePlay }: { onTogglePlay: () => void }) {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:bg-neutral-100">
               <SkipBack className="h-4 w-4" />
             </Button>
-            <Button className="h-10 w-10 rounded-full" onClick={onTogglePlay}>
+            <Button className="h-10 w-10 rounded-full bg-black text-white hover:bg-neutral-800" onClick={onTogglePlay}>
               <Pause className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-black hover:bg-neutral-100">
               <SkipForward className="h-4 w-4" />
             </Button>
           </div>

@@ -59,7 +59,7 @@ export default function EventPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
+      <div className="max-w-5xl mx-auto bg-[#f6f7fa] dark:bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
         {/* Шапка */}
         <div className="relative h-[40vh] sm:h-[50vh]">
           <Link 
@@ -75,35 +75,25 @@ export default function EventPage() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-indigo-900 via-indigo-900/50 to-transparent" />
         </div>
 
         {/* Основной контент */}
         <div 
-          className="p-6 sm:p-8 lg:p-10 -mt-20 relative z-10 transition-all duration-500"
-          style={{
-            background: `linear-gradient(to bottom, 
-              rgba(30, 58, 138, 0) 0%,
-              rgba(30, 58, 138, 0.7) 10%,
-              rgba(30, 58, 138, 0.8) 20%,
-              rgba(30, 58, 138, 0.9) 30%,
-              rgba(30, 58, 138, 0.95) 40%,
-              rgba(30, 58, 138, 1) 100%)`
-          }}
+          className="p-6 sm:p-8 lg:p-10 -mt-20 relative z-10 transition-all duration-500 bg-[#f6f7fa] dark:bg-gray-900"
         >
           <div className="flex items-start justify-between gap-4 mb-8">
             <div>
-              <div className="flex items-center gap-2 text-sm text-white mb-2">
-                <div className="flex items-center gap-1 bg-black/20 backdrop-blur-lg rounded-full px-3 py-1">
+              <div className="flex items-center gap-2 text-sm mb-2 text-gray-900 dark:text-white">
+                <div className="flex items-center gap-1 bg-gray-200 dark:bg-black/20 backdrop-blur-lg rounded-full px-3 py-1">
                   <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
                   <span className="font-medium">{event.rating}</span>
                   <span className="opacity-80">({event.reviews.length} отзывов)</span>
                 </div>
-                <div className="bg-black/20 backdrop-blur-lg rounded-full px-3 py-1">
+                <div className="bg-gray-200 dark:bg-black/20 backdrop-blur-lg rounded-full px-3 py-1">
                   <span>{event.price}</span>
                 </div>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-4 text-gray-900 dark:text-white">
                 {event.title}
               </h1>
             </div>
@@ -111,21 +101,21 @@ export default function EventPage() {
               <button
                 onClick={() => setIsLiked(!isLiked)}
                 className={`p-2 rounded-full backdrop-blur-lg transition-colors ${
-                  isLiked ? "bg-white/30" : "bg-black/20 hover:bg-black/30"
+                  isLiked ? "bg-gray-300 dark:bg-white/30" : "bg-gray-200 dark:bg-black/20 hover:bg-gray-300 dark:hover:bg-black/30"
                 }`}
               >
-                <Heart className={`w-6 h-6 text-white ${isLiked ? "fill-white" : ""}`} />
+                <Heart className={`w-6 h-6 text-gray-900 dark:text-white ${isLiked ? "fill-gray-900 dark:fill-white" : ""}`} />
               </button>
               <button
                 onClick={() => setIsBookmarked(!isBookmarked)}
                 className={`p-2 rounded-full backdrop-blur-lg transition-colors ${
-                  isBookmarked ? "bg-white/30" : "bg-black/20 hover:bg-black/30"
+                  isBookmarked ? "bg-gray-300 dark:bg-white/30" : "bg-gray-200 dark:bg-black/20 hover:bg-gray-300 dark:hover:bg-black/30"
                 }`}
               >
-                <Bookmark className={`w-6 h-6 text-white ${isBookmarked ? "fill-white" : ""}`} />
+                <Bookmark className={`w-6 h-6 text-gray-900 dark:text-white ${isBookmarked ? "fill-gray-900 dark:fill-white" : ""}`} />
               </button>
-              <button className="p-2 rounded-full backdrop-blur-lg bg-black/20 hover:bg-black/30 transition-colors">
-                <Share2 className="w-6 h-6 text-white" />
+              <button className="p-2 rounded-full backdrop-blur-lg bg-gray-200 dark:bg-black/20 hover:bg-gray-300 dark:hover:bg-black/30 transition-colors">
+                <Share2 className="w-6 h-6 text-gray-900 dark:text-white" />
               </button>
             </div>
           </div>
@@ -133,44 +123,44 @@ export default function EventPage() {
           {/* Детали события */}
           <div className="grid sm:grid-cols-2 gap-6 mb-8">
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-white/90">
+              <div className="flex items-center gap-3 text-gray-900 dark:text-white">
                 <Calendar className="w-5 h-5" />
                 <span>{event.date}</span>
               </div>
-              <div className="flex items-center gap-3 text-white/90">
+              <div className="flex items-center gap-3 text-gray-900 dark:text-white">
                 <Clock className="w-5 h-5" />
                 <span>{event.time}</span>
               </div>
-              <div className="flex items-center gap-3 text-white/90">
+              <div className="flex items-center gap-3 text-gray-900 dark:text-white">
                 <MapPin className="w-5 h-5" />
                 <span>{event.location}</span>
               </div>
-              <div className="flex items-center gap-3 text-white/90">
+              <div className="flex items-center gap-3 text-gray-900 dark:text-white">
                 <Users className="w-5 h-5" />
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
                     <span>Осталось мест: {event.capacity - event.registered}</span>
                     <span className="text-sm">{event.registered}/{event.capacity}</span>
                   </div>
-                  <div className="w-full h-2 bg-black/20 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-gray-200 dark:bg-black/20 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-white/30 rounded-full transition-all duration-500"
+                      className="h-full bg-gray-400 dark:bg-white/30 rounded-full transition-all duration-500"
                       style={{ width: `${(event.registered / event.capacity) * 100}%` }}
                     />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-black/20 backdrop-blur-lg rounded-2xl p-6">
-              <h3 className="font-serif font-bold text-xl mb-4 text-white">Об организаторе</h3>
+            <div className="bg-gray-100 dark:bg-black/20 backdrop-blur-lg rounded-2xl p-6">
+              <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Об организаторе</h3>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-white/10" />
+                <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-white/10" />
                 <div>
-                  <div className="font-medium text-white">{event.author}</div>
-                  <div className="text-sm text-white/70">Организатор</div>
+                  <div className="font-medium text-gray-900 dark:text-white">{event.author}</div>
+                  <div className="text-sm text-gray-500 dark:text-white/70">Организатор</div>
                   <div className="flex items-center gap-1 mt-1">
                     <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    <span className="text-sm text-white">{event.rating}</span>
+                    <span className="text-sm text-gray-900 dark:text-white">{event.rating}</span>
                   </div>
                 </div>
               </div>
@@ -179,10 +169,10 @@ export default function EventPage() {
 
           {/* Описание */}
           <div className="mb-8">
-            <h3 className="font-serif font-bold text-xl mb-4 text-white">Описание</h3>
-            <div className="prose prose-invert max-w-none mb-8">
+            <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Описание</h3>
+            <div className="prose max-w-none mb-8 text-gray-900 dark:prose-invert dark:text-white">
               {event.fullDescription.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="text-white/90">{paragraph}</p>
+                <p key={index}>{paragraph}</p>
               ))}
             </div>
             <motion.button
@@ -196,19 +186,19 @@ export default function EventPage() {
 
           {/* Отзывы */}
           <div>
-            <h3 className="font-serif font-bold text-xl mb-4 text-white">Отзывы</h3>
+            <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Отзывы</h3>
             <div className="space-y-4">
               {event.reviews.map(review => (
-                <div key={review.id} className="bg-black/20 backdrop-blur-lg rounded-xl p-4">
+                <div key={review.id} className="bg-gray-100 dark:bg-black/20 backdrop-blur-lg rounded-xl p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="font-medium text-white">{review.author}</div>
+                    <div className="font-medium text-gray-900 dark:text-white">{review.author}</div>
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                      <span className="text-white">{review.rating}</span>
+                      <span className="text-gray-900 dark:text-white">{review.rating}</span>
                     </div>
                   </div>
-                  <p className="text-white/80 mb-2">{review.text}</p>
-                  <div className="text-sm text-white/60">{review.date}</div>
+                  <p className="text-gray-700 dark:text-white/80 mb-2">{review.text}</p>
+                  <div className="text-sm text-gray-500 dark:text-white/60">{review.date}</div>
                 </div>
               ))}
             </div>

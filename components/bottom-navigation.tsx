@@ -30,11 +30,11 @@ export default function BottomNavigation() {
             "flex items-center justify-center w-12 h-12 -mt-6 rounded-full shadow-lg"
           }
           animate={isActive ? { background: [
-            "linear-gradient(90deg, #7c3aed, #f59e42)",
-            "linear-gradient(90deg, #f59e42, #7c3aed)",
-            "linear-gradient(90deg, #7c3aed, #f59e42)"
+            "linear-gradient(90deg,rgb(135, 11, 146),rgb(180, 81, 131))",
+            "linear-gradient(90deg, #ec4899,rgb(201, 90, 16))",
+            "linear-gradient(90deg, #a21caf, #ec4899)"
           ] } : { background: "#111" }}
-          transition={isActive ? { repeat: Infinity, duration: 2, ease: "linear" } : {}}
+          transition={isActive ? { repeat: Infinity, duration: 3, ease: "linear" } : {}}
           style={{ background: isActive ? undefined : "#111" }}
         >
           <Image src="/nuanu_logo.png" alt="Nuanu Logo" width={32} height={32} className="object-contain" />
@@ -75,7 +75,7 @@ export default function BottomNavigation() {
             )}
             {item.name === "Home"
               ? item.icon(isActive)
-              : <item.icon className={cn("w-5 h-5", item.name === "Home" ? "w-6 h-6" : "w-5 h-5")} />}
+              : <item.icon className="w-5 h-5" />}
             {item.name !== "Home" && <span className="text-xs mt-1">{item.name}</span>}
           </Link>
         );

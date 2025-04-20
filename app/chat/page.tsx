@@ -50,6 +50,23 @@ const aiStartMessage = {
 export default function ChatPage() {
   const [activeTab, setActiveTab] = useState<"ai" | "community">("ai")
   const [message, setMessage] = useState("")
+  const [userMessages, setUserMessages] = useState<{id: number, message: string, time: string}[]>([])
+
+  const handleSend = () => {
+    if (!message.trim()) return;
+    setUserMessages((msgs) => [
+      ...msgs,
+      { id: Date.now(), message, time: new Date().toLocaleTimeString().slice(0,5) }
+    ])
+    setMessage("")
+  }
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSend();
+    }
+  }
 
   return (
     <div className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900 flex flex-col">
@@ -58,10 +75,10 @@ export default function ChatPage() {
         <div className="flex justify-center gap-2 p-4">
           <button
             onClick={() => setActiveTab("ai")}
-            className={`px-6 py-2 rounded-full whitespace-nowrap transition-all flex items-center gap-2 ${
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-6 py-2 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
               activeTab === "ai"
-                ? "bg-purple-500 text-white scale-105"
-                : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                ? "bg-black text-white shadow-sm"
+                : "bg-muted text-muted-foreground"
             }`}
           >
             <Bot className="w-4 h-4" />
@@ -69,10 +86,10 @@ export default function ChatPage() {
           </button>
           <button
             onClick={() => setActiveTab("community")}
-            className={`px-6 py-2 rounded-full whitespace-nowrap transition-all flex items-center gap-2 ${
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-6 py-2 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
               activeTab === "community"
-                ? "bg-purple-500 text-white scale-105"
-                : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                ? "bg-black text-white shadow-sm"
+                : "bg-muted text-muted-foreground"
             }`}
           >
             <User className="w-4 h-4" />
@@ -100,6 +117,15 @@ export default function ChatPage() {
                   <span className="text-xs text-gray-500 mt-2 block">{aiStartMessage.time}</span>
                 </div>
               </div>
+              {/* Сообщения пользователя */}
+              {userMessages.map((msg) => (
+                <div key={msg.id} className="flex gap-3 justify-end">
+                  <div className="flex-1 bg-neutral-100 dark:bg-neutral-900 rounded-2xl rounded-tr-none p-4 shadow-sm max-w-xs">
+                    <p className="text-gray-900 dark:text-gray-100">{msg.message}</p>
+                    <span className="text-xs text-gray-500 mt-2 block text-right">{msg.time}</span>
+                  </div>
+                </div>
+              ))}
             </motion.div>
           ) : (
             <motion.div
@@ -139,10 +165,10 @@ export default function ChatPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <button className="text-sm text-gray-500 hover:text-purple-500 transition-colors">
+                      <button className="text-sm text-gray-500 hover:text-black transition-colors">
                         Нравится ({msg.likes})
                       </button>
-                      <button className="text-sm text-gray-500 hover:text-purple-500 transition-colors">
+                      <button className="text-sm text-gray-500 hover:text-black transition-colors">
                         Ответить
                       </button>
                     </div>
@@ -155,19 +181,20 @@ export default function ChatPage() {
       </div>
 
       {/* Ввод сообщения */}
-      <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-4">
+      <div className="fixed left-0 right-0 bottom-24 z-50 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-4">
         <div className="max-w-4xl mx-auto flex gap-2">
-          <button className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-500 hover:text-purple-500 transition-colors">
+          <button className="p-3 rounded-full bg-white dark:bg-gray-800 text-black hover:text-neutral-800 transition-colors">
             <ImageIcon className="w-5 h-5" />
           </button>
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleInputKeyDown}
             placeholder={activeTab === "ai" ? "Задайте вопрос Nuanu AI..." : "Напишите сообщение..."}
             className="flex-1 bg-white dark:bg-gray-800 rounded-full px-4 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
-          <button className="p-3 rounded-full bg-purple-500 text-white hover:bg-purple-600 transition-colors">
+          <button className="p-3 rounded-full bg-black text-white hover:bg-neutral-800 transition-colors" onClick={handleSend}>
             <Send className="w-5 h-5" />
           </button>
         </div>

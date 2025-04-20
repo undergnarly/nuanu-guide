@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, MapPin, Headphones, Smartphone, Compass } from "lucide-react"
 import ThemeToggle from "@/components/theme-toggle"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 
 const featuredEvents = [
   {
@@ -71,10 +71,15 @@ const stats = [
 
 export default function Home() {
   const infoRef = useRef<HTMLDivElement>(null)
+  const [profileOpen, setProfileOpen] = useState(false)
   const handleScrollDown = () => {
     if (infoRef.current) {
       infoRef.current.scrollIntoView({ behavior: 'smooth' })
     }
+  }
+  const handleLogout = () => {
+    alert('Выход выполнен')
+    setProfileOpen(false)
   }
 
   return (
@@ -88,18 +93,31 @@ export default function Home() {
           muted
           playsInline
         />
-        {/* Top blur only for hero background */}
-        <div className="absolute top-0 left-0 w-full h-[15vh] pointer-events-none z-0 blur-overlay"
-          style={{maskImage: 'linear-gradient(to bottom, black, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)'}} />
+        {/* Top black gradient overlay for hero background (без blur) */}
+        <div className="absolute top-0 left-0 w-full h-[15vh] pointer-events-none z-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.0) 100%)'}} />
+        {/* Верхний blur удалён */}
         {/* Шапка hero */}
         <div className="sticky top-0 left-0 w-full flex items-center justify-between px-4 pt-3 z-50 bg-transparent" style={{backdropFilter: 'none', WebkitBackdropFilter: 'none'}}>
           <span className="text-lg md:text-xl font-bold text-white drop-shadow-lg">Nuanu Guide</span>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+          <button className="flex items-center gap-3 group focus:outline-none" onClick={() => setProfileOpen(true)}>
+            <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center border-2 border-white group-hover:ring-2 group-hover:ring-black transition-all">
               <img src="/placeholder-user.jpg" alt="User" className="object-cover w-full h-full" />
             </div>
-            <span className="text-white font-medium">User Name</span>
-          </div>
+            <span className="text-white font-medium group-hover:underline">User Name</span>
+          </button>
+          {profileOpen && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 min-w-[320px] flex flex-col items-center relative">
+                <button className="absolute top-3 right-3 text-gray-400 hover:text-black dark:hover:text-white text-2xl" onClick={() => setProfileOpen(false)}>&times;</button>
+                <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center mb-3">
+                  <img src="/placeholder-user.jpg" alt="User" className="object-cover w-full h-full" />
+                </div>
+                <div className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">User Name</div>
+                <ThemeToggle />
+                <button onClick={handleLogout} className="mt-6 w-full bg-black text-white rounded-full py-2 font-medium hover:bg-neutral-800 transition-colors">Выйти</button>
+              </div>
+            </div>
+          )}
         </div>
         <div className="pt-14" />
         {/* Кликабельная стрелочка вниз */}
@@ -132,7 +150,7 @@ export default function Home() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     className="px-4 sm:px-8 flex items-center gap-2 sm:gap-3"
                   >
-                    <stat.icon className="w-4 h-4 sm:w-6 sm:h-6 text-purple-500 flex-shrink-0" />
+                    <stat.icon className="w-4 h-4 sm:w-6 sm:h-6 text-black flex-shrink-0" />
                     <div className="text-left">
                       <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
                       <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
@@ -153,7 +171,7 @@ export default function Home() {
               </h2>
               <Link 
                 href="/events" 
-                className="text-purple-500 hover:text-purple-600 transition-colors flex items-center gap-2"
+                className="text-black hover:text-purple-600 transition-colors flex items-center gap-2"
               >
                 Все события
                 <ArrowRight className="w-4 h-4" />
@@ -180,7 +198,7 @@ export default function Home() {
                       </div>
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-purple-500">
+                          <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-black">
                             {event.date}
                           </span>
                           <div className="flex items-center gap-1 text-yellow-500">
@@ -196,7 +214,7 @@ export default function Home() {
                           {event.description}
                         </p>
                         <div className="flex items-center justify-between">
-                          <span className="text-purple-500 font-medium">{event.price}</span>
+                          <span className="text-black font-medium">{event.price}</span>
                           <span className="text-sm text-gray-500">{event.time}</span>
                         </div>
                       </div>
@@ -235,7 +253,7 @@ export default function Home() {
                       </div>
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-purple-500">
+                          <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-black">
                             {event.date}
                           </span>
                           <div className="flex items-center gap-1 text-yellow-500">
@@ -251,7 +269,7 @@ export default function Home() {
                           {event.description}
                         </p>
                         <div className="flex items-center justify-between">
-                          <span className="text-purple-500 font-medium">{event.price}</span>
+                          <span className="text-black font-medium">{event.price}</span>
                         </div>
                       </div>
                     </motion.div>
