@@ -7,94 +7,94 @@ import Image from "next/image"
 import Link from "next/link"
 
 const categories = [
-  { id: "all", label: "Все" },
-  { id: "art", label: "Искусство" },
-  { id: "music", label: "Музыка" },
-  { id: "food", label: "Еда" },
-  { id: "workshops", label: "Мастер-классы" },
+  { id: "all", label: "All" },
+  { id: "art", label: "Art" },
+  { id: "music", label: "Music" },
+  { id: "food", label: "Food" },
+  { id: "workshops", label: "Workshops" },
 ]
 
 const events = [
   {
     id: 1,
-    title: "Выставка современного искусства",
-    description: "Погрузитесь в мир современного искусства на нашей новой выставке, где представлены работы местных художников. Уникальная возможность увидеть работы талантливых мастеров Бали и пообщаться с ними лично.",
+    title: "Contemporary Art Exhibition",
+    description: "Immerse yourself in the world of contemporary art at our new exhibition, featuring works by local artists. A unique opportunity to see the works of talented Balinese masters and meet them in person.",
     image: "https://images.unsplash.com/photo-1561488111-5d800fd56b8a?q=80&w=1000",
     category: "art",
-    date: "24 марта",
+    date: "March 24",
     time: "19:00",
     likes: 128,
-    author: "Мария Артова",
-    price: "Бесплатно",
+    author: "Maria Artova",
+    price: "Free",
     rating: 4.8,
     reviews: 47,
   },
   {
     id: 2,
-    title: "Джазовый вечер под открытым небом",
-    description: "Насладитесь живой джазовой музыкой в уютной атмосфере нашего сада. Выступают лучшие джазовые музыканты острова, а также специальные гости из Джакарты.",
+    title: "Open-Air Jazz Evening",
+    description: "Enjoy live jazz music in the cozy atmosphere of our garden. The best jazz musicians of the island perform, as well as special guests from Jakarta.",
     image: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?q=80&w=1000",
     category: "music",
-    date: "26 марта",
+    date: "March 26",
     time: "20:00",
     likes: 256,
-    author: "Джон Смит",
+    author: "John Smith",
     price: "350.000 IDR",
     rating: 4.9,
     reviews: 89,
   },
   {
     id: 3,
-    title: "Кулинарный мастер-класс балийской кухни",
-    description: "Научитесь готовить аутентичные балийские блюда под руководством опытного шеф-повара. В программе: традиционные специи, соусы и техники приготовления.",
+    title: "Balinese Cooking Masterclass",
+    description: "Learn to cook authentic Balinese dishes under the guidance of an experienced chef. The program includes: traditional spices, sauces, and cooking techniques.",
     image: "https://images.unsplash.com/photo-1540648639573-8c848de23f0a?q=80&w=1000",
     category: "food",
-    date: "28 марта",
+    date: "March 28",
     time: "12:00",
     likes: 189,
-    author: "Вайан Путу",
+    author: "Wayan Putu",
     price: "500.000 IDR",
     rating: 4.7,
     reviews: 124,
   },
   {
     id: 4,
-    title: "Мастер-класс по гончарному искусству",
-    description: "Создайте свое уникальное керамическое изделие под руководством опытного мастера. Все материалы включены в стоимость, подходит для начинающих.",
+    title: "Pottery Workshop",
+    description: "Create your own unique ceramic piece under the guidance of an experienced master. All materials are included, suitable for beginners.",
     image: "https://images.unsplash.com/photo-1532570204726-d10d25a9ce47?q=80&w=1000",
     category: "workshops",
-    date: "30 марта",
+    date: "March 30",
     time: "15:00",
     likes: 145,
-    author: "Анна Керамика",
+    author: "Anna Ceramics",
     price: "400.000 IDR",
     rating: 4.9,
     reviews: 67,
   },
   {
     id: 5,
-    title: "Электронная вечеринка на пляже",
-    description: "Танцуйте до рассвета под звуки электронной музыки от известных диджеев. Специальные световые эффекты и незабываемая атмосфера на берегу океана.",
+    title: "Electronic Beach Party",
+    description: "Dance until dawn to the sounds of electronic music from famous DJs. Special light effects and an unforgettable atmosphere on the ocean shore.",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000",
     category: "music",
-    date: "1 апреля",
+    date: "April 1",
     time: "22:00",
     likes: 312,
-    author: "DJ Волна",
+    author: "DJ Wave",
     price: "250.000 IDR",
     rating: 4.6,
     reviews: 156,
   },
   {
     id: 6,
-    title: "Выставка цифрового искусства",
-    description: "Погрузитесь в мир NFT и цифрового искусства. Интерактивные инсталляции, VR-экспонаты и встречи с художниками нового поколения.",
+    title: "Digital Art Exhibition",
+    description: "Dive into the world of NFT and digital art. Interactive installations, VR exhibits, and meetings with new generation artists.",
     image: "https://images.unsplash.com/photo-1573152958734-1922c188fba3?q=80&w=1000",
     category: "art",
-    date: "3 апреля",
+    date: "April 3",
     time: "11:00",
     likes: 220,
-    author: "Крипто Арт",
+    author: "Crypto Art",
     price: "150.000 IDR",
     rating: 4.7,
     reviews: 89,
@@ -124,7 +124,12 @@ const experiences = [
   { id: 20, title: "Sunrise Yoga with Desak Henny", day: "Tuesday", description: "", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800", link: "https://www.nuanu.com/visit/experience" },
 ]
 
-export default function EventsPage() {
+const TABS = [
+  { key: 'events', label: 'Events' },
+  { key: 'experiences', label: 'Experiences' },
+]
+
+export default function EventsSection() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [activeType, setActiveType] = useState<'events' | 'experiences'>('events')
 
@@ -142,42 +147,35 @@ export default function EventsPage() {
         transition={{ duration: 0.8, ease: 'easeInOut' }}
         className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900"
       >
-        {/* Селектор Events/Experiences — sliding radio button */}
-        <div className="flex justify-center pt-6 pb-2 bg-transparent">
-          <div className="inline-flex items-center justify-center rounded-full bg-muted p-1 text-muted-foreground shadow-md border border-gray-200 dark:border-gray-700">
-            <button
-              className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-6 py-2 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
-                activeType === 'events'
-                  ? 'bg-black text-white shadow-sm'
-                  : 'bg-muted text-muted-foreground'
-              }`}
-              onClick={() => setActiveType('events')}
-            >
-              Events
-            </button>
-            <button
-              className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-6 py-2 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
-                activeType === 'experiences'
-                  ? 'bg-black text-white shadow-sm'
-                  : 'bg-muted text-muted-foreground'
-              }`}
-              onClick={() => setActiveType('experiences')}
-            >
-              Experiences
-            </button>
+        {/* Плавающий селектор Events/Experiences */}
+        <div className="fixed top-6 left-1/2 z-40 -translate-x-1/2 pointer-events-none">
+          <div className="inline-flex rounded-full p-1 shadow-xl backdrop-blur-md bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
+            {TABS.map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveType(tab.key as 'events' | 'experiences')}
+                className={`px-6 py-2 rounded-full font-medium transition-all text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 pointer-events-auto ${
+                  activeType === tab.key
+                    ? "bg-black text-white shadow-sm"
+                    : "bg-transparent text-gray-700 dark:text-gray-200"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
         </div>
-        {/* Категории */}
-        <div className="sticky top-0 z-10 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-md">
-          <div className="flex overflow-x-auto no-scrollbar gap-2 p-4">
+        {/* Плавающий селектор категорий */}
+        <div className="fixed top-24 left-1/2 z-30 -translate-x-1/2 w-full flex justify-center pointer-events-none" style={{maxWidth: '100vw'}}>
+          <div className="flex overflow-x-auto no-scrollbar gap-2 px-2 py-1 rounded-full shadow-lg backdrop-blur-md bg-white/60 dark:bg-gray-900/60 pointer-events-auto max-w-2xl">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
+                className={`px-4 py-2 rounded-full whitespace-nowrap transition-all pointer-events-auto ${
                   activeCategory === category.id
                     ? "bg-black text-white scale-105"
-                    : "bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 hover:bg-white/90 dark:hover:bg-gray-800/90"
+                    : "bg-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800"
                 }`}
               >
                 {category.label}
@@ -185,7 +183,7 @@ export default function EventsPage() {
             ))}
           </div>
         </div>
-
+        <div style={{height: '120px'}} />
         {/* События */}
         {activeType === 'events' ? (
           <div className="h-[calc(100vh-8rem)] overflow-y-auto">
@@ -231,7 +229,6 @@ export default function EventsPage() {
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           </div>
-                          
                           {/* Контент */}
                           <div className="relative mt-4 px-2">
                             <div className="flex items-start justify-between">
@@ -261,7 +258,7 @@ export default function EventsPage() {
                                   {event.description}
                                 </p>
                                 <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
-                                  <span>Подробнее</span>
+                                  <span>More Info</span>
                                   <ArrowRight className="w-4 h-4" />
                                 </div>
                               </div>
@@ -333,7 +330,7 @@ export default function EventsPage() {
                                 <span>{exp.day}</span>
                               </div>
                               <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
-                                <span>Подробнее</span>
+                                <span>More Info</span>
                                 <ArrowRight className="w-4 h-4" />
                               </div>
                             </div>
@@ -371,4 +368,4 @@ export default function EventsPage() {
       </motion.div>
     </AnimatePresence>
   )
-}
+} 

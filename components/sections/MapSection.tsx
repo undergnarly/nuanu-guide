@@ -8,7 +8,7 @@ const TABS = [
   { key: "tour", label: "3D тур" },
 ]
 
-export default function MapPage() {
+export default function MapSection() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [activeFilters, setActiveFilters] = useState<string[]>([])
   const [activeTab, setActiveTab] = useState<'map' | 'tour'>('map')
@@ -30,25 +30,25 @@ export default function MapPage() {
 
   return (
     <div className="min-h-screen h-screen w-full flex flex-col flex-1 overflow-hidden">
-      {/* Селектор табов */}
-      <div className="flex justify-center pt-6 pb-2 bg-transparent">
-        <div className="inline-flex bg-gray-100 dark:bg-gray-800 rounded-full p-1 shadow-sm">
-          {TABS.map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key as 'map' | 'tour')}
-              className={`px-6 py-2 rounded-full font-medium transition-all text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
-                activeTab === tab.key
-                  ? "bg-black text-white shadow-sm"
-                  : "bg-transparent text-gray-700 dark:text-gray-200"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </div>
       <div className="flex-1 relative">
+        {/* Плавающий селектор табов */}
+        <div className="absolute top-6 left-1/2 z-20 -translate-x-1/2">
+          <div className="inline-flex bg-white/90 dark:bg-gray-900/90 rounded-full p-1 shadow-lg backdrop-blur-md">
+            {TABS.map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key as 'map' | 'tour')}
+                className={`px-6 py-2 rounded-full font-medium transition-all text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
+                  activeTab === tab.key
+                    ? "bg-black text-white shadow-sm"
+                    : "bg-transparent text-gray-700 dark:text-gray-200"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
         {activeTab === 'map' ? (
           <>
             <iframe
@@ -61,13 +61,13 @@ export default function MapPage() {
             {/* Кнопка фильтров */}
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="absolute top-4 right-4 p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-shadow z-10"
+              className="absolute top-4 right-4 p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-shadow z-30"
             >
               <Filter className="w-5 h-5 text-gray-700 dark:text-gray-200" />
             </button>
             {/* Панель фильтров */}
             <div
-              className={`absolute top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out z-20 ${
+              className={`absolute top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
                 isFilterOpen ? "translate-x-0" : "translate-x-full"
               }`}
             >
@@ -122,4 +122,4 @@ export default function MapPage() {
       </div>
     </div>
   )
-}
+} 

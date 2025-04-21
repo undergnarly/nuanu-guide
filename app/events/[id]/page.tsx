@@ -7,42 +7,42 @@ import { motion } from "framer-motion"
 import { ArrowLeft, Heart, Bookmark, Share2, User, Star, Calendar, Clock, MapPin, Users, ChevronLeft } from "lucide-react"
 import Link from "next/link"
 
-// Используем те же данные, что и на странице списка (в реальном приложении будет API)
+// Using the same data as on the list page (in a real app, this would be from an API)
 const events = [
   {
     id: 1,
-    title: "Выставка современного искусства",
-    description: "Погрузитесь в мир современного искусства на нашей новой выставке, где представлены работы местных художников. Уникальная возможность увидеть работы талантливых мастеров Бали и пообщаться с ними лично.",
-    fullDescription: `Приглашаем вас на уникальную выставку современного искусства в креативной деревне Nuanu. 
+    title: "Contemporary Art Exhibition",
+    description: "Immerse yourself in the world of contemporary art at our new exhibition featuring works by local artists. A unique opportunity to see the works of talented Bali masters and meet them in person.",
+    fullDescription: `We invite you to a unique contemporary art exhibition in the Nuanu Creative Village.
 
-На выставке будут представлены работы более 20 талантливых художников Бали, работающих в различных стилях и техниках. Вы сможете увидеть живопись, скульптуру, инсталляции и цифровое искусство.
+The exhibition will feature works by more than 20 talented Bali artists working in various styles and techniques. You will see paintings, sculptures, installations, and digital art.
 
-Программа мероприятия:
-• 19:00 - Открытие выставки
-• 19:30 - Приветственное слово куратора
-• 20:00 - Встреча с художниками
-• 21:00 - Фуршет и нетворкинг
-• 22:00 - Музыкальное сопровождение
+Event program:
+• 19:00 - Exhibition opening
+• 19:30 - Curator's welcome speech
+• 20:00 - Meet the artists
+• 21:00 - Buffet and networking
+• 22:00 - Music performance
 
-Все работы доступны для приобретения. Часть средств будет направлена на поддержку местного сообщества художников.`,
+All works are available for purchase. Part of the proceeds will go to support the local artist community.`,
     image: "https://images.unsplash.com/photo-1561488111-5d800fd56b8a?q=80&w=1000",
     category: "art",
-    date: "24 марта",
+    date: "March 24",
     time: "19:00",
-    location: "Галерея Nuanu",
+    location: "Nuanu Gallery",
     capacity: 150,
     registered: 89,
     likes: 128,
-    author: "Мария Артова",
-    price: "Бесплатно",
+    author: "Maria Artova",
+    price: "Free",
     rating: 4.8,
     reviews: [
-      { id: 1, author: "Анна М.", rating: 5, text: "Потрясающая выставка! Очень вдохновляет.", date: "15 марта 2024" },
-      { id: 2, author: "Петр К.", rating: 4, text: "Интересная подборка работ, но хотелось бы больше интерактива", date: "14 марта 2024" },
+      { id: 1, author: "Anna M.", rating: 5, text: "Amazing exhibition! Very inspiring.", date: "March 15, 2024" },
+      { id: 2, author: "Petr K.", rating: 4, text: "Interesting selection of works, but I would like more interactivity", date: "March 14, 2024" },
     ],
     bgColor: "from-purple-900/90 via-purple-900/80 to-purple-900/95",
   },
-  // Добавьте остальные события здесь
+  // Add more events here
 ]
 
 export default function EventPage() {
@@ -54,13 +54,13 @@ export default function EventPage() {
   const event = events.find(e => e.id === Number(params.id))
 
   if (!event) {
-    return <div>Событие не найдено</div>
+    return <div>Event not found</div>
   }
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-950 p-4 sm:p-6 lg:p-8">
       <div className="max-w-5xl mx-auto bg-[#f6f7fa] dark:bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
-        {/* Шапка */}
+        {/* Header */}
         <div className="relative h-[40vh] sm:h-[50vh]">
           <Link 
             href="/events"
@@ -77,7 +77,7 @@ export default function EventPage() {
           />
         </div>
 
-        {/* Основной контент */}
+        {/* Main content */}
         <div 
           className="p-6 sm:p-8 lg:p-10 -mt-20 relative z-10 transition-all duration-500 bg-[#f6f7fa] dark:bg-gray-900"
         >
@@ -87,7 +87,7 @@ export default function EventPage() {
                 <div className="flex items-center gap-1 bg-gray-200 dark:bg-black/20 backdrop-blur-lg rounded-full px-3 py-1">
                   <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
                   <span className="font-medium">{event.rating}</span>
-                  <span className="opacity-80">({event.reviews.length} отзывов)</span>
+                  <span className="opacity-80">({event.reviews.length} reviews)</span>
                 </div>
                 <div className="bg-gray-200 dark:bg-black/20 backdrop-blur-lg rounded-full px-3 py-1">
                   <span>{event.price}</span>
@@ -120,7 +120,7 @@ export default function EventPage() {
             </div>
           </div>
 
-          {/* Детали события */}
+          {/* Event details */}
           <div className="grid sm:grid-cols-2 gap-6 mb-8">
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-gray-900 dark:text-white">
@@ -139,7 +139,7 @@ export default function EventPage() {
                 <Users className="w-5 h-5" />
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
-                    <span>Осталось мест: {event.capacity - event.registered}</span>
+                    <span>Remaining seats: {event.capacity - event.registered}</span>
                     <span className="text-sm">{event.registered}/{event.capacity}</span>
                   </div>
                   <div className="w-full h-2 bg-gray-200 dark:bg-black/20 rounded-full overflow-hidden">
@@ -152,12 +152,12 @@ export default function EventPage() {
               </div>
             </div>
             <div className="bg-gray-100 dark:bg-black/20 backdrop-blur-lg rounded-2xl p-6">
-              <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Об организаторе</h3>
+              <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">About the organizer</h3>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-white/10" />
                 <div>
                   <div className="font-medium text-gray-900 dark:text-white">{event.author}</div>
-                  <div className="text-sm text-gray-500 dark:text-white/70">Организатор</div>
+                  <div className="text-sm text-gray-500 dark:text-white/70">Organizer</div>
                   <div className="flex items-center gap-1 mt-1">
                     <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
                     <span className="text-sm text-gray-900 dark:text-white">{event.rating}</span>
@@ -167,9 +167,9 @@ export default function EventPage() {
             </div>
           </div>
 
-          {/* Описание */}
+          {/* Description */}
           <div className="mb-8">
-            <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Описание</h3>
+            <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Description</h3>
             <div className="prose max-w-none mb-8 text-gray-900 dark:prose-invert dark:text-white">
               {event.fullDescription.split('\n\n').map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
@@ -180,13 +180,13 @@ export default function EventPage() {
               whileTap={{ scale: 0.98 }}
               className="w-full bg-purple-400 hover:bg-purple-300 text-white font-medium py-4 rounded-2xl shadow-lg transition-colors"
             >
-              {event.price === "Бесплатно" ? "Зарегистрироваться" : "Купить билет"}
+              {event.price === "Free" ? "Register" : "Buy ticket"}
             </motion.button>
           </div>
 
-          {/* Отзывы */}
+          {/* Reviews */}
           <div>
-            <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Отзывы</h3>
+            <h3 className="font-serif font-bold text-xl mb-4 text-gray-900 dark:text-white">Reviews</h3>
             <div className="space-y-4">
               {event.reviews.map(review => (
                 <div key={review.id} className="bg-gray-100 dark:bg-black/20 backdrop-blur-lg rounded-xl p-4">

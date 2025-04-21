@@ -10,7 +10,7 @@ import { Headphones, Smartphone, Play, Pause, SkipBack, SkipForward, Volume2 } f
 import { Slider } from "@/components/ui/slider"
 import { motion, AnimatePresence } from "framer-motion"
 
-export default function GuidesPage() {
+export default function GuidesSection() {
   const [activeTab, setActiveTab] = useState("audio")
   const [isPlaying, setIsPlaying] = useState(false)
 
@@ -191,4 +191,4 @@ function AudioPlayer({ onTogglePlay }: { onTogglePlay: () => void }) {
       </CardContent>
     </Card>
   )
-}
+} 

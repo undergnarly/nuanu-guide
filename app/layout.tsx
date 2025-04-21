@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Montserrat, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import BottomNavigation from "@/components/bottom-navigation"
 import PageTransition from "@/components/page-transition"
 
 const montserrat = Montserrat({
@@ -38,7 +37,6 @@ export default function RootLayout({
         >
           <PageTransition>
             {children}
-            <BottomNavigation />
           </PageTransition>
         </ThemeProvider>
       </body>

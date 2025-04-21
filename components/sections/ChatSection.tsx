@@ -47,7 +47,7 @@ const aiStartMessage = {
   time: "14:00"
 }
 
-export default function ChatPage() {
+export default function ChatSection() {
   const [activeTab, setActiveTab] = useState<"ai" | "community">("ai")
   const [message, setMessage] = useState("")
   const [userMessages, setUserMessages] = useState<{id: number, message: string, time: string}[]>([])
