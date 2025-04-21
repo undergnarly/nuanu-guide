@@ -145,205 +145,152 @@ export default function EventsSection() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -40 }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
-        className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900"
+        className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900 relative"
       >
-        {/* Плавающий селектор Events/Experiences */}
-        <div className="fixed top-6 left-1/2 z-40 -translate-x-1/2 pointer-events-none">
-          <div className="inline-flex rounded-full p-1 shadow-xl backdrop-blur-md bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
-            {TABS.map(tab => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveType(tab.key as 'events' | 'experiences')}
-                className={`px-6 py-2 rounded-full font-medium transition-all text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 pointer-events-auto ${
-                  activeType === tab.key
-                    ? "bg-black text-white shadow-sm"
-                    : "bg-transparent text-gray-700 dark:text-gray-200"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+        {/* Top transparent gradient overlay (без блюра) */}
+        <div
+          className="absolute top-0 left-0 w-full h-[112px] z-30 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(255,255,255,0.85) 80%, rgba(255,255,255,0.0) 100%)'
+          }}
+        />
+        {/* Селекторы поверх блюра */}
+        <div className="relative z-40">
+          {/* Плавающий селектор Events/Experiences */}
+          <div className="fixed top-6 left-1/2 z-40 -translate-x-1/2 pointer-events-none">
+            <div className="inline-flex rounded-full p-1 shadow-xl backdrop-blur-md bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
+              {TABS.map(tab => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveType(tab.key as 'events' | 'experiences')}
+                  className={`px-6 py-2 rounded-full font-medium transition-all text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 pointer-events-auto ${
+                    activeType === tab.key
+                      ? "bg-black text-white shadow-sm"
+                      : "bg-transparent text-gray-700 dark:text-gray-200"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* Плавающий селектор категорий */}
+          <div className="fixed top-24 left-1/2 z-40 -translate-x-1/2 w-full flex justify-center pointer-events-none" style={{maxWidth: '100vw'}}>
+            <div className="flex overflow-x-auto no-scrollbar gap-2 px-2 py-1 rounded-full shadow-lg backdrop-blur-md bg-white/60 dark:bg-gray-900/60 pointer-events-auto max-w-2xl">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`px-4 py-2 rounded-full whitespace-nowrap transition-all pointer-events-auto ${
+                    activeCategory === category.id
+                      ? "bg-black text-white scale-105"
+                      : "bg-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800"
+                  }`}
+                >
+                  {category.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-        {/* Плавающий селектор категорий */}
-        <div className="fixed top-24 left-1/2 z-30 -translate-x-1/2 w-full flex justify-center pointer-events-none" style={{maxWidth: '100vw'}}>
-          <div className="flex overflow-x-auto no-scrollbar gap-2 px-2 py-1 rounded-full shadow-lg backdrop-blur-md bg-white/60 dark:bg-gray-900/60 pointer-events-auto max-w-2xl">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-all pointer-events-auto ${
-                  activeCategory === category.id
-                    ? "bg-black text-white scale-105"
-                    : "bg-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800"
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div style={{height: '120px'}} />
-        {/* События */}
-        {activeType === 'events' ? (
-          <div className="h-[calc(100vh-8rem)] overflow-y-auto">
-            <div className="px-4 py-4">
-              <div className="space-y-4">
-                <AnimatePresence mode="wait">
-                  {filteredEvents.map((event) => (
-                    <motion.div
-                      key={event.id}
-                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                      transition={{ 
-                        type: "spring", 
-                        stiffness: 100, 
-                        damping: 15,
-                        mass: 1
-                      }}
-                      className="relative max-w-xl mx-auto"
-                    >
-                      <div 
-                        className="relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
-                        style={{
-                          background: `linear-gradient(to bottom, 
-                            ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
-                            event.category === 'music' ? 'rgb(30, 58, 138)' : 
-                            event.category === 'food' ? 'rgb(124, 45, 18)' : 
-                            'rgb(88, 28, 135)'} 0%,
-                            ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
-                            event.category === 'music' ? 'rgb(59, 130, 246)' : 
-                            event.category === 'food' ? 'rgb(234, 88, 12)' : 
-                            'rgb(126, 34, 206)'} 100%)`
-                        }}
-                      >
-                        <Link href={`/events/${event.id}`} className="block">
-                          {/* Изображение */}
-                          <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
-                            <Image
-                              src={event.image}
-                              alt={event.title}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            />
-                          </div>
-                          {/* Контент */}
-                          <div className="relative mt-4 px-2">
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-3 text-sm">
-                                  <div className="w-6 h-6 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center">
-                                    <User className="w-4 h-4 text-white" />
-                                  </div>
-                                  <span className="text-white/90">{event.author}</span>
-                                  <div className="flex items-center gap-1">
-                                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                                    <span className="text-white">{event.rating}</span>
-                                    <span className="text-white/60">({event.reviews})</span>
-                                  </div>
-                                </div>
-                                <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
-                                  {event.title}
-                                </h3>
-                                <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
-                                  <span>{event.date}</span>
-                                  <span>•</span>
-                                  <span>{event.time}</span>
-                                  <span>•</span>
-                                  <span className="text-white">{event.price}</span>
-                                </div>
-                                <p className="text-base text-white/80 line-clamp-3 leading-relaxed mb-4">
-                                  {event.description}
-                                </p>
-                                <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
-                                  <span>More Info</span>
-                                  <ArrowRight className="w-4 h-4" />
-                                </div>
-                              </div>
-                              <div className="flex flex-col items-center gap-3 ml-4">
-                                <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                                  <Heart className="w-6 h-6 text-white" />
-                                </button>
-                                <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                                  <Bookmark className="w-6 h-6 text-white" />
-                                </button>
-                                <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                                  <Share2 className="w-6 h-6 text-white" />
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </Link>
+        {/* Убираю лишний spacer для контента */}
+        <div className="px-4 py-4">
+          <div className="space-y-4">
+            {/* Invisible event card spacer for selectors/gradient */}
+            <div style={{height: 150, width: '100%', pointerEvents: 'none', background: 'transparent'}} aria-hidden />
+            <AnimatePresence mode="wait">
+              {filteredEvents.map((event) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 100, 
+                    damping: 15,
+                    mass: 1
+                  }}
+                  className="relative max-w-xl mx-auto"
+                >
+                  <div 
+                    className="relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
+                    style={{
+                      background: `linear-gradient(to bottom, 
+                        ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
+                        event.category === 'music' ? 'rgb(30, 58, 138)' : 
+                        event.category === 'food' ? 'rgb(124, 45, 18)' : 
+                        'rgb(88, 28, 135)'} 0%,
+                        ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
+                        event.category === 'music' ? 'rgb(59, 130, 246)' : 
+                        event.category === 'food' ? 'rgb(234, 88, 12)' : 
+                        'rgb(126, 34, 206)'} 100%)`
+                    }}
+                  >
+                    <Link href={`/events/${event.id}`} className="block">
+                      {/* Изображение */}
+                      <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
+                        <Image
+                          src={event.image}
+                          alt={event.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
                       </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="h-[calc(100vh-8rem)] overflow-y-auto">
-            <div className="px-4 py-4">
-              <div className="space-y-4">
-                <AnimatePresence mode="wait">
-                  {experiences.map((exp) => (
-                    <motion.div
-                      key={exp.id}
-                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                      transition={{ 
-                        type: "spring", 
-                        stiffness: 100, 
-                        damping: 15,
-                        mass: 1
-                      }}
-                      className="relative max-w-xl mx-auto"
-                    >
-                      <a
-                        href={exp.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
-                        style={{
-                          background: 'linear-gradient(to bottom, rgb(30,30,30) 0%, rgb(60,60,60) 100%)'
-                        }}
-                      >
-                        {/* Изображение */}
-                        <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
-                          <img
-                            src={exp.image}
-                            alt={exp.title}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                        {/* Контент */}
-                        <div className="relative mt-4 px-2">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
-                                {exp.title}
-                              </h3>
-                              <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
-                                <span>{exp.day}</span>
+                      {/* Контент */}
+                      <div className="relative mt-4 px-2">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-3 text-sm">
+                              <div className="w-6 h-6 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center">
+                                <User className="w-4 h-4 text-white" />
                               </div>
-                              <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
-                                <span>More Info</span>
-                                <ArrowRight className="w-4 h-4" />
+                              <span className="text-white/90">{event.author}</span>
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                                <span className="text-white">{event.rating}</span>
+                                <span className="text-white/60">({event.reviews})</span>
                               </div>
                             </div>
+                            <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
+                              {event.title}
+                            </h3>
+                            <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
+                              <span>{event.date}</span>
+                              <span>•</span>
+                              <span>{event.time}</span>
+                              <span>•</span>
+                              <span className="text-white">{event.price}</span>
+                            </div>
+                            <p className="text-base text-white/80 line-clamp-3 leading-relaxed mb-4">
+                              {event.description}
+                            </p>
+                            <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
+                              <span>More Info</span>
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-center gap-3 ml-4">
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Heart className="w-6 h-6 text-white" />
+                            </button>
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Bookmark className="w-6 h-6 text-white" />
+                            </button>
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Share2 className="w-6 h-6 text-white" />
+                            </button>
                           </div>
                         </div>
-                      </a>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </div>
+                      </div>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
-        )}
+        </div>
 
         <style jsx global>{`
           .overflow-y-auto {
