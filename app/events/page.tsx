@@ -128,8 +128,8 @@ export default function EventsPage() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [activeType, setActiveType] = useState<'events' | 'experiences'>('events')
 
-  const filteredEvents = activeCategory === "all"
-    ? events
+  const filteredEvents = activeCategory === "all" 
+    ? events 
     : events.filter(event => event.category === activeCategory)
 
   return (
@@ -167,125 +167,125 @@ export default function EventsPage() {
             </button>
           </div>
         </div>
-        {/* Категории */}
-        <div className="sticky top-0 z-10 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-md">
-          <div className="flex overflow-x-auto no-scrollbar gap-2 p-4">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
-                  activeCategory === category.id
+      {/* Категории */}
+      <div className="sticky top-0 z-10 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-md">
+        <div className="flex overflow-x-auto no-scrollbar gap-2 p-4">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveCategory(category.id)}
+              className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
+                activeCategory === category.id
                     ? "bg-black text-white scale-105"
-                    : "bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 hover:bg-white/90 dark:hover:bg-gray-800/90"
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
+                  : "bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 hover:bg-white/90 dark:hover:bg-gray-800/90"
+              }`}
+            >
+              {category.label}
+            </button>
+          ))}
         </div>
+      </div>
 
-        {/* События */}
+      {/* События */}
         {activeType === 'events' ? (
-          <div className="h-[calc(100vh-8rem)] overflow-y-auto">
-            <div className="px-4 py-4">
-              <div className="space-y-4">
-                <AnimatePresence mode="wait">
-                  {filteredEvents.map((event) => (
-                    <motion.div
-                      key={event.id}
-                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                      transition={{ 
-                        type: "spring", 
-                        stiffness: 100, 
-                        damping: 15,
-                        mass: 1
-                      }}
-                      className="relative max-w-xl mx-auto"
-                    >
-                      <div 
-                        className="relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
-                        style={{
-                          background: `linear-gradient(to bottom, 
-                            ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
-                            event.category === 'music' ? 'rgb(30, 58, 138)' : 
-                            event.category === 'food' ? 'rgb(124, 45, 18)' : 
-                            'rgb(88, 28, 135)'} 0%,
-                            ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
-                            event.category === 'music' ? 'rgb(59, 130, 246)' : 
-                            event.category === 'food' ? 'rgb(234, 88, 12)' : 
-                            'rgb(126, 34, 206)'} 100%)`
-                        }}
-                      >
-                        <Link href={`/events/${event.id}`} className="block">
-                          {/* Изображение */}
-                          <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
-                            <Image
-                              src={event.image}
-                              alt={event.title}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            />
-                          </div>
-                          
-                          {/* Контент */}
-                          <div className="relative mt-4 px-2">
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-3 text-sm">
-                                  <div className="w-6 h-6 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center">
-                                    <User className="w-4 h-4 text-white" />
-                                  </div>
-                                  <span className="text-white/90">{event.author}</span>
-                                  <div className="flex items-center gap-1">
-                                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                                    <span className="text-white">{event.rating}</span>
-                                    <span className="text-white/60">({event.reviews})</span>
-                                  </div>
-                                </div>
-                                <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
-                                  {event.title}
-                                </h3>
-                                <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
-                                  <span>{event.date}</span>
-                                  <span>•</span>
-                                  <span>{event.time}</span>
-                                  <span>•</span>
-                                  <span className="text-white">{event.price}</span>
-                                </div>
-                                <p className="text-base text-white/80 line-clamp-3 leading-relaxed mb-4">
-                                  {event.description}
-                                </p>
-                                <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
-                                  <span>Подробнее</span>
-                                  <ArrowRight className="w-4 h-4" />
-                                </div>
+      <div className="h-[calc(100vh-8rem)] overflow-y-auto">
+        <div className="px-4 py-4">
+          <div className="space-y-4">
+            <AnimatePresence mode="wait">
+              {filteredEvents.map((event) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 100, 
+                    damping: 15,
+                    mass: 1
+                  }}
+                  className="relative max-w-xl mx-auto"
+                >
+                  <div 
+                    className="relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group p-3 pb-4"
+                    style={{
+                      background: `linear-gradient(to bottom, 
+                        ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
+                        event.category === 'music' ? 'rgb(30, 58, 138)' : 
+                        event.category === 'food' ? 'rgb(124, 45, 18)' : 
+                        'rgb(88, 28, 135)'} 0%,
+                        ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
+                        event.category === 'music' ? 'rgb(59, 130, 246)' : 
+                        event.category === 'food' ? 'rgb(234, 88, 12)' : 
+                        'rgb(126, 34, 206)'} 100%)`
+                    }}
+                  >
+                    <Link href={`/events/${event.id}`} className="block">
+                      {/* Изображение */}
+                      <div className="aspect-[4/3] relative rounded-2xl overflow-hidden">
+                        <Image
+                          src={event.image}
+                          alt={event.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                      
+                      {/* Контент */}
+                      <div className="relative mt-4 px-2">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-3 text-sm">
+                              <div className="w-6 h-6 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center">
+                                <User className="w-4 h-4 text-white" />
                               </div>
-                              <div className="flex flex-col items-center gap-3 ml-4">
-                                <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                                  <Heart className="w-6 h-6 text-white" />
-                                </button>
-                                <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                                  <Bookmark className="w-6 h-6 text-white" />
-                                </button>
-                                <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
-                                  <Share2 className="w-6 h-6 text-white" />
-                                </button>
+                              <span className="text-white/90">{event.author}</span>
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                                <span className="text-white">{event.rating}</span>
+                                <span className="text-white/60">({event.reviews})</span>
                               </div>
                             </div>
+                            <h3 className="text-2xl font-serif font-bold mb-3 leading-tight text-white group-hover:opacity-80 transition-opacity">
+                              {event.title}
+                            </h3>
+                            <div className="flex items-center gap-2 text-sm text-white/90 mb-3">
+                              <span>{event.date}</span>
+                              <span>•</span>
+                              <span>{event.time}</span>
+                              <span>•</span>
+                              <span className="text-white">{event.price}</span>
+                            </div>
+                            <p className="text-base text-white/80 line-clamp-3 leading-relaxed mb-4">
+                              {event.description}
+                            </p>
+                            <div className="inline-flex items-center gap-2 text-white group-hover:gap-3 transition-all">
+                              <span>Подробнее</span>
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
                           </div>
-                        </Link>
+                          <div className="flex flex-col items-center gap-3 ml-4">
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Heart className="w-6 h-6 text-white" />
+                            </button>
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Bookmark className="w-6 h-6 text-white" />
+                            </button>
+                            <button className="p-2 hover:bg-white/10 rounded-full transition-colors" onClick={(e) => e.preventDefault()}>
+                              <Share2 className="w-6 h-6 text-white" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </div>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
+        </div>
+      </div>
         ) : (
           <div className="h-[calc(100vh-8rem)] overflow-y-auto">
             <div className="px-4 py-4">
@@ -348,26 +348,26 @@ export default function EventsPage() {
           </div>
         )}
 
-        <style jsx global>{`
-          .overflow-y-auto {
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-          }
+      <style jsx global>{`
+        .overflow-y-auto {
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+        }
 
-          .overflow-y-auto::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
+        .overflow-y-auto::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
 
         {/* Scroll indicator */}
-        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 flex gap-1">
-          {filteredEvents.map((_, index) => (
-            <div
-              key={index}
-              className="w-1.5 h-1.5 rounded-full bg-white/30"
-            />
-          ))}
-        </div>
+      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 flex gap-1">
+        {filteredEvents.map((_, index) => (
+          <div
+            key={index}
+            className="w-1.5 h-1.5 rounded-full bg-white/30"
+          />
+        ))}
+      </div>
       </motion.div>
     </AnimatePresence>
   )

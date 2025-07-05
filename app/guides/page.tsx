@@ -66,38 +66,38 @@ export default function GuidesPage() {
         transition={{ duration: 0.8, ease: 'easeInOut' }}
         className="container p-4"
       >
-        <h1 className="text-2xl font-bold mb-4">Guides</h1>
+      <h1 className="text-2xl font-bold mb-4">Guides</h1>
 
-        <Tabs defaultValue="audio" className="mb-6" onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 mb-4">
-            <TabsTrigger value="audio">Audio Guides</TabsTrigger>
-            <TabsTrigger value="ar">AR Experiences</TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="audio" className="mb-6" onValueChange={setActiveTab}>
+        <TabsList className="grid grid-cols-2 mb-4">
+          <TabsTrigger value="audio">Audio Guides</TabsTrigger>
+          <TabsTrigger value="ar">AR Experiences</TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="audio" className="mt-0">
-            <div className="space-y-4">
-              {audioGuides.map((guide, index) => (
-                <GuideCard
-                  key={index}
-                  guide={guide}
-                  type="audio"
-                  isActive={index === 0 && isPlaying}
-                  onTogglePlay={() => index === 0 && setIsPlaying(!isPlaying)}
-                />
-              ))}
-            </div>
+        <TabsContent value="audio" className="mt-0">
+          <div className="space-y-4">
+            {audioGuides.map((guide, index) => (
+              <GuideCard
+                key={index}
+                guide={guide}
+                type="audio"
+                isActive={index === 0 && isPlaying}
+                onTogglePlay={() => index === 0 && setIsPlaying(!isPlaying)}
+              />
+            ))}
+          </div>
 
-            {isPlaying && <AudioPlayer onTogglePlay={() => setIsPlaying(!isPlaying)} />}
-          </TabsContent>
+          {isPlaying && <AudioPlayer onTogglePlay={() => setIsPlaying(!isPlaying)} />}
+        </TabsContent>
 
-          <TabsContent value="ar" className="mt-0">
-            <div className="space-y-4">
-              {arGuides.map((guide, index) => (
-                <GuideCard key={index} guide={guide} type="ar" />
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+        <TabsContent value="ar" className="mt-0">
+          <div className="space-y-4">
+            {arGuides.map((guide, index) => (
+              <GuideCard key={index} guide={guide} type="ar" />
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
       </motion.div>
     </AnimatePresence>
   )

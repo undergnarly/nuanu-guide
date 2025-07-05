@@ -3,6 +3,7 @@ import { Montserrat, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import PageTransition from "@/components/page-transition"
+import { Suspense } from "react"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -36,7 +37,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <PageTransition>
+            <Suspense fallback={
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+              </div>
+            }>
             {children}
+            </Suspense>
           </PageTransition>
         </ThemeProvider>
       </body>

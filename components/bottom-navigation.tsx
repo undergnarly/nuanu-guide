@@ -65,19 +65,19 @@ export default function BottomNavigation({ active, onNavigate }: Props) {
           <button
             key={item.key}
             onClick={() => onNavigate(item.key)}
-            className={cn(
+          className={cn(
               "flex flex-col items-center justify-center flex-1 h-full relative focus:outline-none",
               isActive ? "text-black dark:text-white" : "text-gray-500 dark:text-gray-400",
-            )}
+          )}
             aria-label={item.name}
-          >
+        >
             {isActive && item.key !== "home" && (
-              <motion.div
-                layoutId="navigation-indicator"
+            <motion.div
+              layoutId="navigation-indicator"
                 className="absolute bottom-0 w-8 h-1 bg-black dark:bg-white rounded-t-full"
-                transition={{ type: "spring", stiffness: 350, damping: 30 }}
-              />
-            )}
+              transition={{ type: "spring", stiffness: 350, damping: 30 }}
+            />
+          )}
             {item.key === "home"
               ? (typeof item.icon === 'function' ? item.icon(isActive) : null)
               : React.createElement(item.icon as React.ElementType, { className: 'w-5 h-5' })}
