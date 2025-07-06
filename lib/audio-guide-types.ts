@@ -23,6 +23,15 @@ export interface AudioGuideObject {
     audio_description: boolean
     sign_language: boolean
   }
+  pricing?: {
+    services: PricingService[]
+    booking_url?: string
+    contact_info?: {
+      phone?: string
+      email?: string
+      whatsapp?: string
+    }
+  }
   created_at: string
   updated_at: string
 }
@@ -31,14 +40,8 @@ export interface AudioGuideContent {
   title: string
   description: string
   full_text: string
-  audio: {
-    url: string
-    duration: number
-    transcript?: AudioTranscript[]
-  }
-  highlights: string[] // ключевые моменты
-  fun_facts: string[]
-  related_objects?: string[] // ID связанных объектов
+  highlights: string[]
+  audio_timestamps: AudioTimestamp[]
 }
 
 export interface AudioTranscript {
@@ -80,4 +83,28 @@ export interface MapMarker {
   title: string
   category: string
   isActive: boolean
+}
+
+export interface PricingService {
+  id: string
+  name: {
+    [languageCode: string]: string
+  }
+  description: {
+    [languageCode: string]: string
+  }
+  price: string
+  duration?: string
+  age_group?: string
+  schedule?: string
+  max_participants?: number
+  includes?: {
+    [languageCode: string]: string[]
+  }
+}
+
+export interface AudioTimestamp {
+  start: number
+  end: number
+  text: string
 } 

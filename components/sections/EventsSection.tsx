@@ -12,6 +12,7 @@ const categories = [
   { id: "music", label: "Music" },
   { id: "food", label: "Food" },
   { id: "workshops", label: "Workshops" },
+  { id: "kids", label: "Kids" },
 ]
 
 const events = [
@@ -31,6 +32,20 @@ const events = [
   },
   {
     id: 2,
+    title: "Jungle Kids - Kids Development Center",
+    description: "Comprehensive kids center with daycare, summer camps, and additional classes. For children aged 1-9 years. Try a free trial day!",
+    image: "https://images.unsplash.com/photo-1607745963884-cd2eaa7a4e86?q=80&w=1000",
+    category: "kids",
+    date: "Mon-Fri",
+    time: "8:00-20:00",
+    likes: 245,
+    author: "Jungle Kids Team",
+    price: "From 120.000 IDR",
+    rating: 4.9,
+    reviews: 156,
+  },
+  {
+    id: 3,
     title: "Open-Air Jazz Evening",
     description: "Enjoy live jazz music in the cozy atmosphere of our garden. The best jazz musicians of the island perform, as well as special guests from Jakarta.",
     image: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?q=80&w=1000",
@@ -44,7 +59,7 @@ const events = [
     reviews: 89,
   },
   {
-    id: 3,
+    id: 4,
     title: "Balinese Cooking Masterclass",
     description: "Learn to cook authentic Balinese dishes under the guidance of an experienced chef. The program includes: traditional spices, sauces, and cooking techniques.",
     image: "https://images.unsplash.com/photo-1540648639573-8c848de23f0a?q=80&w=1000",
@@ -58,7 +73,7 @@ const events = [
     reviews: 124,
   },
   {
-    id: 4,
+    id: 5,
     title: "Pottery Workshop",
     description: "Create your own unique ceramic piece under the guidance of an experienced master. All materials are included, suitable for beginners.",
     image: "https://images.unsplash.com/photo-1532570204726-d10d25a9ce47?q=80&w=1000",
@@ -72,7 +87,7 @@ const events = [
     reviews: 67,
   },
   {
-    id: 5,
+    id: 6,
     title: "Electronic Beach Party",
     description: "Dance until dawn to the sounds of electronic music from famous DJs. Special light effects and an unforgettable atmosphere on the ocean shore.",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000",
@@ -86,7 +101,7 @@ const events = [
     reviews: 156,
   },
   {
-    id: 6,
+    id: 7,
     title: "Digital Art Exhibition",
     description: "Dive into the world of NFT and digital art. Interactive installations, VR exhibits, and meetings with new generation artists.",
     image: "https://images.unsplash.com/photo-1573152958734-1922c188fba3?q=80&w=1000",
@@ -220,10 +235,12 @@ export default function EventsSection() {
                         ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
                         event.category === 'music' ? 'rgb(30, 58, 138)' : 
                         event.category === 'food' ? 'rgb(124, 45, 18)' : 
+                        event.category === 'kids' ? 'rgb(34, 139, 34)' :
                         'rgb(88, 28, 135)'} 0%,
                         ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
                         event.category === 'music' ? 'rgb(59, 130, 246)' : 
                         event.category === 'food' ? 'rgb(234, 88, 12)' : 
+                        event.category === 'kids' ? 'rgb(34, 197, 94)' :
                         'rgb(126, 34, 206)'} 100%)`
                     }}
                   >

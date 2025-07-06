@@ -12,6 +12,7 @@ const categories = [
   { id: "music", label: "Музыка" },
   { id: "food", label: "Еда" },
   { id: "workshops", label: "Мастер-классы" },
+  { id: "kids", label: "Детские программы" },
 ]
 
 const events = [
@@ -31,6 +32,20 @@ const events = [
   },
   {
     id: 2,
+    title: "Jungle Kids - Детский центр развития",
+    description: "Комплексный детский центр с дневным присмотром, летними лагерями и дополнительными занятиями. Для детей от 1 до 9 лет. Попробуйте бесплатный пробный день!",
+    image: "https://images.unsplash.com/photo-1607745963884-cd2eaa7a4e86?q=80&w=1000",
+    category: "kids",
+    date: "Пн-Пт",
+    time: "8:00-20:00",
+    likes: 245,
+    author: "Jungle Kids Team",
+    price: "От 120.000 IDR",
+    rating: 4.9,
+    reviews: 156,
+  },
+  {
+    id: 3,
     title: "Джазовый вечер под открытым небом",
     description: "Насладитесь живой джазовой музыкой в уютной атмосфере нашего сада. Выступают лучшие джазовые музыканты острова, а также специальные гости из Джакарты.",
     image: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?q=80&w=1000",
@@ -44,7 +59,7 @@ const events = [
     reviews: 89,
   },
   {
-    id: 3,
+    id: 4,
     title: "Кулинарный мастер-класс балийской кухни",
     description: "Научитесь готовить аутентичные балийские блюда под руководством опытного шеф-повара. В программе: традиционные специи, соусы и техники приготовления.",
     image: "https://images.unsplash.com/photo-1540648639573-8c848de23f0a?q=80&w=1000",
@@ -58,7 +73,7 @@ const events = [
     reviews: 124,
   },
   {
-    id: 4,
+    id: 5,
     title: "Мастер-класс по гончарному искусству",
     description: "Создайте свое уникальное керамическое изделие под руководством опытного мастера. Все материалы включены в стоимость, подходит для начинающих.",
     image: "https://images.unsplash.com/photo-1532570204726-d10d25a9ce47?q=80&w=1000",
@@ -72,7 +87,7 @@ const events = [
     reviews: 67,
   },
   {
-    id: 5,
+    id: 6,
     title: "Электронная вечеринка на пляже",
     description: "Танцуйте до рассвета под звуки электронной музыки от известных диджеев. Специальные световые эффекты и незабываемая атмосфера на берегу океана.",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1000",
@@ -86,7 +101,7 @@ const events = [
     reviews: 156,
   },
   {
-    id: 6,
+    id: 7,
     title: "Выставка цифрового искусства",
     description: "Погрузитесь в мир NFT и цифрового искусства. Интерактивные инсталляции, VR-экспонаты и встречи с художниками нового поколения.",
     image: "https://images.unsplash.com/photo-1573152958734-1922c188fba3?q=80&w=1000",
@@ -213,10 +228,12 @@ export default function EventsPage() {
                         ${event.category === 'art' ? 'rgb(88, 28, 135)' : 
                         event.category === 'music' ? 'rgb(30, 58, 138)' : 
                         event.category === 'food' ? 'rgb(124, 45, 18)' : 
+                        event.category === 'kids' ? 'rgb(34, 139, 34)' :
                         'rgb(88, 28, 135)'} 0%,
                         ${event.category === 'art' ? 'rgb(126, 34, 206)' : 
                         event.category === 'music' ? 'rgb(59, 130, 246)' : 
                         event.category === 'food' ? 'rgb(234, 88, 12)' : 
+                        event.category === 'kids' ? 'rgb(34, 197, 94)' :
                         'rgb(126, 34, 206)'} 100%)`
                     }}
                   >
