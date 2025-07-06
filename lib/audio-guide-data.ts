@@ -29,7 +29,7 @@ export const AUDIO_GUIDE_OBJECTS: AudioGuideObject[] = [
       lat: -8.3405,
       lng: 115.0920
     },
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1000',
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1000&auto=format&fit=crop',
     video: {
       youtube_id: 'dQw4w9WgXcQ',
       thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg'
@@ -188,12 +188,12 @@ Perhatikan sambungan bambu yang rumit dan cara cahaya menyaring melalui struktur
   },
   {
     id: '2',
-    slug: 'ceramic-sculpture-garden',
+    slug: 'ceramic-garden',
     coordinates: {
-      lat: -8.3408,
-      lng: 115.0925
+      lat: -8.3400,
+      lng: 115.0915
     },
-    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1000',
+    image: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?q=80&w=1000&auto=format&fit=crop',
     video: {
       youtube_id: 'jNQXAC9IVRw',
       thumbnail: 'https://img.youtube.com/vi/jNQXAC9IVRw/maxresdefault.jpg'
@@ -369,7 +369,7 @@ Perhatikan bagaimana patung-patung berubah penampilan sepanjang hari seiring ber
       lat: -8.3410,
       lng: 115.0918
     },
-    image: 'https://images.unsplash.com/photo-1607745963884-cd2eaa7a4e86?q=80&w=1000',
+    image: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=1000&auto=format&fit=crop',
     video: {
       youtube_id: 'fbQaVcm5fAw',
       thumbnail: 'https://img.youtube.com/vi/fbQaVcm5fAw/maxresdefault.jpg'

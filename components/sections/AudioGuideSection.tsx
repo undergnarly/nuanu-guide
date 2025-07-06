@@ -168,21 +168,21 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-1 sm:p-4"
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-none sm:rounded-lg w-full h-full sm:max-w-4xl sm:w-full sm:max-h-[95vh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Badge className={categoryColors[audioGuide.category]}>
+        <div className="sticky top-0 bg-white border-b border-gray-200 p-2 sm:p-4 flex items-center justify-between z-10">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <Badge className={`${categoryColors[audioGuide.category]} text-xs`}>
               {categoryLabels[audioGuide.category][language]}
             </Badge>
-            <span className="text-sm text-gray-500">
+            <span className="text-xs sm:text-sm text-gray-500">
               {formatTime(duration)} • {audioGuide.coordinates.lat.toFixed(4)}, {audioGuide.coordinates.lng.toFixed(4)}
             </span>
           </div>
@@ -190,16 +190,16 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="shrink-0"
+            className="shrink-0 p-1 sm:p-2"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">{t.close}</span>
           </Button>
         </div>
 
-        <div className="p-6 space-y-8">
+        <div className="p-2 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 lg:space-y-8">
           {/* Image + Title */}
-          <div className="space-y-4">
+          <div className="space-y-2 sm:space-y-4">
             <div className="relative aspect-video rounded-lg overflow-hidden">
               <img
                 src={audioGuide.image}
@@ -208,25 +208,25 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{content.title}</h1>
-              <p className="text-lg text-gray-600">{content.description}</p>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{content.title}</h1>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-600">{content.description}</p>
             </div>
           </div>
 
           {/* Audio Player */}
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4 mb-4">
+            <CardContent className="p-3 sm:p-4 lg:p-6">
+              <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-3 sm:mb-4">
                 <Button
                   onClick={togglePlayPause}
-                  size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  size="sm"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-full sm:w-auto"
                 >
-                  {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-                  <span className="ml-2">{isPlaying ? t.pause : t.play}</span>
+                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                  <span className="ml-2 text-sm">{isPlaying ? t.pause : t.play}</span>
                 </Button>
                 
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                   <Slider
                     value={[currentTime]}
                     onValueChange={handleTimeChange}
@@ -234,21 +234,22 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                     step={1}
                     className="w-full"
                   />
-                  <div className="flex justify-between text-sm text-gray-500 mt-1">
+                  <div className="flex justify-between text-xs sm:text-sm text-gray-500 mt-1">
                     <span>{formatTime(currentTime)}</span>
                     <span>{formatTime(duration)}</span>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 w-full sm:w-auto">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={toggleMute}
+                    className="p-1 sm:p-2"
                   >
-                    {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                    {isMuted ? <VolumeX className="h-3 w-3 sm:h-4 sm:w-4" /> : <Volume2 className="h-3 w-3 sm:h-4 sm:w-4" />}
                   </Button>
-                  <div className="w-20">
+                  <div className="w-16 sm:w-20">
                     <Slider
                       value={[isMuted ? 0 : volume]}
                       onValueChange={handleVolumeChange}
@@ -261,7 +262,7 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
               </div>
               
               {/* Text with synchronized highlighting */}
-              <div className="prose prose-gray max-w-none">
+              <div className="prose prose-sm sm:prose-base max-w-none">
                 {content.audio_timestamps.map((timestamp, index) => (
                   <span
                     key={index}
@@ -269,7 +270,7 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                       index === currentWordIndex
                         ? 'bg-yellow-200 text-yellow-900'
                         : 'text-gray-700'
-                    } transition-colors duration-200`}
+                    } transition-colors duration-200 text-sm sm:text-base`}
                   >
                     {timestamp.text}{' '}
                   </span>
@@ -281,11 +282,11 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
           {/* Video */}
           {audioGuide.video?.youtube_id && (
             <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">Video</CardTitle>
+              <CardHeader className="p-3 sm:p-4 lg:p-6">
+                <CardTitle className="text-lg sm:text-xl">Video</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="aspect-video rounded-lg overflow-hidden">
+              <CardContent className="p-3 sm:p-4 lg:p-6 pt-0">
+                <div className="aspect-[9/16] sm:aspect-video rounded-lg overflow-hidden">
                   <iframe
                     src={getYouTubeEmbedUrl(audioGuide.video.youtube_id)}
                     title={content.title}
@@ -299,27 +300,27 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
 
           {/* Description */}
           <Card>
-            <CardContent className="p-6">
-              <div className="prose prose-gray max-w-none">
-                <p className="text-gray-700 leading-relaxed">{content.full_text}</p>
+            <CardContent className="p-3 sm:p-4 lg:p-6">
+              <div className="prose prose-sm sm:prose-base max-w-none">
+                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{content.full_text}</p>
               </div>
             </CardContent>
           </Card>
 
           {/* Key Highlights */}
           <Card>
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center">
+            <CardHeader className="p-3 sm:p-4 lg:p-6">
+              <CardTitle className="text-lg sm:text-xl flex items-center">
                 <span className="mr-2">✨</span>
                 {t.highlights}
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-3">
+            <CardContent className="p-3 sm:p-4 lg:p-6 pt-0">
+              <ul className="space-y-2 sm:space-y-3">
                 {content.highlights.map((highlight, index) => (
-                  <li key={index} className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mt-2"></span>
-                    <span className="text-gray-700">{highlight}</span>
+                  <li key={index} className="flex items-start space-x-2 sm:space-x-3">
+                    <span className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mt-1.5 sm:mt-2"></span>
+                    <span className="text-gray-700 text-sm sm:text-base">{highlight}</span>
                   </li>
                 ))}
               </ul>
@@ -329,8 +330,8 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
           {/* Pricing & Services */}
           {audioGuide.pricing && (
             <Card>
-              <CardHeader>
-                <CardTitle className="text-xl flex items-center justify-between">
+              <CardHeader className="p-3 sm:p-4 lg:p-6">
+                <CardTitle className="text-lg sm:text-xl flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
                   <span className="flex items-center">
                     <span className="mr-2">💰</span>
                     {t.pricing}
@@ -338,25 +339,26 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                   {audioGuide.pricing.booking_url && (
                     <Button
                       onClick={handleBooking}
-                      className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                      size="sm"
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 w-full sm:w-auto"
                     >
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      {t.bookNow}
+                      <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      <span className="text-sm">{t.bookNow}</span>
                     </Button>
                   )}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
+              <CardContent className="p-3 sm:p-4 lg:p-6 pt-0">
+                <div className="space-y-4 sm:space-y-6">
                   {audioGuide.pricing.services.map((service, index) => (
-                    <div key={service.id} className="border-l-4 border-gradient-to-b from-purple-600 to-pink-600 pl-4">
-                      <div className="flex items-start justify-between">
+                    <div key={service.id} className="border-l-4 border-gradient-to-b from-purple-600 to-pink-600 pl-3 sm:pl-4">
+                      <div className="flex flex-col sm:flex-row items-start justify-between space-y-2 sm:space-y-0">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-lg text-gray-900 mb-1">
+                          <h3 className="font-semibold text-base sm:text-lg text-gray-900 mb-1">
                             {service.name[language]}
                           </h3>
-                          <p className="text-gray-600 mb-2">{service.description[language]}</p>
-                          <div className="flex flex-wrap gap-2 mb-2">
+                          <p className="text-gray-600 mb-2 text-sm sm:text-base">{service.description[language]}</p>
+                          <div className="flex flex-wrap gap-1 sm:gap-2 mb-2">
                             {service.age_group && (
                               <Badge variant="secondary" className="text-xs">
                                 {service.age_group}
@@ -374,8 +376,8 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                             )}
                           </div>
                         </div>
-                        <div className="text-right ml-4">
-                          <div className="text-lg font-bold text-gray-900">{service.price}</div>
+                        <div className="text-left sm:text-right sm:ml-4 w-full sm:w-auto">
+                          <div className="text-base sm:text-lg font-bold text-gray-900">{service.price}</div>
                         </div>
                       </div>
                     </div>
@@ -383,29 +385,29 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                   
                   {/* Contact Information */}
                   {audioGuide.pricing.contact_info && (
-                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-semibold text-gray-900 mb-3">{t.contact}</h4>
+                    <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                      <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">{t.contact}</h4>
                       <div className="space-y-2">
                         {audioGuide.pricing.contact_info.phone && (
                           <div className="flex items-center space-x-2">
-                            <Phone className="h-4 w-4 text-gray-500" />
-                            <a href={`tel:${audioGuide.pricing.contact_info.phone}`} className="text-blue-600 hover:text-blue-800">
+                            <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                            <a href={`tel:${audioGuide.pricing.contact_info.phone}`} className="text-blue-600 hover:text-blue-800 text-sm sm:text-base">
                               {audioGuide.pricing.contact_info.phone}
                             </a>
                           </div>
                         )}
                         {audioGuide.pricing.contact_info.email && (
                           <div className="flex items-center space-x-2">
-                            <Mail className="h-4 w-4 text-gray-500" />
-                            <a href={`mailto:${audioGuide.pricing.contact_info.email}`} className="text-blue-600 hover:text-blue-800">
+                            <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                            <a href={`mailto:${audioGuide.pricing.contact_info.email}`} className="text-blue-600 hover:text-blue-800 text-sm sm:text-base">
                               {audioGuide.pricing.contact_info.email}
                             </a>
                           </div>
                         )}
                         {audioGuide.pricing.contact_info.whatsapp && (
                           <div className="flex items-center space-x-2">
-                            <MessageCircle className="h-4 w-4 text-gray-500" />
-                            <a href={`https://wa.me/${audioGuide.pricing.contact_info.whatsapp.replace(/[^0-9]/g, '')}`} className="text-green-600 hover:text-green-800">
+                            <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                            <a href={`https://wa.me/${audioGuide.pricing.contact_info.whatsapp.replace(/[^0-9]/g, '')}`} className="text-green-600 hover:text-green-800 text-sm sm:text-base">
                               WhatsApp
                             </a>
                           </div>
@@ -420,13 +422,13 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
 
           {/* Location */}
           <Card>
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center">
-                <MapPin className="h-5 w-5 mr-2" />
+            <CardHeader className="p-3 sm:p-4 lg:p-6">
+              <CardTitle className="text-lg sm:text-xl flex items-center">
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                 {t.location}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3 sm:p-4 lg:p-6 pt-0">
               <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
                 <iframe
                   src={`https://www.openstreetmap.org/export/embed.html?bbox=${audioGuide.coordinates.lng-0.01},${audioGuide.coordinates.lat-0.01},${audioGuide.coordinates.lng+0.01},${audioGuide.coordinates.lat+0.01}&layer=mapnik&marker=${audioGuide.coordinates.lat},${audioGuide.coordinates.lng}`}
@@ -434,7 +436,7 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                   title={`Map of ${content.title}`}
                 />
               </div>
-              <p className="text-sm text-gray-600 mt-2">
+              <p className="text-xs sm:text-sm text-gray-600 mt-2">
                 {audioGuide.coordinates.lat.toFixed(6)}, {audioGuide.coordinates.lng.toFixed(6)}
               </p>
             </CardContent>
@@ -442,40 +444,40 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
 
           {/* Accessibility */}
           <Card>
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center">
-                <Accessibility className="h-5 w-5 mr-2" />
+            <CardHeader className="p-3 sm:p-4 lg:p-6">
+              <CardTitle className="text-lg sm:text-xl flex items-center">
+                <Accessibility className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                 {t.accessibility}
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
+            <CardContent className="p-3 sm:p-4 lg:p-6 pt-0">
+              <div className="space-y-2 sm:space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Car className="h-4 w-4 text-gray-500" />
-                    <span className="text-gray-700">{t.wheelchairAccessible}</span>
+                    <Car className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                    <span className="text-gray-700 text-sm sm:text-base">{t.wheelchairAccessible}</span>
                   </div>
-                  <Badge variant={audioGuide.accessibility.wheelchair_accessible ? "default" : "secondary"}>
+                  <Badge variant={audioGuide.accessibility.wheelchair_accessible ? "default" : "secondary"} className="text-xs">
                     {audioGuide.accessibility.wheelchair_accessible ? t.available : t.notAvailable}
                   </Badge>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Ear className="h-4 w-4 text-gray-500" />
-                    <span className="text-gray-700">{t.audioDescription}</span>
+                    <Ear className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                    <span className="text-gray-700 text-sm sm:text-base">{t.audioDescription}</span>
                   </div>
-                  <Badge variant={audioGuide.accessibility.audio_description ? "default" : "secondary"}>
+                  <Badge variant={audioGuide.accessibility.audio_description ? "default" : "secondary"} className="text-xs">
                     {audioGuide.accessibility.audio_description ? t.available : t.notAvailable}
                   </Badge>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Eye className="h-4 w-4 text-gray-500" />
-                    <span className="text-gray-700">{t.signLanguage}</span>
+                    <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                    <span className="text-gray-700 text-sm sm:text-base">{t.signLanguage}</span>
                   </div>
-                  <Badge variant={audioGuide.accessibility.sign_language ? "default" : "secondary"}>
+                  <Badge variant={audioGuide.accessibility.sign_language ? "default" : "secondary"} className="text-xs">
                     {audioGuide.accessibility.sign_language ? t.available : t.notAvailable}
                   </Badge>
                 </div>
