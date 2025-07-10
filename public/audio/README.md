@@ -4,10 +4,7 @@ This directory contains audio files for the Nuanu Creative City audio guide syst
 
 ## File Structure
 
-- `bamboo-pavilion-en.mp3` - English audio guide for Bamboo Pavilion
-- `bamboo-pavilion-ru.mp3` - Russian audio guide for Bamboo Pavilion  
-- `ceramic-garden-en.mp3` - English audio guide for Ceramic Sculpture Garden
-- `ceramic-garden-ru.mp3` - Russian audio guide for Ceramic Sculpture Garden
+
 
 ## Audio Requirements
 

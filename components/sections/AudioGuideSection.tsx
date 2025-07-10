@@ -220,19 +220,18 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                 <Button
                   onClick={togglePlayPause}
                   size="sm"
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 w-full sm:w-auto"
+                  className="bg-black hover:bg-gray-800 rounded-full w-12 h-12 p-0 flex items-center justify-center flex-shrink-0"
                 >
-                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                  <span className="ml-2 text-sm">{isPlaying ? t.pause : t.play}</span>
+                  {isPlaying ? <Pause className="h-5 w-5 text-white" /> : <Play className="h-5 w-5 text-white ml-0.5" />}
                 </Button>
                 
-                <div className="flex-1 w-full">
+                <div className="flex-1 w-full min-w-0">
                   <Slider
                     value={[currentTime]}
                     onValueChange={handleTimeChange}
                     max={duration}
                     step={1}
-                    className="w-full"
+                    className="w-full [&_[data-orientation=horizontal]]:h-2 [&_[data-orientation=horizontal]]:bg-black [&_[data-orientation=horizontal]]:rounded-full [&>span[data-orientation=horizontal]]:bg-gray-200 [&>span[data-orientation=horizontal]]:h-2 [&>span[data-orientation=horizontal]]:rounded-full [&_[role=slider]]:bg-black [&_[role=slider]]:border-2 [&_[role=slider]]:border-black [&_[role=slider]]:w-4 [&_[role=slider]]:h-4 [&_[role=slider]]:rounded-full [&_[role=slider]]:shadow-sm hover:[&_[role=slider]]:bg-gray-800"
                   />
                   <div className="flex justify-between text-xs sm:text-sm text-gray-500 mt-1">
                     <span>{formatTime(currentTime)}</span>
@@ -240,37 +239,33 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-2 w-full sm:w-auto">
+                <div className="flex items-center space-x-2 w-auto flex-shrink-0">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={toggleMute}
-                    className="p-1 sm:p-2"
+                    className="p-2 text-black hover:bg-gray-100 w-8 h-8 flex items-center justify-center"
                   >
-                    {isMuted ? <VolumeX className="h-3 w-3 sm:h-4 sm:w-4" /> : <Volume2 className="h-3 w-3 sm:h-4 sm:w-4" />}
+                    {isMuted ? <VolumeX className="h-4 w-4 text-black" /> : <Volume2 className="h-4 w-4 text-black" />}
                   </Button>
-                  <div className="w-16 sm:w-20">
+                  <div className="w-20">
                     <Slider
                       value={[isMuted ? 0 : volume]}
                       onValueChange={handleVolumeChange}
                       max={1}
                       step={0.1}
-                      className="w-full"
+                      className="w-full [&_[data-orientation=horizontal]]:h-2 [&_[data-orientation=horizontal]]:bg-black [&_[data-orientation=horizontal]]:rounded-full [&>span[data-orientation=horizontal]]:bg-gray-200 [&>span[data-orientation=horizontal]]:h-2 [&>span[data-orientation=horizontal]]:rounded-full [&_[role=slider]]:bg-black [&_[role=slider]]:border-2 [&_[role=slider]]:border-black [&_[role=slider]]:w-4 [&_[role=slider]]:h-4 [&_[role=slider]]:rounded-full [&_[role=slider]]:shadow-sm hover:[&_[role=slider]]:bg-gray-800"
                     />
                   </div>
                 </div>
               </div>
               
-              {/* Text with synchronized highlighting */}
+              {/* Text without highlighting */}
               <div className="prose prose-sm sm:prose-base max-w-none">
                 {content.audio_timestamps.map((timestamp, index) => (
                   <span
                     key={index}
-                    className={`${
-                      index === currentWordIndex
-                        ? 'bg-yellow-200 text-yellow-900'
-                        : 'text-gray-700'
-                    } transition-colors duration-200 text-sm sm:text-base`}
+                    className="text-gray-700 text-sm sm:text-base"
                   >
                     {timestamp.text}{' '}
                   </span>
@@ -297,15 +292,6 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
               </CardContent>
             </Card>
           )}
-
-          {/* Description */}
-          <Card>
-            <CardContent className="p-3 sm:p-4 lg:p-6">
-              <div className="prose prose-sm sm:prose-base max-w-none">
-                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{content.full_text}</p>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Key Highlights */}
           <Card>

@@ -9,7 +9,6 @@ import {
   Navigation, 
   Compass, 
   ExternalLink,
-  Directions,
   Share2,
   Download
 } from 'lucide-react'
@@ -216,7 +215,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
               onClick={openInGoogleMaps}
               className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white"
             >
-              <Directions className="h-4 w-4" />
+              <Navigation className="h-4 w-4" />
               <span>Google Maps</span>
             </Button>
             
@@ -224,7 +223,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
               onClick={openInAppleMaps}
               className="flex items-center justify-center space-x-2 bg-gray-800 hover:bg-gray-900 text-white"
             >
-              <Directions className="h-4 w-4" />
+              <Navigation className="h-4 w-4" />
               <span>Apple Maps</span>
             </Button>
           </div>
@@ -254,20 +253,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
         </CardHeader>
         <CardContent className="pt-0">
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                  <MapPin className="h-4 w-4 text-white" />
-                </div>
-                <div>
-                  <p className="font-medium text-sm">Ceramic Sculpture Garden</p>
-                  <p className="text-xs text-gray-600">50m away</p>
-                </div>
-              </div>
-              <Button size="sm" variant="outline" className="text-xs">
-                Visit
-              </Button>
-            </div>
+
             
             <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
               <div className="flex items-center space-x-3">

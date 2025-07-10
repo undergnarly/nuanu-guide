@@ -153,8 +153,8 @@ https://yourdomain.com/?audio-guide=<slug>&lang=<language>
 
 ### Примеры
 ```
-https://yourdomain.com/?audio-guide=bamboo-pavilion&lang=en
-https://yourdomain.com/?audio-guide=ceramic-sculpture-garden&lang=ru
+https://yourdomain.com/?audio-guide=jungle-kids-center&lang=en
+https://yourdomain.com/?audio-guide=jungle-kids-center&lang=ru
 ```
 
 ### Генерация QR-кодов
@@ -186,7 +186,7 @@ npm run build
 ```bash
 npm run dev
 # Тестируйте QR-коды через:
-# http://localhost:3000/?audio-guide=bamboo-pavilion&lang=en
+# http://localhost:3000/?audio-guide=jungle-kids-center&lang=en
 ```
 
 ### Тестирование QR-кодов
