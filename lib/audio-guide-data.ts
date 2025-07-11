@@ -82,7 +82,7 @@ export const AUDIO_GUIDE_OBJECTS: AudioGuideObject[] = [
     slug: 'art-village',
     coordinates: { lat: -8.3425, lng: 115.0930 },
     image: '/images/guides/art_village.jpg',
-    card_color: '#573114',
+    card_color: '#233f24',
     audio_url: '/audio/guides/art-village.mp3',
     video: {
       youtube_id: 'your_youtube_id_here',
@@ -178,7 +178,7 @@ Come by the studio today and expand your knowledge on the world of glass art!`,
     slug: 'pacha-alpaca',
     coordinates: { lat: -8.3418, lng: 115.0925 },
     image: '/images/guides/pacha-alpaca-new.jpg',
-    card_color: '#271d0e',
+    card_color: '#2d1d0b',
     audio_url: '/audio/guides/pacha-alpaca.mp3',
     video: {
       youtube_id: 'your_youtube_id_here',

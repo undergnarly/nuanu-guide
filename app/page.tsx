@@ -20,34 +20,35 @@ const NAV = [
 ]
 
 function AppContent() {
-  const [active, setActive] = useState("home")
+  const [active, setActive] = useState("guides")
   const [audioGuideSlug, setAudioGuideSlug] = useState<string | null>(null)
   const [audioGuideLang, setAudioGuideLang] = useState<string>("en")
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Проверяем URL параметры для QR-кодов аудиогида
-    const audioGuideParam = searchParams.get('audio-guide')
-    const langParam = searchParams.get('lang')
-    
-    if (audioGuideParam) {
-      setAudioGuideSlug(audioGuideParam)
-      setAudioGuideLang(langParam || 'en')
-      // Очищаем URL от параметров
-      const url = new URL(window.location.href)
-      url.searchParams.delete('audio-guide')
-      url.searchParams.delete('lang')
-      window.history.replaceState({}, '', url.toString())
+    const path = window.location.pathname
+    const slug = path.substring(1) // Убираем / в начале
+
+    if (slug) {
+      const guideExists = AUDIO_GUIDE_OBJECTS.some(g => g.slug === slug)
+      if (guideExists) {
+        setAudioGuideSlug(slug)
+        // Можно также установить язык, если он передается, например, в query-параметрах
+        // const lang = new URLSearchParams(window.location.search).get('lang');
+        // if (lang) setAudioGuideLang(lang);
+      }
     }
-  }, [searchParams])
+  }, [])
 
   const handleOpenAudioGuide = (slug: string, lang: string) => {
     setAudioGuideSlug(slug)
     setAudioGuideLang(lang)
+    window.history.pushState({}, '', `/${slug}`)
   }
 
   const handleCloseAudioGuide = () => {
     setAudioGuideSlug(null)
+    window.history.pushState({}, '', '/')
   }
 
   // Если открыт аудиогид, показываем его

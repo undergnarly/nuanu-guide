@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { AUDIO_GUIDE_OBJECTS } from "@/lib/audio-guide-data"
+import { QRCodeCanvas } from 'qrcode.react'
 
 interface GuidesSectionProps {
   onOpenAudioGuide?: (slug: string, lang: string) => void
@@ -29,6 +30,9 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   const [currentAudio, setCurrentAudio] = useState<{id: string, url: string} | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // QR modal state
+  const [qrGuide, setQrGuide] = useState<null | typeof AUDIO_GUIDE_OBJECTS[0]>(null)
 
   const handlePlayPause = (guideId: string, audioUrl: string) => {
     if (currentAudio?.id === guideId) {
@@ -225,7 +229,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                           className="p-2 hover:bg-white/10 rounded-full transition-colors"
                           onClick={(e) => {
                             e.stopPropagation()
-                            // Логика для QR-кода
+                            setQrGuide(guide)
                           }}
                         >
                           <QrCode className="w-6 h-6 text-white" />
@@ -273,6 +277,48 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* QR Modal */}
+      <AnimatePresence>
+        {qrGuide && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center"
+            onClick={() => setQrGuide(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-lg p-6 sm:p-8 text-center"
+              onClick={e => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-bold mb-2">{qrGuide.content[selectedLanguage]?.title}</h3>
+              <p className="text-sm text-gray-500 mb-4">Scan the code to open this guide</p>
+              <div className="p-4 bg-gray-100 rounded-md inline-block">
+                <QRCodeCanvas
+                  value={`${window.location.origin}/${qrGuide.slug}`}
+                  size={192}
+                  includeMargin={true}
+                />
+              </div>
+              <p className="mt-4 text-xs text-gray-600 break-all">
+                {`${window.location.origin}/${qrGuide.slug}`}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setQrGuide(null)}
+                className="mt-6"
+              >
+                Close
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AnimatePresence>
   )
 }

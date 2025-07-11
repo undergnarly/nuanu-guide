@@ -2,12 +2,13 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Play, Pause, Volume2, VolumeX, MapPin, Phone, Mail, MessageCircle, ExternalLink, Accessibility, Car, Eye, Ear } from 'lucide-react'
+import { X, Play, Pause, Volume2, VolumeX, MapPin, Phone, Mail, MessageCircle, ExternalLink, Accessibility, Car, Eye, Ear, QrCode } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
 import { AudioGuideObject } from '@/lib/audio-guide-types'
+import { QRCodeCanvas } from 'qrcode.react'
 
 interface AudioGuideSectionProps {
   audioGuide: AudioGuideObject
@@ -27,6 +28,7 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
   const [volume, setVolume] = useState(1)
   const [isMuted, setIsMuted] = useState(false)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
+  const [showQrModal, setShowQrModal] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
   const categoryColors = {
     art: 'bg-purple-100 text-purple-800',
@@ -214,15 +216,26 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
               {content.title}
             </span>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="shrink-0 p-1 sm:p-2"
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">{t.close}</span>
-          </Button>
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowQrModal(true)}
+              className="shrink-0 p-1 sm:p-2"
+            >
+              <QrCode className="h-4 w-4" />
+              <span className="sr-only">Show QR Code</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="shrink-0 p-1 sm:p-2"
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">{t.close}</span>
+            </Button>
+          </div>
         </div>
 
         <div className="p-2 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 lg:space-y-8">
@@ -243,52 +256,58 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
           {/* Audio Player */}
           <Card>
             <CardContent className="p-3 sm:p-4 lg:p-6">
-              <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-3 sm:mb-4">
+              <div className="flex items-center space-x-3 sm:space-x-4">
                 <Button
                   onClick={togglePlayPause}
                   size="sm"
-                  className="bg-black hover:bg-gray-800 rounded-full w-12 h-12 p-0 flex items-center justify-center flex-shrink-0"
+                  variant="ghost"
+                  className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
                 >
-                  {isPlaying ? <Pause className="h-5 w-5 text-white" /> : <Play className="h-5 w-5 text-white ml-0.5" />}
+                  {isPlaying ? (
+                    <Pause className="h-5 w-5" />
+                  ) : (
+                    <Play className="h-5 w-5" />
+                  )}
+                  <span className="sr-only">{isPlaying ? t.pause : t.play}</span>
                 </Button>
+
+                <span className="text-xs text-gray-500 font-mono w-12 text-center">
+                  {formatTime(currentTime)}
+                </span>
                 
-                <div className="flex-1 w-full min-w-0">
+                <div className="flex-grow">
                   <Slider
                     value={[currentTime]}
-                    onValueChange={handleTimeChange}
                     max={duration}
                     step={1}
-                    className="w-full [&_[data-orientation=horizontal]]:h-2 [&_[data-orientation=horizontal]]:bg-black [&_[data-orientation=horizontal]]:rounded-full [&>span[data-orientation=horizontal]]:bg-gray-200 [&>span[data-orientation=horizontal]]:h-2 [&>span[data-orientation=horizontal]]:rounded-full [&_[role=slider]]:bg-black [&_[role=slider]]:border-2 [&_[role=slider]]:border-black [&_[role=slider]]:w-4 [&_[role=slider]]:h-4 [&_[role=slider]]:rounded-full [&_[role=slider]]:shadow-sm hover:[&_[role=slider]]:bg-gray-800"
+                    onValueChange={handleTimeChange}
                   />
-                  <div className="flex justify-between text-xs sm:text-sm text-gray-500 mt-1">
-                    <span>{formatTime(currentTime)}</span>
-                    <span>{formatTime(duration)}</span>
-                  </div>
                 </div>
-                
-                <div className="flex items-center space-x-2 w-auto flex-shrink-0">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={toggleMute}
-                    className="p-2 text-black hover:bg-gray-100 w-8 h-8 flex items-center justify-center"
-                  >
-                    {isMuted ? <VolumeX className="h-4 w-4 text-black" /> : <Volume2 className="h-4 w-4 text-black" />}
-                  </Button>
-                  <div className="w-20">
-                    <Slider
-                      value={[isMuted ? 0 : volume]}
-                      onValueChange={handleVolumeChange}
-                      max={1}
-                      step={0.1}
-                      className="w-full [&_[data-orientation=horizontal]]:h-2 [&_[data-orientation=horizontal]]:bg-black [&_[data-orientation=horizontal]]:rounded-full [&>span[data-orientation=horizontal]]:bg-gray-200 [&>span[data-orientation=horizontal]]:h-2 [&>span[data-orientation=horizontal]]:rounded-full [&_[role=slider]]:bg-black [&_[role=slider]]:border-2 [&_[role=slider]]:border-black [&_[role=slider]]:w-4 [&_[role=slider]]:h-4 [&_[role=slider]]:rounded-full [&_[role=slider]]:shadow-sm hover:[&_[role=slider]]:bg-gray-800"
-                    />
-                  </div>
-                </div>
+
+                <span className="text-xs text-gray-500 font-mono w-12 text-center">
+                  {formatTime(duration)}
+                </span>
+
+                <Button
+                  onClick={toggleMute}
+                  size="sm"
+                  variant="ghost"
+                  className="rounded-full w-10 h-10 p-0 flex items-center justify-center flex-shrink-0"
+                >
+                  {isMuted ? (
+                    <VolumeX className="h-5 w-5" />
+                  ) : (
+                    <Volume2 className="h-5 w-5" />
+                  )}
+                  <span className="sr-only">{isMuted ? t.unmute : t.mute}</span>
+                </Button>
               </div>
-              
-              <div className="prose prose-sm sm:prose-base max-w-none mb-4">
-                <p style={{ whiteSpace: 'pre-wrap' }}>{content.full_text}</p>
+
+              {/* Full Text */}
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-gray-600 whitespace-pre-wrap text-sm sm:text-base">
+                  {content.full_text}
+                </p>
               </div>
 
               {/* Text with highlighting */}
@@ -503,6 +522,46 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
           </Card>
         </div>
       </motion.div>
+      <AnimatePresence>
+        {showQrModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center"
+            onClick={() => setShowQrModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-lg p-6 sm:p-8 text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-bold mb-2">{content.title}</h3>
+              <p className="text-sm text-gray-500 mb-4">Scan the code to open this guide</p>
+              <div className="p-4 bg-gray-100 rounded-md inline-block">
+                <QRCodeCanvas
+                  value={`${window.location.origin}/${audioGuide.slug}`}
+                  size={192}
+                  includeMargin={true}
+                />
+              </div>
+              <p className="mt-4 text-xs text-gray-600 break-all">
+                {`${window.location.origin}/${audioGuide.slug}`}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowQrModal(false)}
+                className="mt-6"
+              >
+                Close
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 } 
