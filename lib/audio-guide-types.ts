@@ -7,6 +7,8 @@ export interface AudioGuideObject {
     lng: number
   }
   image: string
+  card_color?: string
+  audio_url?: string
   video?: {
     youtube_id?: string
     url?: string

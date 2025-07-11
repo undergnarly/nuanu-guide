@@ -104,52 +104,70 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
   const t = labels[language]
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isPlaying) {
-        setCurrentTime(prev => {
-          const newTime = prev + 1
-          if (newTime >= duration) {
-            setIsPlaying(false)
-            return 0
-          }
-          
-          // Update current word based on timestamp
-          const currentTimestamp = content.audio_timestamps.find(
-            (ts, index) => newTime >= ts.start && newTime < ts.end
-          )
-          if (currentTimestamp) {
-            const index = content.audio_timestamps.indexOf(currentTimestamp)
-            setCurrentWordIndex(index)
-          }
-          
-          return newTime
-        })
-      }
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [isPlaying, duration, content.audio_timestamps])
+    if (audioRef.current && audioGuide.audio_url) {
+      audioRef.current.src = audioGuide.audio_url
+    }
+  }, [audioGuide.audio_url])
 
   const togglePlayPause = () => {
-    setIsPlaying(!isPlaying)
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause()
+      } else {
+        audioRef.current.play()
+      }
+    }
+  }
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime)
+      const currentTimestamp = content.audio_timestamps.find(
+        (ts) =>
+          audioRef.current!.currentTime >= ts.start && audioRef.current!.currentTime < ts.end
+      )
+      if (currentTimestamp) {
+        const index = content.audio_timestamps.indexOf(currentTimestamp)
+        setCurrentWordIndex(index)
+      }
+    }
+  }
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration)
+    }
   }
 
   const handleTimeChange = (value: number[]) => {
-    setCurrentTime(value[0])
+    if (audioRef.current) {
+      audioRef.current.currentTime = value[0]
+      setCurrentTime(value[0])
+    }
   }
 
   const handleVolumeChange = (value: number[]) => {
-    setVolume(value[0])
-    setIsMuted(value[0] === 0)
+    if (audioRef.current) {
+      const newVolume = value[0]
+      audioRef.current.volume = newVolume
+      setVolume(newVolume)
+      setIsMuted(newVolume === 0)
+    }
   }
 
   const toggleMute = () => {
-    setIsMuted(!isMuted)
+    if (audioRef.current) {
+      const newMuteState = !isMuted
+      audioRef.current.muted = newMuteState
+      setIsMuted(newMuteState)
+    }
   }
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
+    if (isNaN(seconds)) return "0:00"
+    const roundedSeconds = Math.round(seconds)
+    const mins = Math.floor(roundedSeconds / 60)
+    const secs = roundedSeconds % 60
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
@@ -176,14 +194,24 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
         exit={{ scale: 0.9, opacity: 0 }}
         className="bg-white rounded-none sm:rounded-lg w-full h-full sm:max-w-4xl sm:w-full sm:max-h-[95vh] overflow-y-auto"
       >
+        <audio
+          ref={audioRef}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onEnded={() => setIsPlaying(false)}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          muted={isMuted}
+          className="hidden"
+        />
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 p-2 sm:p-4 flex items-center justify-between z-10">
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3 overflow-hidden">
             <Badge className={`${categoryColors[audioGuide.category]} text-xs`}>
               {categoryLabels[audioGuide.category][language]}
             </Badge>
-            <span className="text-xs sm:text-sm text-gray-500">
-              {formatTime(duration)} • {audioGuide.coordinates.lat.toFixed(4)}, {audioGuide.coordinates.lng.toFixed(4)}
+            <span className="text-sm font-medium text-gray-700 truncate">
+              {content.title}
             </span>
           </div>
           <Button
@@ -209,7 +237,6 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
             </div>
             <div>
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{content.title}</h1>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-600">{content.description}</p>
             </div>
           </div>
 
@@ -260,7 +287,11 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
                 </div>
               </div>
               
-              {/* Text without highlighting */}
+              <div className="prose prose-sm sm:prose-base max-w-none mb-4">
+                <p style={{ whiteSpace: 'pre-wrap' }}>{content.full_text}</p>
+              </div>
+
+              {/* Text with highlighting */}
               <div className="prose prose-sm sm:prose-base max-w-none">
                 {content.audio_timestamps.map((timestamp, index) => (
                   <span
