@@ -1,18 +1,14 @@
 import type { Metadata } from "next"
-import { Montserrat, Playfair_Display } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import PageTransition from "@/components/page-transition"
 import { Suspense } from "react"
 
-const montserrat = Montserrat({
+// Inter as Helvetica alternative (similar geometric sans-serif)
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-montserrat",
-})
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-inter",
 })
 
 export const metadata: Metadata = {
@@ -27,9 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${montserrat.variable} ${playfair.variable} font-sans antialiased overflow-x-hidden`}>
-        {/* Bottom blur gradient */}
-        <div className="blur-overlay" style={{bottom: 0, top: 'auto', height: '15vh', maskImage: 'linear-gradient(to top, black, transparent)', WebkitMaskImage: 'linear-gradient(to top, black, transparent)'}} />
+      <body className={`${inter.variable} font-sans antialiased overflow-x-hidden`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -50,6 +44,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-import './globals.css'

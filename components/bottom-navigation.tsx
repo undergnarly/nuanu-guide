@@ -29,20 +29,32 @@ export default function BottomNavigation({ active, onNavigate }: Props) {
       key: "home",
       name: "Home",
       icon: (isActive: boolean) => (
-        <motion.div
-          className={
-            "flex items-center justify-center w-12 h-12 -mt-6 rounded-full shadow-lg"
-          }
-          animate={isActive ? { background: [
-            "linear-gradient(90deg,rgb(135, 11, 146),rgb(180, 81, 131))",
-            "linear-gradient(90deg, #ec4899,rgb(201, 90, 16))",
-            "linear-gradient(90deg,rgb(167, 78, 18),rgb(131, 24, 158))"
-          ] } : { background: "#111" }}
-          transition={isActive ? { repeat: Infinity, duration: 3, ease: "linear" } : {}}
-          style={{ background: isActive ? undefined : "#111" }}
-        >
-          <Image src="/nuanu_logo.png" alt="Nuanu Logo" width={32} height={32} className="object-contain" />
-        </motion.div>
+        <div className="relative flex items-center justify-center">
+          {isActive && (
+            <motion.div
+              layoutId="home-glow"
+              className="flex items-center justify-center w-14 h-14 p-[4px] absolute z-0"
+              style={{
+                background: "conic-gradient(from 0deg, #ec4899, #b45183, #ec4899, #a74e12, #83189e, #ec4899)",
+                borderRadius: '9999px',
+                animation: 'spin 3s linear infinite',
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+            />
+          )}
+          <motion.div
+            className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg z-10"
+            style={{ background: "#111" }}
+          >
+            <Image src="/nuanu_logo.png" alt="Nuanu Logo" width={32} height={32} className="object-contain" />
+          </motion.div>
+          <style jsx>{`
+            @keyframes spin {
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
       ),
     },
     {
