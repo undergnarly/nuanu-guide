@@ -292,12 +292,12 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 onClick={() => toggleCategory(category.id)}
               >
                 {/* Video Background */}
-                <div className="absolute inset-0">
+                <div className="absolute inset-0 pointer-events-none">
                   <video
                     ref={(el) => {
                       videoRefs.current[category.id] = el
                     }}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover pointer-events-none"
                     loop
                     muted
                     playsInline
@@ -308,8 +308,8 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 </div>
 
                 {/* Gradient overlay - blur and darkening from top to bottom */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80" />
-                <div className="absolute inset-0 backdrop-blur-[2px] bg-gradient-to-b from-transparent to-black/60"
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 pointer-events-none" />
+                <div className="absolute inset-0 backdrop-blur-[2px] bg-gradient-to-b from-transparent to-black/60 pointer-events-none"
                      style={{ maskImage: 'linear-gradient(to bottom, transparent 40%, black 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 40%, black 100%)' }} />
 
                 {/* Selection Checkbox */}
