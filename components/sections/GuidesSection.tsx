@@ -384,44 +384,104 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
             <div className="mt-8">
               <h4 className="text-xl font-bold text-center mb-6 text-gray-900 dark:text-white">How many people?</h4>
 
-              <div className="flex items-center justify-center gap-8">
-                <User className="w-6 h-6 text-gray-400" />
+              <div className="flex items-center justify-center gap-12">
+                <div className="flex flex-col items-center gap-2">
+                  <User className="w-6 h-6 text-gray-400" />
+                  <span className="text-xs font-bold text-gray-400 uppercase">Min</span>
+                </div>
 
                 <div className="relative">
-                  <div className="w-40 h-40 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 shadow-[inset_0_2px_10px_rgba(0,0,0,0.2)] flex items-center justify-center">
-                    <div
-                      className="w-32 h-32 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 shadow-xl cursor-pointer relative group"
-                      style={{ transform: `rotate(${knobRotation}deg)` }}
-                      onMouseDown={(e) => {
-                        const startY = e.clientY
-                        const startRotation = knobRotation
+                  {/* Outer ring with tick marks */}
+                  <div className="absolute inset-0 w-48 h-48">
+                    {Array.from({ length: 10 }).map((_, i) => {
+                      const angle = -135 + (i * 270) / 9
+                      const isActive = i < peopleCount
+                      return (
+                        <div
+                          key={i}
+                          className="absolute left-1/2 top-1/2 w-1 h-3 -ml-0.5 origin-bottom transition-all duration-300"
+                          style={{
+                            transform: `rotate(${angle}deg) translateY(-96px)`,
+                            backgroundColor: isActive
+                              ? 'rgb(40, 40, 40)'
+                              : 'rgb(161, 161, 161)',
+                            opacity: isActive ? 1 : 0.4,
+                            height: i % 1 === 0 ? '14px' : '10px'
+                          }}
+                        />
+                      )
+                    })}
+                  </div>
 
-                        const handleMouseMove = (moveEvent: MouseEvent) => {
-                          const deltaY = startY - moveEvent.clientY
-                          const newRotation = Math.max(-135, Math.min(135, startRotation + deltaY))
-                          setKnobRotation(newRotation)
-                          const newCount = Math.round(((newRotation + 135) / 270) * 9) + 1
-                          setPeopleCount(newCount)
-                        }
+                  {/* Main knob container with shadows */}
+                  <div className="w-48 h-48 rounded-full relative" style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(0,0,0,0.45) 100%)',
+                    boxShadow: '0 56px 70px 8px rgba(0,0,0,0.45), 0 -50px 45px 26px rgba(255,255,255,0.6)'
+                  }}>
+                    <div className="absolute inset-4 rounded-full bg-gradient-to-br from-[#e8e8e8] to-[#f5f5f5] dark:from-gray-700 dark:to-gray-800 shadow-[inset_0_2px_20px_rgba(0,0,0,0.25)] flex items-center justify-center">
+                      {/* Knob face */}
+                      <div
+                        className="w-36 h-36 rounded-full cursor-grab active:cursor-grabbing relative transition-shadow duration-100"
+                        style={{
+                          transform: `rotate(${knobRotation}deg)`,
+                          background: 'linear-gradient(180deg, #f1f1f1 0%, #ffffff 100%)',
+                          border: '5px solid transparent',
+                          borderImage: 'linear-gradient(180deg, #ffffff 34%, #d1d1d1 100%) 1',
+                          boxShadow: '0 0 0 0 rgba(0,0,0,0.6)',
+                          transition: 'transform 500ms cubic-bezier(0.18, 0.89, 0.32, 1.28), box-shadow 100ms ease-out'
+                        }}
+                        onMouseDown={(e) => {
+                          const startY = e.clientY
+                          const startRotation = knobRotation
+                          const knobElement = e.currentTarget as HTMLElement
+                          knobElement.style.cursor = 'grabbing'
 
-                        const handleMouseUp = () => {
-                          document.removeEventListener('mousemove', handleMouseMove)
-                          document.removeEventListener('mouseup', handleMouseUp)
-                        }
+                          const handleMouseMove = (moveEvent: MouseEvent) => {
+                            const deltaY = startY - moveEvent.clientY
+                            const newRotation = Math.max(-135, Math.min(135, startRotation + deltaY))
+                            setKnobRotation(newRotation)
+                            const newCount = Math.round(((newRotation + 135) / 270) * 9) + 1
+                            setPeopleCount(newCount)
+                          }
 
-                        document.addEventListener('mousemove', handleMouseMove)
-                        document.addEventListener('mouseup', handleMouseUp)
-                      }}
-                    >
-                      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-6 bg-black dark:bg-white rounded-full" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-3xl font-bold text-gray-900 dark:text-white">{peopleCount}</span>
+                          const handleMouseUp = () => {
+                            knobElement.style.cursor = 'grab'
+                            document.removeEventListener('mousemove', handleMouseMove)
+                            document.removeEventListener('mouseup', handleMouseUp)
+                          }
+
+                          document.addEventListener('mousemove', handleMouseMove)
+                          document.addEventListener('mouseup', handleMouseUp)
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.boxShadow = '0 0 7em 0 rgba(0,0,0,0.6)'
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 0 rgba(0,0,0,0.6)'
+                        }}
+                      >
+                        {/* Pointer indicator */}
+                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-2 h-8 bg-[#282828] rounded-full" />
+
+                        {/* Center display */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-5xl font-bold text-gray-900 select-none" style={{
+                            textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                          }}>{peopleCount}</span>
+                        </div>
                       </div>
+
+                      {/* Min/Max dots indicators */}
+                      <div className="absolute bottom-6 left-[32%] w-2.5 h-2.5 rounded-full bg-[#282828] opacity-90" />
+                      <div className="absolute bottom-6 right-[32%] w-2.5 h-2.5 rounded-full bg-[#282828] opacity-90" />
                     </div>
                   </div>
                 </div>
 
-                <Users className="w-8 h-8 text-gray-900 dark:text-white" />
+                <div className="flex flex-col items-center gap-2">
+                  <Users className="w-8 h-8 text-gray-900 dark:text-white" />
+                  <span className="text-xs font-bold text-gray-900 dark:text-white uppercase">Max</span>
+                </div>
               </div>
             </div>
           </div>
