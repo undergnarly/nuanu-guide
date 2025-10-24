@@ -10,53 +10,76 @@ interface GuidesSectionProps {
   onOpenAudioGuide?: (slug: string, lang: string) => void
 }
 
-// Minimalist flag component as circular tricolors
+// Minimalist flag component as circular flags
 const FlagIcon = ({ code, size = 24 }: { code: string; size?: number }) => {
-  const flags = {
-    en: {
-      colors: ['#B22234', '#FFFFFF', '#3C3B6E'],
-      type: 'horizontal'
-    },
-    ru: {
-      colors: ['#FFFFFF', '#0039A6', '#D52B1E'],
-      type: 'horizontal'
-    },
-    id: {
-      colors: ['#FF0000', '#FFFFFF'],
-      type: 'horizontal'
-    }
+  if (code === 'en') {
+    // UK Flag (Union Jack)
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24">
+        <defs>
+          <clipPath id="circle-clip">
+            <circle cx="12" cy="12" r="10.5"/>
+          </clipPath>
+        </defs>
+        <circle cx="12" cy="12" r="11" fill="none" stroke="#e5e7eb" strokeWidth="0.5"/>
+        <g clipPath="url(#circle-clip)">
+          {/* Blue background */}
+          <rect x="1.5" y="1.5" width="21" height="21" fill="#012169"/>
+
+          {/* White diagonal cross */}
+          <path d="M 1.5 1.5 L 22.5 22.5 M 22.5 1.5 L 1.5 22.5" stroke="white" strokeWidth="3.5"/>
+
+          {/* Red diagonal cross */}
+          <path d="M 1.5 1.5 L 22.5 22.5 M 22.5 1.5 L 1.5 22.5" stroke="#C8102E" strokeWidth="2"/>
+
+          {/* White main cross */}
+          <path d="M 12 1.5 L 12 22.5 M 1.5 12 L 22.5 12" stroke="white" strokeWidth="4"/>
+
+          {/* Red main cross */}
+          <path d="M 12 1.5 L 12 22.5 M 1.5 12 L 22.5 12" stroke="#C8102E" strokeWidth="2.5"/>
+        </g>
+      </svg>
+    )
   }
 
-  const flag = flags[code as keyof typeof flags]
-  if (!flag) return null
+  if (code === 'ru') {
+    // Russian Flag
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24">
+        <defs>
+          <clipPath id="circle-clip-ru">
+            <circle cx="12" cy="12" r="10.5"/>
+          </clipPath>
+        </defs>
+        <circle cx="12" cy="12" r="11" fill="none" stroke="#e5e7eb" strokeWidth="0.5"/>
+        <g clipPath="url(#circle-clip-ru)">
+          <rect x="1.5" y="1.5" width="21" height="7" fill="#FFFFFF"/>
+          <rect x="1.5" y="8.5" width="21" height="7" fill="#0039A6"/>
+          <rect x="1.5" y="15.5" width="21" height="7" fill="#D52B1E"/>
+        </g>
+      </svg>
+    )
+  }
 
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="11" fill="none" stroke="#e5e7eb" strokeWidth="0.5"/>
-      {flag.colors.map((color, index) => {
-        const segmentHeight = 24 / flag.colors.length
-        const y = index * segmentHeight
+  if (code === 'id') {
+    // Indonesian Flag
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24">
+        <defs>
+          <clipPath id="circle-clip-id">
+            <circle cx="12" cy="12" r="10.5"/>
+          </clipPath>
+        </defs>
+        <circle cx="12" cy="12" r="11" fill="none" stroke="#e5e7eb" strokeWidth="0.5"/>
+        <g clipPath="url(#circle-clip-id)">
+          <rect x="1.5" y="1.5" width="21" height="10.5" fill="#FF0000"/>
+          <rect x="1.5" y="12" width="21" height="10.5" fill="#FFFFFF"/>
+        </g>
+      </svg>
+    )
+  }
 
-        return (
-          <g key={index}>
-            <defs>
-              <clipPath id={`clip-${code}-${index}`}>
-                <circle cx="12" cy="12" r="10.5"/>
-              </clipPath>
-            </defs>
-            <rect
-              x="1.5"
-              y={y}
-              width="21"
-              height={segmentHeight}
-              fill={color}
-              clipPath={`url(#clip-${code}-${index})`}
-            />
-          </g>
-        )
-      })}
-    </svg>
-  )
+  return null
 }
 
 // Experience categories data
