@@ -117,7 +117,6 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   const [visitDate, setVisitDate] = useState<Date | null>(null)
   const [visitTiming, setVisitTiming] = useState<"now" | "later" | null>(null)
   const [peopleCount, setPeopleCount] = useState(1)
-  const [knobRotation, setKnobRotation] = useState(0)
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({})
 
   const toggleCategory = (categoryId: string) => {
@@ -333,7 +332,11 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
             className="container px-4 max-w-xl mx-auto"
           >
             <div className="bg-white dark:bg-gray-900 rounded-3xl p-8">
-            <h3 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">When</h3>
+            <h3 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">
+              {selectedLanguage === 'en' && 'When'}
+              {selectedLanguage === 'ru' && 'Когда'}
+              {selectedLanguage === 'id' && 'Kapan'}
+            </h3>
 
             <div className="flex gap-4 mb-8">
               <button
@@ -347,7 +350,9 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
                 }`}
               >
-                Now
+                {selectedLanguage === 'en' && 'Now'}
+                {selectedLanguage === 'ru' && 'Сейчас'}
+                {selectedLanguage === 'id' && 'Sekarang'}
               </button>
               <button
                 onClick={() => {
@@ -361,111 +366,99 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 }`}
               >
                 <CalendarIcon className="w-5 h-5" />
-                Choose Date
+                {selectedLanguage === 'en' && 'Choose Date'}
+                {selectedLanguage === 'ru' && 'Выбрать дату'}
+                {selectedLanguage === 'id' && 'Pilih Tanggal'}
               </button>
             </div>
 
-            {/* People Count Volume Knob */}
+            {/* People Count Slider */}
             <div className="mt-8">
-              <h4 className="text-xl font-bold text-center mb-6 text-gray-900 dark:text-white">How many people?</h4>
+              <h4 className="text-xl font-bold text-center mb-6 text-gray-900 dark:text-white">
+                {selectedLanguage === 'en' && 'How many people?'}
+                {selectedLanguage === 'ru' && 'Сколько человек?'}
+                {selectedLanguage === 'id' && 'Berapa orang?'}
+              </h4>
 
-              <div className="flex items-center justify-center gap-12">
+              <div className="flex items-center gap-6">
                 <div className="flex flex-col items-center gap-2">
-                  <User className="w-6 h-6 text-gray-400" />
-                  <span className="text-xs font-bold text-gray-400 uppercase">Min</span>
+                  <User className="w-5 h-5 text-gray-400" />
+                  <span className="text-xs font-medium text-gray-500">1</span>
                 </div>
 
-                <div className="relative">
-                  {/* Outer ring with tick marks */}
-                  <div className="absolute inset-0 w-48 h-48">
-                    {Array.from({ length: 10 }).map((_, i) => {
-                      const angle = -135 + (i * 270) / 9
-                      const isActive = i < peopleCount
-                      return (
-                        <div
-                          key={i}
-                          className="absolute left-1/2 top-1/2 w-1 h-3 -ml-0.5 origin-bottom transition-all duration-300"
-                          style={{
-                            transform: `rotate(${angle}deg) translateY(-96px)`,
-                            backgroundColor: isActive
-                              ? 'rgb(40, 40, 40)'
-                              : 'rgb(161, 161, 161)',
-                            opacity: isActive ? 1 : 0.4,
-                            height: i % 1 === 0 ? '14px' : '10px'
-                          }}
-                        />
-                      )
-                    })}
+                <div className="flex-1">
+                  {/* Number Display */}
+                  <div className="flex justify-center mb-4">
+                    <div className="bg-black dark:bg-white text-white dark:text-black rounded-2xl px-6 py-3 shadow-lg">
+                      <span className="text-3xl font-bold">
+                        {peopleCount === 10 ? '10+' : peopleCount}
+                      </span>
+                      <span className="text-sm ml-2 opacity-70">
+                        {peopleCount === 1
+                          ? (selectedLanguage === 'en' ? 'person' : selectedLanguage === 'ru' ? 'человек' : 'orang')
+                          : (selectedLanguage === 'en' ? 'people' : selectedLanguage === 'ru' ? 'человек' : 'orang')
+                        }
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Main knob container with shadows */}
-                  <div className="w-48 h-48 rounded-full relative" style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(0,0,0,0.45) 100%)',
-                    boxShadow: '0 56px 70px 8px rgba(0,0,0,0.45), 0 -50px 45px 26px rgba(255,255,255,0.6)'
-                  }}>
-                    <div className="absolute inset-4 rounded-full bg-gradient-to-br from-[#e8e8e8] to-[#f5f5f5] dark:from-gray-700 dark:to-gray-800 shadow-[inset_0_2px_20px_rgba(0,0,0,0.25)] flex items-center justify-center">
-                      {/* Knob face */}
-                      <div
-                        className="w-36 h-36 rounded-full cursor-grab active:cursor-grabbing relative transition-shadow duration-100"
-                        style={{
-                          transform: `rotate(${knobRotation}deg)`,
-                          background: 'linear-gradient(180deg, #f1f1f1 0%, #ffffff 100%)',
-                          border: '5px solid transparent',
-                          borderImage: 'linear-gradient(180deg, #ffffff 34%, #d1d1d1 100%) 1',
-                          boxShadow: '0 0 0 0 rgba(0,0,0,0.6)',
-                          transition: 'transform 500ms cubic-bezier(0.18, 0.89, 0.32, 1.28), box-shadow 100ms ease-out'
-                        }}
-                        onMouseDown={(e) => {
-                          const startY = e.clientY
-                          const startRotation = knobRotation
-                          const knobElement = e.currentTarget as HTMLElement
-                          knobElement.style.cursor = 'grabbing'
+                  {/* Modern Slider */}
+                  <div className="relative">
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={peopleCount}
+                      onChange={(e) => setPeopleCount(Number(e.target.value))}
+                      className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full appearance-none cursor-pointer
+                        [&::-webkit-slider-thumb]:appearance-none
+                        [&::-webkit-slider-thumb]:w-7
+                        [&::-webkit-slider-thumb]:h-7
+                        [&::-webkit-slider-thumb]:rounded-full
+                        [&::-webkit-slider-thumb]:bg-black
+                        [&::-webkit-slider-thumb]:dark:bg-white
+                        [&::-webkit-slider-thumb]:shadow-lg
+                        [&::-webkit-slider-thumb]:cursor-grab
+                        [&::-webkit-slider-thumb]:active:cursor-grabbing
+                        [&::-webkit-slider-thumb]:hover:scale-110
+                        [&::-webkit-slider-thumb]:transition-transform
+                        [&::-moz-range-thumb]:w-7
+                        [&::-moz-range-thumb]:h-7
+                        [&::-moz-range-thumb]:rounded-full
+                        [&::-moz-range-thumb]:bg-black
+                        [&::-moz-range-thumb]:dark:bg-white
+                        [&::-moz-range-thumb]:border-0
+                        [&::-moz-range-thumb]:shadow-lg
+                        [&::-moz-range-thumb]:cursor-grab
+                        [&::-moz-range-thumb]:active:cursor-grabbing
+                        [&::-moz-range-thumb]:hover:scale-110
+                        [&::-moz-range-thumb]:transition-transform"
+                      style={{
+                        background: `linear-gradient(to right,
+                          rgb(0, 0, 0) 0%,
+                          rgb(0, 0, 0) ${((peopleCount - 1) / 9) * 100}%,
+                          rgb(229, 231, 235) ${((peopleCount - 1) / 9) * 100}%,
+                          rgb(229, 231, 235) 100%)`
+                      }}
+                    />
 
-                          const handleMouseMove = (moveEvent: MouseEvent) => {
-                            const deltaY = startY - moveEvent.clientY
-                            const newRotation = Math.max(-135, Math.min(135, startRotation + deltaY))
-                            setKnobRotation(newRotation)
-                            const newCount = Math.round(((newRotation + 135) / 270) * 9) + 1
-                            setPeopleCount(newCount)
-                          }
-
-                          const handleMouseUp = () => {
-                            knobElement.style.cursor = 'grab'
-                            document.removeEventListener('mousemove', handleMouseMove)
-                            document.removeEventListener('mouseup', handleMouseUp)
-                          }
-
-                          document.addEventListener('mousemove', handleMouseMove)
-                          document.addEventListener('mouseup', handleMouseUp)
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.boxShadow = '0 0 7em 0 rgba(0,0,0,0.6)'
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 0 rgba(0,0,0,0.6)'
-                        }}
-                      >
-                        {/* Pointer indicator */}
-                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-2 h-8 bg-[#282828] rounded-full" />
-
-                        {/* Center display */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-5xl font-bold text-gray-900 select-none" style={{
-                            textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                          }}>{peopleCount}</span>
-                        </div>
-                      </div>
-
-                      {/* Min/Max dots indicators */}
-                      <div className="absolute bottom-6 left-[32%] w-2.5 h-2.5 rounded-full bg-[#282828] opacity-90" />
-                      <div className="absolute bottom-6 right-[32%] w-2.5 h-2.5 rounded-full bg-[#282828] opacity-90" />
+                    {/* Tick marks */}
+                    <div className="flex justify-between mt-2 px-1">
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-0.5 h-2 rounded-full transition-all duration-200 ${
+                            i < peopleCount ? 'bg-black dark:bg-white' : 'bg-gray-300 dark:bg-gray-600'
+                          }`}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
-                  <Users className="w-8 h-8 text-gray-900 dark:text-white" />
-                  <span className="text-xs font-bold text-gray-900 dark:text-white uppercase">Max</span>
+                  <Users className="w-6 h-6 text-gray-900 dark:text-white" />
+                  <span className="text-xs font-medium text-gray-500">10+</span>
                 </div>
               </div>
             </div>
