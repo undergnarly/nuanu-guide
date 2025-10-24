@@ -129,11 +129,27 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   }
 
   const handleNextStep = () => {
-    console.log('Selected categories:', selectedCategories)
-    console.log('Visit timing:', visitTiming)
-    console.log('Visit date:', visitDate)
-    console.log('People count:', peopleCount)
-    // TODO: Navigate to next step
+    // Format categories list
+    const categoriesText = selectedCategories
+      .map(id => EXPERIENCE_CATEGORIES.find(cat => cat.id === id)?.title.en)
+      .filter(Boolean)
+      .join(' and ')
+
+    // Format date
+    const dateText = visitTiming === 'now'
+      ? 'today'
+      : visitDate
+        ? visitDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
+        : 'a future date'
+
+    // Create WhatsApp message
+    const message = `Hello! I want to book ${categoriesText} in Nuanu for ${peopleCount} ${peopleCount === 1 ? 'person' : 'people'} at ${dateText}`
+
+    // WhatsApp URL
+    const whatsappUrl = `https://wa.me/6285235948856?text=${encodeURIComponent(message)}`
+
+    // Open WhatsApp
+    window.open(whatsappUrl, '_blank')
   }
 
   // Calendar helpers
@@ -208,7 +224,9 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   }, [activeCardId])
 
   return (
-    <div className="min-h-screen">
+    <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
+      {/* First Slide - Experience Cards */}
+      <section className="min-h-screen snap-start relative">
       {/* Sticky Header with Title and Language Selector */}
       <div className="fixed top-6 left-0 right-0 z-40 px-4 pointer-events-none">
         <div className="max-w-xl mx-auto relative">
@@ -304,15 +322,17 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
           )
         })}
       </div>
+      </section>
 
-      {/* When Section */}
+      {/* Second Slide - Form Section */}
       {selectedCategories.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="container px-4 pb-8"
-        >
-          <div className="max-w-xl mx-auto bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl">
+        <section className="h-screen snap-start bg-white dark:bg-gray-900 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="container px-4 max-w-xl mx-auto"
+          >
+            <div className="bg-white dark:bg-gray-900 rounded-3xl p-8">
             <h3 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">When</h3>
 
             <div className="flex gap-4 mb-8">
@@ -449,8 +469,9 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 </div>
               </div>
             </div>
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
+        </section>
       )}
 
       {/* Calendar Modal */}
@@ -636,19 +657,19 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
         )}
       </AnimatePresence>
 
-      {/* Bottom Navigation Button */}
-      {selectedCategories.length > 0 && (
+      {/* Bottom Navigation Button - Only show when categories AND timing are selected */}
+      {selectedCategories.length > 0 && visitTiming && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-6 left-0 right-0 z-40 px-4 pointer-events-none"
+          className="fixed bottom-6 left-0 right-0 z-50 px-4 pointer-events-none"
         >
           <div className="max-w-xl mx-auto flex justify-center">
             <Button
               onClick={handleNextStep}
               className="rounded-full px-8 py-6 shadow-xl backdrop-blur-md bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 pointer-events-auto text-base font-medium"
             >
-              Continue ({selectedCategories.length} selected)
+              Book via WhatsApp
             </Button>
           </div>
         </motion.div>
