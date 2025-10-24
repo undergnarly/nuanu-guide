@@ -573,17 +573,20 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
       {/* Language Selector Modal */}
       <AnimatePresence>
         {showLanguageModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={() => setShowLanguageModal(false)}
           >
-            {/* Blur Backdrop */}
-            <div className="absolute inset-0 backdrop-blur-md bg-black/30" />
+            {/* Blur Backdrop - appears instantly */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="absolute inset-0 backdrop-blur-md bg-black/30"
+            />
 
-            {/* Language Modal Content */}
+            {/* Language Modal Content - animates with spring */}
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -627,7 +630,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 ))}
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
