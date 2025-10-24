@@ -394,9 +394,18 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 }`}
               >
                 <CalendarIcon className="w-5 h-5" />
-                {selectedLanguage === 'en' && 'Choose Date'}
-                {selectedLanguage === 'ru' && 'Выбрать дату'}
-                {selectedLanguage === 'id' && 'Pilih Tanggal'}
+                {visitDate ? (
+                  visitDate.toLocaleDateString(selectedLanguage === 'ru' ? 'ru-RU' : selectedLanguage === 'id' ? 'id-ID' : 'en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                  })
+                ) : (
+                  <>
+                    {selectedLanguage === 'en' && 'Choose Date'}
+                    {selectedLanguage === 'ru' && 'Выбрать дату'}
+                    {selectedLanguage === 'id' && 'Pilih Tanggal'}
+                  </>
+                )}
               </button>
             </div>
 
