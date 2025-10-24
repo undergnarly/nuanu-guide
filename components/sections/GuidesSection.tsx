@@ -2,12 +2,6 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Check, User, Users, Calendar as CalendarIcon, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { SUPPORTED_LANGUAGES } from "@/lib/audio-guide-data"
@@ -119,6 +113,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [activeCardId, setActiveCardId] = useState<string | null>(null)
   const [showCalendar, setShowCalendar] = useState(false)
+  const [showLanguageModal, setShowLanguageModal] = useState(false)
   const [visitDate, setVisitDate] = useState<Date | null>(null)
   const [visitTiming, setVisitTiming] = useState<"now" | "later" | null>(null)
   const [peopleCount, setPeopleCount] = useState(1)
@@ -228,47 +223,13 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
             </div>
           )}
 
-          {/* Language selector block - absolute positioned right */}
-          <DropdownMenu modal={true}>
-            <DropdownMenuTrigger asChild>
-              <button className="absolute right-0 top-0 flex items-center justify-center w-12 h-12 rounded-full bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 pointer-events-auto">
-                <FlagIcon code={selectedLanguage} size={28} />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="center"
-              side="bottom"
-              sideOffset={20}
-              className="w-64 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 p-2"
-              style={{
-                position: 'fixed',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
-            >
-              {SUPPORTED_LANGUAGES.map((language) => (
-                <DropdownMenuItem
-                  key={language.code}
-                  onClick={() => setSelectedLanguage(language.code)}
-                  className={`flex items-center gap-3 px-4 py-3 cursor-pointer rounded-2xl ${
-                    selectedLanguage === language.code
-                      ? 'bg-gray-100 dark:bg-gray-800'
-                      : ''
-                  }`}
-                >
-                  <FlagIcon code={language.code} size={24} />
-                  <div className="flex flex-col">
-                    <span className="font-medium text-sm">{language.native_name}</span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{language.name}</span>
-                  </div>
-                  {selectedLanguage === language.code && (
-                    <div className="ml-auto w-2 h-2 rounded-full bg-black dark:bg-white" />
-                  )}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Language selector button - absolute positioned right */}
+          <button
+            onClick={() => setShowLanguageModal(true)}
+            className="absolute right-0 top-0 flex items-center justify-center w-12 h-12 rounded-full bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 pointer-events-auto"
+          >
+            <FlagIcon code={selectedLanguage} size={28} />
+          </button>
         </div>
       </div>
 
@@ -604,6 +565,67 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               >
                 {visitDate ? `Confirm - ${visitDate.toLocaleDateString()}` : 'Select a date'}
               </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Language Selector Modal */}
+      <AnimatePresence>
+        {showLanguageModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            onClick={() => setShowLanguageModal(false)}
+          >
+            {/* Blur Backdrop */}
+            <div className="absolute inset-0 backdrop-blur-md bg-black/30" />
+
+            {/* Language Modal Content */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowLanguageModal(false)}
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Choose Language</h3>
+
+              <div className="space-y-3">
+                {SUPPORTED_LANGUAGES.map((language) => (
+                  <button
+                    key={language.code}
+                    onClick={() => {
+                      setSelectedLanguage(language.code)
+                      setShowLanguageModal(false)
+                    }}
+                    className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 ${
+                      selectedLanguage === language.code
+                        ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg scale-105'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
+                    }`}
+                  >
+                    <FlagIcon code={language.code} size={32} />
+                    <div className="flex flex-col items-start flex-1">
+                      <span className="font-bold text-lg">{language.native_name}</span>
+                      <span className="text-sm opacity-70">{language.name}</span>
+                    </div>
+                    {selectedLanguage === language.code && (
+                      <Check className="w-6 h-6" />
+                    )}
+                  </button>
+                ))}
+              </div>
             </motion.div>
           </motion.div>
         )}
