@@ -92,9 +92,9 @@ const EXPERIENCE_CATEGORIES = [
       id: 'Pengalaman'
     },
     description: {
-      en: 'Discover unique activities and adventures in Nuanu Creative Village',
-      ru: 'Откройте для себя уникальные активности и приключения в Nuanu Creative Village',
-      id: 'Temukan aktivitas dan petualangan unik di Nuanu Creative Village'
+      en: 'Discover unique activities and adventures in Nuanu',
+      ru: 'Откройте для себя уникальные активности и приключения в Nuanu',
+      id: 'Temukan aktivitas dan petualangan unik di Nuanu'
     },
     videoUrl: '/video/experiences.mp4',
     posterUrl: '/video/experiences-poster.jpg',
@@ -138,22 +138,51 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   const [selectedLanguage, setSelectedLanguage] = useState("en")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [activeCardId, setActiveCardId] = useState<string | null>(null)
+  const [lastSelectedCategoryId, setLastSelectedCategoryId] = useState<string | null>(null)
   const [showCalendar, setShowCalendar] = useState(false)
   const [showLanguageModal, setShowLanguageModal] = useState(false)
   const [visitDate, setVisitDate] = useState<Date | null>(null)
   const [visitTiming, setVisitTiming] = useState<"now" | "later" | null>(null)
   const [peopleCount, setPeopleCount] = useState(1)
+  const [isOnFormSlide, setIsOnFormSlide] = useState(false)
   const [isOnConfirmationSlide, setIsOnConfirmationSlide] = useState(false)
+  const [showThankYouModal, setShowThankYouModal] = useState(false)
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({})
   const confirmationSlideRef = useRef<HTMLElement | null>(null)
   const formSlideRef = useRef<HTMLElement | null>(null)
 
   const toggleCategory = (categoryId: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
-    )
+    setSelectedCategories(prev => {
+      const isCurrentlySelected = prev.includes(categoryId)
+      if (isCurrentlySelected) {
+        // If deselecting, find another selected category to play
+        const remaining = prev.filter(id => id !== categoryId)
+        setLastSelectedCategoryId(remaining.length > 0 ? remaining[remaining.length - 1] : null)
+        return remaining
+      } else {
+        // If selecting, this becomes the last selected
+        setLastSelectedCategoryId(categoryId)
+        return [...prev, categoryId]
+      }
+    })
+  }
+
+  const resetBooking = () => {
+    setSelectedCategories([])
+    setVisitTiming(null)
+    setVisitDate(null)
+    setPeopleCount(1)
+    setShowThankYouModal(false)
+    // Scroll back to top
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleCloseCalendar = () => {
+    setShowCalendar(false)
+    // If a date was selected, update timing to 'later'
+    if (visitDate) {
+      setVisitTiming("later")
+    }
   }
 
   const scrollToFormSlide = () => {
@@ -169,25 +198,12 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   }
 
   const handleNextStep = () => {
-    if (isOnConfirmationSlide) {
-      // On confirmation slide - open WhatsApp
-      const categoriesText = selectedCategories
-        .map(id => EXPERIENCE_CATEGORIES.find(cat => cat.id === id)?.title.en)
-        .filter(Boolean)
-        .join(' and ')
-
-      const dateText = visitTiming === 'now'
-        ? 'today'
-        : visitDate
-          ? visitDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
-          : 'a future date'
-
-      const message = `Hello! I want to book ${categoriesText} in Nuanu for ${peopleCount} ${peopleCount === 1 ? 'person' : 'people'} at ${dateText}`
-      const whatsappUrl = `https://wa.me/6285235948856?text=${encodeURIComponent(message)}`
-      window.open(whatsappUrl, '_blank')
+    if (isOnFormSlide) {
+      // On second slide - show thank you modal and book via WhatsApp
+      setShowThankYouModal(true)
     } else {
-      // On second slide - scroll to confirmation
-      scrollToConfirmation()
+      // On first slide - scroll to form
+      scrollToFormSlide()
     }
   }
 
@@ -247,11 +263,11 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   }, [])
 
   useEffect(() => {
-    // Управление воспроизведением видео
+    // Управление воспроизведением видео - только последняя выбранная карточка
     Object.keys(videoRefs.current).forEach((key) => {
       const video = videoRefs.current[key]
       if (video) {
-        if (key === activeCardId) {
+        if (key === lastSelectedCategoryId) {
           video.play().catch(() => {
             // Ignore autoplay errors
           })
@@ -260,7 +276,30 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
         }
       }
     })
-  }, [activeCardId])
+  }, [lastSelectedCategoryId])
+
+  useEffect(() => {
+    // Track form slide visibility
+    if (!formSlideRef.current) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsOnFormSlide(entry.isIntersecting && entry.intersectionRatio > 0.5)
+        })
+      },
+      {
+        threshold: [0, 0.5, 1],
+        rootMargin: '-20% 0px -20% 0px'
+      }
+    )
+
+    observer.observe(formSlideRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [selectedCategories])
 
   useEffect(() => {
     // Track confirmation slide visibility
@@ -285,26 +324,41 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
     }
   }, [selectedCategories, visitTiming])
 
+  useEffect(() => {
+    // Auto-redirect to WhatsApp after 2 seconds when thank you modal is shown
+    if (!showThankYouModal) return
+
+    const timer = setTimeout(() => {
+      const categoriesText = selectedCategories
+        .map(id => EXPERIENCE_CATEGORIES.find(cat => cat.id === id)?.title.en)
+        .filter(Boolean)
+        .join(' and ')
+
+      const dateText = visitTiming === 'now'
+        ? 'today'
+        : visitDate
+          ? visitDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
+          : 'a future date'
+
+      const datePrefix = visitTiming === 'now' ? '' : 'at '
+
+      const message = `Hello! I want to book ${categoriesText} in Nuanu for ${peopleCount} ${peopleCount === 1 ? 'person' : 'people'} ${datePrefix}${dateText}`
+      const whatsappUrl = `https://wa.me/6285235948856?text=${encodeURIComponent(message)}`
+      window.open(whatsappUrl, '_blank')
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [showThankYouModal, selectedCategories, visitTiming, visitDate, peopleCount])
+
   return (
     <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
       {/* Fixed Header with Language Selector - outside sections */}
       <div className="fixed top-6 left-0 right-0 z-50 px-4 pointer-events-none">
-        <div className="max-w-xl mx-auto relative">
-          {/* Choose your experience - show when no cards selected */}
-          {selectedCategories.length === 0 && (
-            <div className="flex justify-center">
-              <div className="rounded-full px-5 py-3 shadow-xl backdrop-blur-md bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
-                <span className="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                  Choose your experience
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Language selector button - absolute positioned right */}
+        <div className="max-w-xl mx-auto relative flex items-center justify-between">
+          {/* Language selector button */}
           <button
             onClick={() => setShowLanguageModal(true)}
-            className="absolute right-0 top-0 flex items-center justify-center w-12 h-12 rounded-full bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 pointer-events-auto"
+            className="flex items-center justify-center w-12 h-12 rounded-full bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 pointer-events-auto ml-auto"
           >
             <FlagIcon code={selectedLanguage} size={28} />
           </button>
@@ -312,12 +366,19 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
       </div>
 
       {/* First Slide - Experience Cards */}
-      <section className="min-h-screen snap-start relative">
+      <section className="h-screen snap-start relative flex flex-col">
       {/* Spacer for fixed header */}
-      <div className="h-24" />
+      <div className="h-20" />
 
-      {/* Fullscreen Experience Cards */}
-      <div className="container px-4 space-y-6 pb-32">
+      {/* Nuanu Experience title - inside the slide */}
+      <div className="container px-4 max-w-xl mx-auto">
+        <h1 className="font-serif text-black dark:text-white text-center mb-4" style={{ fontSize: '1.6rem', lineHeight: '2rem', fontWeight: 700 }}>
+          Nuanu Experience
+        </h1>
+      </div>
+
+      {/* Compact Experience Cards - all three visible */}
+      <div className="flex-1 flex flex-col justify-center container px-4 py-4 space-y-3">
         {EXPERIENCE_CATEGORIES.map((category) => {
           const isSelected = selectedCategories.includes(category.id)
           return (
@@ -325,11 +386,11 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               key={category.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative max-w-xl mx-auto"
+              className="relative max-w-xl mx-auto w-full"
               id={`card-${category.id}`}
             >
               <div
-                className={`relative h-[70vh] rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] ${
+                className={`relative h-[23vh] rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] ${
                   isSelected ? 'ring-4 ring-black dark:ring-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]' : ''
                 }`}
                 onClick={() => toggleCategory(category.id)}
@@ -358,13 +419,13 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                      style={{ maskImage: 'linear-gradient(to bottom, transparent 40%, black 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 40%, black 100%)' }} />
 
                 {/* Selection Checkbox */}
-                <div className="absolute top-6 right-6 z-10">
-                  <div className={`w-12 h-12 rounded-full backdrop-blur-md transition-all duration-300 flex items-center justify-center ${
+                <div className="absolute top-3 right-3 z-10">
+                  <div className={`w-7 h-7 rounded-full backdrop-blur-md transition-all duration-300 flex items-center justify-center ${
                     isSelected
                       ? 'bg-white dark:bg-white shadow-lg scale-110'
                       : 'bg-white/20 dark:bg-gray-900/20 ring-2 ring-white/60 dark:ring-white/60'
                   }`}>
-                    <Check className={`w-7 h-7 transition-all duration-300 stroke-[3] ${
+                    <Check className={`w-4 h-4 transition-all duration-300 stroke-[3] ${
                       isSelected
                         ? 'text-black opacity-100 scale-100'
                         : 'text-white opacity-40 scale-90'
@@ -373,11 +434,11 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 </div>
 
                 {/* Content - Title and Description */}
-                <div className="absolute bottom-0 left-0 right-0 p-8 z-10">
-                  <h2 className="font-serif text-white mb-3" style={{ fontSize: '2rem', lineHeight: '2.5rem', fontWeight: 700 }}>
+                <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
+                  <h2 className="font-serif text-white mb-1" style={{ fontSize: '1.2rem', lineHeight: '1.6rem', fontWeight: 700 }}>
                     {category.title[selectedLanguage as keyof typeof category.title]}
                   </h2>
-                  <p className="text-lg text-white/90 leading-relaxed">
+                  <p className="text-xs text-white/90 leading-snug">
                     {category.description[selectedLanguage as keyof typeof category.description]}
                   </p>
                 </div>
@@ -387,87 +448,66 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
         })}
       </div>
 
-      {/* Scroll down indicator - only on first slide when no cards selected */}
-      {selectedCategories.length === 0 && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white/70"
-          >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.div>
-        </div>
-      )}
-
-      {/* Continue button on first slide - always visible, gray when disabled */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="fixed bottom-6 left-0 right-0 z-50 px-4 pointer-events-none"
-      >
-        <div className="max-w-xl mx-auto flex justify-center">
-          <Button
-            onClick={scrollToFormSlide}
-            disabled={selectedCategories.length === 0}
-            className={`rounded-full px-8 py-6 shadow-xl backdrop-blur-md pointer-events-auto text-base font-medium transition-all ${
-              selectedCategories.length > 0
-                ? 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90'
-                : 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            {selectedLanguage === 'en' && 'Continue'}
-            {selectedLanguage === 'ru' && 'Продолжить'}
-            {selectedLanguage === 'id' && 'Lanjutkan'}
-          </Button>
-        </div>
-      </motion.div>
+      {/* Bottom spacing for button */}
+      <div className="h-20" />
       </section>
 
-      {/* Second Slide - Form Section */}
+      {/* Second Slide - Form Section with Booking Summary */}
       {selectedCategories.length > 0 && (
-        <section ref={formSlideRef} className="h-screen snap-start bg-white dark:bg-gray-900 flex items-center justify-center">
+        <section ref={formSlideRef} className="h-screen snap-start bg-white dark:bg-gray-900 flex flex-col relative">
+          {/* Scroll up indicator - on second slide */}
+          <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="text-gray-400 dark:text-gray-500"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+              </svg>
+            </motion.div>
+          </div>
+
+          {/* Main Content - Form and Summary */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="container px-4 max-w-xl mx-auto"
+            className="flex-1 flex flex-col justify-center container px-4 max-w-xl mx-auto py-6"
           >
-            <div className="bg-white dark:bg-gray-900 rounded-3xl p-8">
-            <h3 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">
-              {selectedLanguage === 'en' && 'When'}
-              {selectedLanguage === 'ru' && 'Когда'}
-              {selectedLanguage === 'id' && 'Kapan'}
-            </h3>
+            {/* When Section - Compact */}
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-center mb-3 text-gray-900 dark:text-white">
+                {selectedLanguage === 'en' && 'When'}
+                {selectedLanguage === 'ru' && 'Когда'}
+                {selectedLanguage === 'id' && 'Kapan'}
+              </h3>
 
-            <div className="flex gap-4 mb-8">
-              <button
-                onClick={() => {
-                  setVisitTiming("now")
-                  setVisitDate(null)
-                }}
-                className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-all duration-300 ${
-                  visitTiming === "now"
-                    ? 'bg-black text-white shadow-lg scale-105'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
-                }`}
-              >
-                {selectedLanguage === 'en' && 'Now'}
-                {selectedLanguage === 'ru' && 'Сейчас'}
-                {selectedLanguage === 'id' && 'Sekarang'}
-              </button>
-              <button
-                onClick={() => {
-                  setVisitTiming("later")
-                  setShowCalendar(true)
-                }}
-                className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
-                  visitTiming === "later"
-                    ? 'bg-black text-white shadow-lg scale-105'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
-                }`}
-              >
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setVisitTiming("now")
+                    setVisitDate(null)
+                  }}
+                  className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${
+                    visitTiming === "now"
+                      ? 'bg-black text-white shadow-lg scale-105'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
+                  }`}
+                >
+                  {selectedLanguage === 'en' && 'Now'}
+                  {selectedLanguage === 'ru' && 'Сейчас'}
+                  {selectedLanguage === 'id' && 'Sekarang'}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowCalendar(true)
+                  }}
+                  className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
+                    visitTiming === "later" && visitDate
+                      ? 'bg-black text-white shadow-lg scale-105'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
+                  }`}
+                >
                 <CalendarIcon className="w-5 h-5" />
                 {visitDate ? (
                   visitDate.toLocaleDateString(selectedLanguage === 'ru' ? 'ru-RU' : selectedLanguage === 'id' ? 'id-ID' : 'en-US', {
@@ -484,28 +524,30 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               </button>
             </div>
 
-            {/* People Count Slider */}
-            <div className="mt-8">
-              <h4 className="text-xl font-bold text-center mb-6 text-gray-900 dark:text-white">
+            </div>
+
+            {/* People Count Slider - Compact */}
+            <div className="mb-6">
+              <h4 className="text-lg font-bold text-center mb-3 text-gray-900 dark:text-white">
                 {selectedLanguage === 'en' && 'How many people?'}
                 {selectedLanguage === 'ru' && 'Сколько человек?'}
                 {selectedLanguage === 'id' && 'Berapa orang?'}
               </h4>
 
-              <div className="flex items-center gap-6">
-                <div className="flex flex-col items-center gap-2">
-                  <User className="w-5 h-5 text-gray-400" />
+              <div className="flex items-center gap-4">
+                <div className="flex flex-col items-center gap-1">
+                  <User className="w-4 h-4 text-gray-400" />
                   <span className="text-xs font-medium text-gray-500">1</span>
                 </div>
 
                 <div className="flex-1">
-                  {/* Number Display */}
-                  <div className="flex justify-center mb-4">
-                    <div className="bg-black dark:bg-white text-white dark:text-black rounded-2xl px-6 py-3 shadow-lg">
-                      <span className="text-3xl font-bold">
+                  {/* Number Display - Compact */}
+                  <div className="flex justify-center mb-3">
+                    <div className="bg-black dark:bg-white text-white dark:text-black rounded-xl px-4 py-2 shadow-lg">
+                      <span className="text-2xl font-bold">
                         {peopleCount === 10 ? '10+' : peopleCount}
                       </span>
-                      <span className="text-sm ml-2 opacity-70">
+                      <span className="text-xs ml-2 opacity-70">
                         {peopleCount === 1
                           ? (selectedLanguage === 'en' ? 'person' : selectedLanguage === 'ru' ? 'человек' : 'orang')
                           : (selectedLanguage === 'en' ? 'people' : selectedLanguage === 'ru' ? 'человек' : 'orang')
@@ -568,58 +610,34 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                   </div>
                 </div>
 
-                <div className="flex flex-col items-center gap-2">
-                  <Users className="w-6 h-6 text-gray-900 dark:text-white" />
+                <div className="flex flex-col items-center gap-1">
+                  <Users className="w-5 h-5 text-gray-900 dark:text-white" />
                   <span className="text-xs font-medium text-gray-500">10+</span>
                 </div>
               </div>
             </div>
-            </div>
-          </motion.div>
-        </section>
-      )}
 
-      {/* Third Slide - Confirmation Section */}
-      {selectedCategories.length > 0 && visitTiming && (
-        <section ref={confirmationSlideRef} className="h-screen snap-start bg-white dark:bg-gray-900 flex items-center justify-center relative">
-          {/* Scroll up indicator - only on third slide */}
-          <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="text-gray-400 dark:text-gray-500"
-            >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-              </svg>
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="container px-4 max-w-xl mx-auto"
-          >
-            <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 text-center">
-              <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
+            {/* Booking Summary - Compact - Always visible */}
+            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
+              <h4 className="text-base font-bold mb-3 text-gray-900 dark:text-white text-center">
                 {selectedLanguage === 'en' && 'Booking Summary'}
-                {selectedLanguage === 'ru' && 'Подтверждение бронирования'}
-                {selectedLanguage === 'id' && 'Ringkasan Pemesanan'}
-              </h2>
+                {selectedLanguage === 'ru' && 'Подтверждение'}
+                {selectedLanguage === 'id' && 'Ringkasan'}
+              </h4>
 
-              <div className="space-y-6 text-center">
+              <div className="space-y-2 text-sm">
                 {/* Selected Categories */}
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                    {selectedLanguage === 'en' && 'Selected experiences:'}
-                    {selectedLanguage === 'ru' && 'Выбранные впечатления:'}
-                    {selectedLanguage === 'id' && 'Pengalaman yang dipilih:'}
-                  </p>
-                  <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    {selectedLanguage === 'en' && 'Experiences:'}
+                    {selectedLanguage === 'ru' && 'Впечатления:'}
+                    {selectedLanguage === 'id' && 'Pengalaman:'}
+                  </span>
+                  <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
                     {selectedCategories.map(id => {
                       const category = EXPERIENCE_CATEGORIES.find(cat => cat.id === id)
                       return (
-                        <span key={id} className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-medium">
+                        <span key={id} className="px-2 py-0.5 bg-black dark:bg-white text-white dark:text-black rounded text-xs">
                           {category?.title[selectedLanguage as keyof typeof category.title]}
                         </span>
                       )
@@ -628,13 +646,13 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 </div>
 
                 {/* Date */}
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-400">
                     {selectedLanguage === 'en' && 'Date:'}
                     {selectedLanguage === 'ru' && 'Дата:'}
                     {selectedLanguage === 'id' && 'Tanggal:'}
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-white">
                     {visitTiming === 'now' ? (
                       <>
                         {selectedLanguage === 'en' && 'Today'}
@@ -644,39 +662,38 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     ) : visitDate ? (
                       visitDate.toLocaleDateString(
                         selectedLanguage === 'ru' ? 'ru-RU' : selectedLanguage === 'id' ? 'id-ID' : 'en-US',
-                        { month: 'long', day: 'numeric', year: 'numeric' }
+                        { month: 'short', day: 'numeric' }
                       )
-                    ) : null}
-                  </p>
+                    ) : (
+                      <span className="text-gray-400 dark:text-gray-500">
+                        {selectedLanguage === 'en' && 'Not selected'}
+                        {selectedLanguage === 'ru' && 'Не выбрано'}
+                        {selectedLanguage === 'id' && 'Belum dipilih'}
+                      </span>
+                    )}
+                  </span>
                 </div>
 
-                {/* People Count */}
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                    {selectedLanguage === 'en' && 'Number of people:'}
-                    {selectedLanguage === 'ru' && 'Количество человек:'}
-                    {selectedLanguage === 'id' && 'Jumlah orang:'}
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {peopleCount === 10 ? '10+' : peopleCount} {peopleCount === 1
-                      ? (selectedLanguage === 'en' ? 'person' : selectedLanguage === 'ru' ? 'человек' : 'orang')
-                      : (selectedLanguage === 'en' ? 'people' : selectedLanguage === 'ru' ? 'человек' : 'orang')
-                    }
-                  </p>
+                {/* People */}
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    {selectedLanguage === 'en' && 'People:'}
+                    {selectedLanguage === 'ru' && 'Человек:'}
+                    {selectedLanguage === 'id' && 'Orang:'}
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    {peopleCount === 10 ? '10+' : peopleCount}
+                  </span>
                 </div>
-              </div>
-
-              <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  {selectedLanguage === 'en' && 'Continue booking via WhatsApp to confirm your reservation'}
-                  {selectedLanguage === 'ru' && 'Продолжите бронирование через WhatsApp для подтверждения'}
-                  {selectedLanguage === 'id' && 'Lanjutkan pemesanan melalui WhatsApp untuk konfirmasi'}
-                </p>
               </div>
             </div>
           </motion.div>
+
+          {/* Bottom spacing for button */}
+          <div className="h-20" />
         </section>
       )}
+
 
       {/* Calendar Modal */}
       <AnimatePresence>
@@ -686,7 +703,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            onClick={() => setShowCalendar(false)}
+            onClick={handleCloseCalendar}
           >
             {/* Blur Backdrop */}
             <div className="absolute inset-0 backdrop-blur-md bg-black/30" />
@@ -701,7 +718,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={() => setShowCalendar(false)}
+                onClick={handleCloseCalendar}
                 className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 <X className="w-6 h-6" />
@@ -861,8 +878,83 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
         )}
       </AnimatePresence>
 
-      {/* Bottom Navigation Button - Only show when categories AND timing are selected */}
-      {selectedCategories.length > 0 && visitTiming && (
+      {/* Thank You Modal */}
+      <AnimatePresence>
+        {showThankYouModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          >
+            {/* Blur Backdrop */}
+            <div className="absolute inset-0 backdrop-blur-md bg-black/30" />
+
+            {/* Thank You Content */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowThankYouModal(false)}
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-900 dark:text-white" />
+              </button>
+
+              <div className="text-center space-y-6">
+                {/* Thank you message */}
+                <div>
+                  <h3 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+                    {selectedLanguage === 'en' && 'Thank You!'}
+                    {selectedLanguage === 'ru' && 'Спасибо!'}
+                    {selectedLanguage === 'id' && 'Terima Kasih!'}
+                  </h3>
+                  <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                    {selectedLanguage === 'en' && 'Redirecting you to WhatsApp...'}
+                    {selectedLanguage === 'ru' && 'Перенаправление в WhatsApp...'}
+                    {selectedLanguage === 'id' && 'Mengalihkan ke WhatsApp...'}
+                  </p>
+                </div>
+
+                {/* Website link */}
+                <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    {selectedLanguage === 'en' && 'Visit our website:'}
+                    {selectedLanguage === 'ru' && 'Посетите наш сайт:'}
+                    {selectedLanguage === 'id' && 'Kunjungi website kami:'}
+                  </p>
+                  <a
+                    href="https://nuanu.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-lg font-bold text-black dark:text-white hover:underline"
+                  >
+                    nuanu.com
+                  </a>
+                </div>
+
+                {/* Start Over button */}
+                <button
+                  onClick={resetBooking}
+                  className="w-full py-4 px-6 rounded-2xl font-medium bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                >
+                  {selectedLanguage === 'en' && 'Start Over'}
+                  {selectedLanguage === 'ru' && 'Начать заново'}
+                  {selectedLanguage === 'id' && 'Mulai Lagi'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Bottom Navigation Button - Two-slide flow */}
+      {selectedCategories.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -871,9 +963,14 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
           <div className="max-w-xl mx-auto flex justify-center">
             <Button
               onClick={handleNextStep}
-              className="rounded-full px-8 py-6 shadow-xl backdrop-blur-md bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 pointer-events-auto text-base font-medium"
+              disabled={isOnFormSlide && (!visitTiming || (visitTiming === 'later' && !visitDate))}
+              className={`rounded-full px-8 py-6 shadow-xl backdrop-blur-md pointer-events-auto text-base font-medium transition-all ${
+                isOnFormSlide && (!visitTiming || (visitTiming === 'later' && !visitDate))
+                  ? 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed'
+                  : 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90'
+              }`}
             >
-              {isOnConfirmationSlide ? (
+              {isOnFormSlide ? (
                 <>
                   {selectedLanguage === 'en' && 'Book via WhatsApp'}
                   {selectedLanguage === 'ru' && 'Забронировать через WhatsApp'}
