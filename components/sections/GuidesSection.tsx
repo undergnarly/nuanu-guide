@@ -143,7 +143,10 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   const [visitDate, setVisitDate] = useState<Date | null>(null)
   const [visitTiming, setVisitTiming] = useState<"now" | "later" | null>(null)
   const [peopleCount, setPeopleCount] = useState(1)
+  const [isOnConfirmationSlide, setIsOnConfirmationSlide] = useState(false)
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({})
+  const confirmationSlideRef = useRef<HTMLElement | null>(null)
+  const formSlideRef = useRef<HTMLElement | null>(null)
 
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories(prev =>
@@ -153,28 +156,39 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
     )
   }
 
+  const scrollToFormSlide = () => {
+    if (formSlideRef.current) {
+      formSlideRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const scrollToConfirmation = () => {
+    if (confirmationSlideRef.current) {
+      confirmationSlideRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   const handleNextStep = () => {
-    // Format categories list
-    const categoriesText = selectedCategories
-      .map(id => EXPERIENCE_CATEGORIES.find(cat => cat.id === id)?.title.en)
-      .filter(Boolean)
-      .join(' and ')
+    if (isOnConfirmationSlide) {
+      // On confirmation slide - open WhatsApp
+      const categoriesText = selectedCategories
+        .map(id => EXPERIENCE_CATEGORIES.find(cat => cat.id === id)?.title.en)
+        .filter(Boolean)
+        .join(' and ')
 
-    // Format date
-    const dateText = visitTiming === 'now'
-      ? 'today'
-      : visitDate
-        ? visitDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
-        : 'a future date'
+      const dateText = visitTiming === 'now'
+        ? 'today'
+        : visitDate
+          ? visitDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
+          : 'a future date'
 
-    // Create WhatsApp message
-    const message = `Hello! I want to book ${categoriesText} in Nuanu for ${peopleCount} ${peopleCount === 1 ? 'person' : 'people'} at ${dateText}`
-
-    // WhatsApp URL
-    const whatsappUrl = `https://wa.me/6285235948856?text=${encodeURIComponent(message)}`
-
-    // Open WhatsApp
-    window.open(whatsappUrl, '_blank')
+      const message = `Hello! I want to book ${categoriesText} in Nuanu for ${peopleCount} ${peopleCount === 1 ? 'person' : 'people'} at ${dateText}`
+      const whatsappUrl = `https://wa.me/6285235948856?text=${encodeURIComponent(message)}`
+      window.open(whatsappUrl, '_blank')
+    } else {
+      // On second slide - scroll to confirmation
+      scrollToConfirmation()
+    }
   }
 
   // Calendar helpers
@@ -248,14 +262,35 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
     })
   }, [activeCardId])
 
+  useEffect(() => {
+    // Track confirmation slide visibility
+    if (!confirmationSlideRef.current) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsOnConfirmationSlide(entry.isIntersecting && entry.intersectionRatio > 0.5)
+        })
+      },
+      {
+        threshold: [0, 0.5, 1],
+        rootMargin: '-20% 0px -20% 0px'
+      }
+    )
+
+    observer.observe(confirmationSlideRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [selectedCategories, visitTiming])
+
   return (
     <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
-      {/* First Slide - Experience Cards */}
-      <section className="min-h-screen snap-start relative">
-      {/* Sticky Header with Title and Language Selector */}
-      <div className="fixed top-6 left-0 right-0 z-40 px-4 pointer-events-none">
+      {/* Fixed Header with Language Selector - outside sections */}
+      <div className="fixed top-6 left-0 right-0 z-50 px-4 pointer-events-none">
         <div className="max-w-xl mx-auto relative">
-          {/* Choose your experience block - centered - hide when categories selected */}
+          {/* Choose your experience - show when no cards selected */}
           {selectedCategories.length === 0 && (
             <div className="flex justify-center">
               <div className="rounded-full px-5 py-3 shadow-xl backdrop-blur-md bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
@@ -276,7 +311,9 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
         </div>
       </div>
 
-      {/* Spacer for sticky header */}
+      {/* First Slide - Experience Cards */}
+      <section className="min-h-screen snap-start relative">
+      {/* Spacer for fixed header */}
       <div className="h-24" />
 
       {/* Fullscreen Experience Cards */}
@@ -349,11 +386,49 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
           )
         })}
       </div>
+
+      {/* Scroll down indicator - only on first slide when no cards selected */}
+      {selectedCategories.length === 0 && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="text-white/70"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Continue button on first slide - always visible, gray when disabled */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="fixed bottom-6 left-0 right-0 z-50 px-4 pointer-events-none"
+      >
+        <div className="max-w-xl mx-auto flex justify-center">
+          <Button
+            onClick={scrollToFormSlide}
+            disabled={selectedCategories.length === 0}
+            className={`rounded-full px-8 py-6 shadow-xl backdrop-blur-md pointer-events-auto text-base font-medium transition-all ${
+              selectedCategories.length > 0
+                ? 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90'
+                : 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            {selectedLanguage === 'en' && 'Continue'}
+            {selectedLanguage === 'ru' && 'Продолжить'}
+            {selectedLanguage === 'id' && 'Lanjutkan'}
+          </Button>
+        </div>
+      </motion.div>
       </section>
 
       {/* Second Slide - Form Section */}
       {selectedCategories.length > 0 && (
-        <section className="h-screen snap-start bg-white dark:bg-gray-900 flex items-center justify-center">
+        <section ref={formSlideRef} className="h-screen snap-start bg-white dark:bg-gray-900 flex items-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -499,6 +574,105 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 </div>
               </div>
             </div>
+            </div>
+          </motion.div>
+        </section>
+      )}
+
+      {/* Third Slide - Confirmation Section */}
+      {selectedCategories.length > 0 && visitTiming && (
+        <section ref={confirmationSlideRef} className="h-screen snap-start bg-white dark:bg-gray-900 flex items-center justify-center relative">
+          {/* Scroll up indicator - only on third slide */}
+          <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="text-gray-400 dark:text-gray-500"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+              </svg>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="container px-4 max-w-xl mx-auto"
+          >
+            <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 text-center">
+              <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
+                {selectedLanguage === 'en' && 'Booking Summary'}
+                {selectedLanguage === 'ru' && 'Подтверждение бронирования'}
+                {selectedLanguage === 'id' && 'Ringkasan Pemesanan'}
+              </h2>
+
+              <div className="space-y-6 text-center">
+                {/* Selected Categories */}
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    {selectedLanguage === 'en' && 'Selected experiences:'}
+                    {selectedLanguage === 'ru' && 'Выбранные впечатления:'}
+                    {selectedLanguage === 'id' && 'Pengalaman yang dipilih:'}
+                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {selectedCategories.map(id => {
+                      const category = EXPERIENCE_CATEGORIES.find(cat => cat.id === id)
+                      return (
+                        <span key={id} className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-medium">
+                          {category?.title[selectedLanguage as keyof typeof category.title]}
+                        </span>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Date */}
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    {selectedLanguage === 'en' && 'Date:'}
+                    {selectedLanguage === 'ru' && 'Дата:'}
+                    {selectedLanguage === 'id' && 'Tanggal:'}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {visitTiming === 'now' ? (
+                      <>
+                        {selectedLanguage === 'en' && 'Today'}
+                        {selectedLanguage === 'ru' && 'Сегодня'}
+                        {selectedLanguage === 'id' && 'Hari ini'}
+                      </>
+                    ) : visitDate ? (
+                      visitDate.toLocaleDateString(
+                        selectedLanguage === 'ru' ? 'ru-RU' : selectedLanguage === 'id' ? 'id-ID' : 'en-US',
+                        { month: 'long', day: 'numeric', year: 'numeric' }
+                      )
+                    ) : null}
+                  </p>
+                </div>
+
+                {/* People Count */}
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    {selectedLanguage === 'en' && 'Number of people:'}
+                    {selectedLanguage === 'ru' && 'Количество человек:'}
+                    {selectedLanguage === 'id' && 'Jumlah orang:'}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {peopleCount === 10 ? '10+' : peopleCount} {peopleCount === 1
+                      ? (selectedLanguage === 'en' ? 'person' : selectedLanguage === 'ru' ? 'человек' : 'orang')
+                      : (selectedLanguage === 'en' ? 'people' : selectedLanguage === 'ru' ? 'человек' : 'orang')
+                    }
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {selectedLanguage === 'en' && 'Continue booking via WhatsApp to confirm your reservation'}
+                  {selectedLanguage === 'ru' && 'Продолжите бронирование через WhatsApp для подтверждения'}
+                  {selectedLanguage === 'id' && 'Lanjutkan pemesanan melalui WhatsApp untuk konfirmasi'}
+                </p>
+              </div>
             </div>
           </motion.div>
         </section>
@@ -699,9 +873,19 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               onClick={handleNextStep}
               className="rounded-full px-8 py-6 shadow-xl backdrop-blur-md bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 pointer-events-auto text-base font-medium"
             >
-              {selectedLanguage === 'en' && 'Book via WhatsApp'}
-              {selectedLanguage === 'ru' && 'Забронировать через WhatsApp'}
-              {selectedLanguage === 'id' && 'Pesan via WhatsApp'}
+              {isOnConfirmationSlide ? (
+                <>
+                  {selectedLanguage === 'en' && 'Book via WhatsApp'}
+                  {selectedLanguage === 'ru' && 'Забронировать через WhatsApp'}
+                  {selectedLanguage === 'id' && 'Pesan via WhatsApp'}
+                </>
+              ) : (
+                <>
+                  {selectedLanguage === 'en' && 'Continue'}
+                  {selectedLanguage === 'ru' && 'Продолжить'}
+                  {selectedLanguage === 'id' && 'Lanjutkan'}
+                </>
+              )}
             </Button>
           </div>
         </motion.div>
