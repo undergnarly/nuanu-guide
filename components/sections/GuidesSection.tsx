@@ -451,7 +451,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
       </div>
 
       {/* Bottom spacing for button */}
-      <div className="h-20" />
+      <div className="h-32" />
       </section>
 
       {/* Second Slide - Form Section with Booking Summary */}
@@ -692,7 +692,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
           </motion.div>
 
           {/* Bottom spacing for button */}
-          <div className="h-20" />
+          <div className="h-32" />
         </section>
       )}
 
@@ -964,11 +964,12 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
         >
           <div className="max-w-xl mx-auto flex justify-center">
             <Button
+              variant="ghost"
               onClick={handleNextStep}
               disabled={isOnFormSlide && (!visitTiming || (visitTiming === 'later' && !visitDate))}
               className={`rounded-full px-8 py-6 shadow-xl backdrop-blur-md pointer-events-auto text-base font-medium transition-all ${
                 isOnFormSlide && (!visitTiming || (visitTiming === 'later' && !visitDate))
-                  ? 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed'
+                  ? 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200'
                   : 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90'
               }`}
             >
