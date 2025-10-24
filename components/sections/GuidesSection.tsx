@@ -73,7 +73,7 @@ const EXPERIENCE_CATEGORIES = [
       ru: 'Откройте для себя уникальные активности и приключения в Nuanu Creative Village',
       id: 'Temukan aktivitas dan petualangan unik di Nuanu Creative Village'
     },
-    videoUrl: '/videos/experiences.mp4',
+    videoUrl: '/video/experiences.mp4',
     imageUrl: '/images/guides/art_village.jpg'
   },
   {
@@ -88,7 +88,7 @@ const EXPERIENCE_CATEGORIES = [
       ru: 'Найдите идеальное место для проживания в наших креативных пространствах',
       id: 'Temukan tempat tinggal sempurna Anda di ruang kreatif kami'
     },
-    videoUrl: '/videos/accommodation.mp4',
+    videoUrl: '/video/accommodation.mp4',
     imageUrl: '/images/guides/pacha-alpaca-new.jpg'
   },
   {
@@ -103,7 +103,7 @@ const EXPERIENCE_CATEGORIES = [
       ru: 'Исследуйте разнообразные кулинарные впечатления и варианты питания',
       id: 'Jelajahi pengalaman kuliner yang beragam dan pilihan tempat makan'
     },
-    videoUrl: '/videos/food.mp4',
+    videoUrl: '/video/food.mp4',
     imageUrl: '/images/guides/horizon.jpg'
   }
 ]
@@ -281,9 +281,10 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     loop
                     muted
                     playsInline
-                    preload="metadata"
+                    preload={category.id === 'experiences' ? 'metadata' : 'none'}
+                    loading={category.id === 'experiences' ? undefined : 'lazy'}
                   >
-                    <source src="/video/lv_0_20251022190538.mp4" type="video/mp4" />
+                    <source src={category.videoUrl} type="video/mp4" />
                   </video>
                 </div>
 
@@ -662,7 +663,9 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               onClick={handleNextStep}
               className="rounded-full px-8 py-6 shadow-xl backdrop-blur-md bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 pointer-events-auto text-base font-medium"
             >
-              Book via WhatsApp
+              {selectedLanguage === 'en' && 'Book via WhatsApp'}
+              {selectedLanguage === 'ru' && 'Забронировать через WhatsApp'}
+              {selectedLanguage === 'id' && 'Pesan via WhatsApp'}
             </Button>
           </div>
         </motion.div>
