@@ -277,14 +277,16 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
 
                 {/* Selection Checkbox */}
                 <div className="absolute top-6 right-6 z-10">
-                  <div className={`w-10 h-10 rounded-full backdrop-blur-md transition-all flex items-center justify-center ${
+                  <div className={`w-12 h-12 rounded-full backdrop-blur-md transition-all duration-300 flex items-center justify-center ${
                     isSelected
-                      ? 'bg-white dark:bg-white shadow-lg'
-                      : 'bg-white/30 dark:bg-gray-900/30'
+                      ? 'bg-white dark:bg-white shadow-lg scale-110'
+                      : 'bg-white/20 dark:bg-gray-900/20 ring-2 ring-white/60 dark:ring-white/60'
                   }`}>
-                    {isSelected && (
-                      <Check className="w-6 h-6 text-black stroke-[3]" />
-                    )}
+                    <Check className={`w-7 h-7 transition-all duration-300 stroke-[3] ${
+                      isSelected
+                        ? 'text-black opacity-100 scale-100'
+                        : 'text-white opacity-40 scale-90'
+                    }`} />
                   </div>
                 </div>
 
