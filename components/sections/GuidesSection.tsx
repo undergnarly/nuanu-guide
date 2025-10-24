@@ -217,14 +217,16 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
       {/* Sticky Header with Title and Language Selector */}
       <div className="fixed top-6 left-0 right-0 z-40 px-4 pointer-events-none">
         <div className="max-w-xl mx-auto relative">
-          {/* Choose your experience block - centered */}
-          <div className="flex justify-center">
-            <div className="rounded-full px-5 py-3 shadow-xl backdrop-blur-md bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
-              <span className="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                Choose your experience
-              </span>
+          {/* Choose your experience block - centered - hide when categories selected */}
+          {selectedCategories.length === 0 && (
+            <div className="flex justify-center">
+              <div className="rounded-full px-5 py-3 shadow-xl backdrop-blur-md bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
+                <span className="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                  Choose your experience
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Language selector block - absolute positioned right */}
           <DropdownMenu modal={true}>
@@ -327,7 +329,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
 
                 {/* Content - Title and Description */}
                 <div className="absolute bottom-0 left-0 right-0 p-8 z-10">
-                  <h2 className="font-serif text-white mb-3" style={{ fontSize: '2.5rem', lineHeight: '3rem', fontWeight: 700 }}>
+                  <h2 className="font-serif text-white mb-3" style={{ fontSize: '2rem', lineHeight: '2.5rem', fontWeight: 700 }}>
                     {category.title[selectedLanguage as keyof typeof category.title]}
                   </h2>
                   <p className="text-lg text-white/90 leading-relaxed">
