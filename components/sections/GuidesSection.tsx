@@ -358,7 +358,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
           {/* Language selector button */}
           <button
             onClick={() => setShowLanguageModal(true)}
-            className="flex items-center justify-center w-12 h-12 rounded-full bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 pointer-events-auto ml-auto"
+            className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-gray-900 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.35)] border-2 border-gray-200 dark:border-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 pointer-events-auto ml-auto"
           >
             <FlagIcon code={selectedLanguage} size={28} />
           </button>
@@ -367,14 +367,16 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
 
       {/* First Slide - Experience Cards */}
       <section className="h-screen snap-start relative flex flex-col">
-      {/* Spacer for fixed header */}
-      <div className="h-20" />
+      {/* Top spacing - minimal */}
+      <div className="h-6" />
 
-      {/* Nuanu Experience title - inside the slide */}
-      <div className="container px-4 max-w-xl mx-auto">
-        <h1 className="font-serif text-black dark:text-white text-center mb-4" style={{ fontSize: '1.6rem', lineHeight: '2rem', fontWeight: 700 }}>
+      {/* Nuanu Experience title - aligned with language button */}
+      <div className="container px-4 max-w-xl mx-auto flex items-center justify-between mb-2">
+        <h1 className="font-serif text-black dark:text-white" style={{ fontSize: '1.6rem', lineHeight: '2rem', fontWeight: 700 }}>
           Nuanu Experience
         </h1>
+        {/* Spacer to balance the language button on the right */}
+        <div className="w-12 h-12" />
       </div>
 
       {/* Compact Experience Cards - all three visible */}
