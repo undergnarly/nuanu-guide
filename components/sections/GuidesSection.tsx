@@ -74,6 +74,7 @@ const EXPERIENCE_CATEGORIES = [
       id: 'Temukan aktivitas dan petualangan unik di Nuanu Creative Village'
     },
     videoUrl: '/video/experiences.mp4',
+    posterUrl: '/video/experiences-poster.jpg',
     imageUrl: '/images/guides/art_village.jpg'
   },
   {
@@ -89,6 +90,7 @@ const EXPERIENCE_CATEGORIES = [
       id: 'Temukan tempat tinggal sempurna Anda di ruang kreatif kami'
     },
     videoUrl: '/video/accommodation.mp4',
+    posterUrl: '/video/accommodation-poster.jpg',
     imageUrl: '/images/guides/pacha-alpaca-new.jpg'
   },
   {
@@ -104,6 +106,7 @@ const EXPERIENCE_CATEGORIES = [
       id: 'Jelajahi pengalaman kuliner yang beragam dan pilihan tempat makan'
     },
     videoUrl: '/video/food.mp4',
+    posterUrl: '/video/food-poster.jpg',
     imageUrl: '/images/guides/horizon.jpg'
   }
 ]
@@ -283,6 +286,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     playsInline
                     preload={category.id === 'experiences' ? 'metadata' : 'none'}
                     loading={category.id === 'experiences' ? undefined : 'lazy'}
+                    poster={category.posterUrl}
                   >
                     <source src={category.videoUrl} type="video/mp4" />
                   </video>
