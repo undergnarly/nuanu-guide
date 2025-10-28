@@ -358,7 +358,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
           {/* Language selector button */}
           <button
             onClick={() => setShowLanguageModal(true)}
-            className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-gray-900 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.35)] border-2 border-gray-200 dark:border-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 pointer-events-auto ml-auto"
+            className="flex items-center justify-center w-12 h-12 rounded-full bg-background dark:bg-gray-900 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.35)] border-2 border-gray-200 dark:border-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-white focus:ring-offset-2 pointer-events-auto ml-auto"
           >
             <FlagIcon code={selectedLanguage} size={28} />
           </button>
@@ -372,7 +372,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
 
       {/* Nuanu Experience title - aligned with language button */}
       <div className="container px-4 max-w-xl mx-auto flex items-center justify-between mb-2">
-        <h1 className="font-serif text-black dark:text-white" style={{ fontSize: '1.6rem', lineHeight: '2rem', fontWeight: 700 }}>
+        <h1 className="font-serif text-foreground dark:text-white" style={{ fontSize: '1.6rem', lineHeight: '2rem', fontWeight: 700 }}>
           Nuanu Experience
         </h1>
         {/* Spacer to balance the language button on the right */}
@@ -393,7 +393,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
             >
               <div
                 className={`relative h-[23vh] rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] ${
-                  isSelected ? 'ring-4 ring-black dark:ring-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]' : ''
+                  isSelected ? 'ring-4 ring-primary dark:ring-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]' : ''
                 }`}
                 onClick={() => toggleCategory(category.id)}
               >
@@ -456,7 +456,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
 
       {/* Second Slide - Form Section with Booking Summary */}
       {selectedCategories.length > 0 && (
-        <section ref={formSlideRef} className="h-screen snap-start bg-white dark:bg-gray-900 flex flex-col relative">
+        <section ref={formSlideRef} className="h-screen snap-start bg-background dark:bg-gray-900 flex flex-col relative">
           {/* Scroll up indicator - on second slide */}
           <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
             <motion.div
@@ -492,8 +492,8 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                   }}
                   className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${
                     visitTiming === "now"
-                      ? 'bg-black text-white shadow-lg scale-105'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
+                      ? 'bg-primary text-primary-foreground shadow-lg scale-105'
+                      : 'bg-secondary dark:bg-gray-800 text-foreground dark:text-white hover:scale-105'
                   }`}
                 >
                   {selectedLanguage === 'en' && 'Now'}
@@ -506,8 +506,8 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                   }}
                   className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
                     visitTiming === "later" && visitDate
-                      ? 'bg-black text-white shadow-lg scale-105'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
+                      ? 'bg-primary text-primary-foreground shadow-lg scale-105'
+                      : 'bg-secondary dark:bg-gray-800 text-foreground dark:text-white hover:scale-105'
                   }`}
                 >
                 <CalendarIcon className="w-5 h-5" />
@@ -545,7 +545,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 <div className="flex-1">
                   {/* Number Display - Compact */}
                   <div className="flex justify-center mb-3">
-                    <div className="bg-black dark:bg-white text-white dark:text-black rounded-xl px-4 py-2 shadow-lg">
+                    <div className="bg-primary dark:bg-white text-primary-foreground dark:text-black rounded-xl px-4 py-2 shadow-lg">
                       <span className="text-2xl font-bold">
                         {peopleCount === 10 ? '10+' : peopleCount}
                       </span>
@@ -620,7 +620,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
             </div>
 
             {/* Booking Summary - Compact - Always visible */}
-            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
+            <div className="mt-6 p-4 bg-secondary dark:bg-gray-900 rounded-xl shadow-lg">
               <h4 className="text-base font-bold mb-3 text-gray-900 dark:text-white text-center">
                 {selectedLanguage === 'en' && 'Booking Summary'}
                 {selectedLanguage === 'ru' && 'Подтверждение'}
@@ -639,7 +639,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     {selectedCategories.map(id => {
                       const category = EXPERIENCE_CATEGORIES.find(cat => cat.id === id)
                       return (
-                        <span key={id} className="px-2 py-0.5 bg-black dark:bg-white text-white dark:text-black rounded text-xs">
+                        <span key={id} className="px-2 py-0.5 bg-primary dark:bg-white text-primary-foreground dark:text-black rounded text-xs">
                           {category?.title[selectedLanguage as keyof typeof category.title]}
                         </span>
                       )
@@ -970,7 +970,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               className={`rounded-full px-8 py-6 shadow-xl backdrop-blur-md pointer-events-auto text-base font-medium transition-all ${
                 isOnFormSlide && (!visitTiming || (visitTiming === 'later' && !visitDate))
                   ? 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200'
-                  : 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90'
+                  : 'bg-primary dark:bg-white text-primary-foreground dark:text-black hover:bg-primary/90 dark:hover:bg-white/90'
               }`}
             >
               {isOnFormSlide ? (

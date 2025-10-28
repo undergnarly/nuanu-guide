@@ -57,6 +57,11 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        nuanu: {
+          dark: "hsl(var(--nuanu-dark))",
+          bg: "hsl(var(--nuanu-bg))",
+          form: "hsl(var(--nuanu-form))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
