@@ -970,7 +970,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               className={`rounded-full px-8 py-6 shadow-xl backdrop-blur-md pointer-events-auto text-base font-medium transition-all ${
                 isOnFormSlide && (!visitTiming || (visitTiming === 'later' && !visitDate))
                   ? 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200'
-                  : 'bg-primary dark:bg-white text-primary-foreground dark:text-black hover:bg-primary/90 dark:hover:bg-white/90'
+                  : 'bg-primary dark:bg-white text-primary-foreground dark:text-black hover:bg-primary/80 hover:text-primary-foreground dark:hover:bg-white/90 dark:hover:text-black'
               }`}
             >
               {isOnFormSlide ? (
