@@ -729,12 +729,12 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
             >
               <button
                 onClick={handleCloseCalendar}
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors z-10"
               >
                 <X className="w-6 h-6" />
               </button>
 
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-6 mt-12">
                 <button
                   onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
                   className="p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors"
