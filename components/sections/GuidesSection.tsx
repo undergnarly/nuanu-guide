@@ -135,7 +135,15 @@ const EXPERIENCE_CATEGORIES = [
 ]
 
 export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) {
-  const [selectedLanguage, setSelectedLanguage] = useState("en")
+  const [selectedLanguage, setSelectedLanguage] = useState(() => {
+    // Detect browser language on initial load
+    if (typeof window !== 'undefined') {
+      const browserLang = navigator.language.toLowerCase()
+      if (browserLang.startsWith('ru')) return 'ru'
+      if (browserLang.startsWith('id')) return 'id'
+    }
+    return 'en'
+  })
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [activeCardId, setActiveCardId] = useState<string | null>(null)
   const [lastSelectedCategoryId, setLastSelectedCategoryId] = useState<string | null>(null)
@@ -716,12 +724,12 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
+              className="relative bg-background dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={handleCloseCalendar}
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -729,18 +737,18 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               <div className="flex items-center justify-between mb-6">
                 <button
                   onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold text-foreground dark:text-white">
                   {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                 </h3>
                 <button
                   onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -781,12 +789,12 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                       disabled={isPast}
                       className={`aspect-square rounded-xl font-medium transition-all ${
                         isSelected
-                          ? 'bg-black text-white dark:bg-white dark:text-black scale-110 shadow-lg'
+                          ? 'bg-primary text-primary-foreground dark:bg-white dark:text-black scale-110 shadow-lg'
                           : isToday
-                          ? 'bg-gray-200 dark:bg-gray-700 hover:scale-110'
+                          ? 'bg-secondary dark:bg-gray-700 hover:scale-110'
                           : isPast
                           ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-110'
+                          : 'hover:bg-secondary dark:hover:bg-gray-800 hover:scale-110'
                       }`}
                     >
                       {day.getDate()}
@@ -805,7 +813,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 disabled={!visitDate}
                 className={`w-full mt-6 py-4 rounded-2xl font-medium transition-all ${
                   visitDate
-                    ? 'bg-black dark:bg-white text-white dark:text-black hover:scale-105'
+                    ? 'bg-primary dark:bg-white text-primary-foreground dark:text-black hover:scale-105'
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
                 }`}
               >
@@ -838,17 +846,17 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
+              className="relative bg-background dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setShowLanguageModal(false)}
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
 
-              <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Choose Language</h3>
+              <h3 className="text-2xl font-bold mb-6 text-foreground dark:text-white">Choose Language</h3>
 
               <div className="space-y-3">
                 {SUPPORTED_LANGUAGES.map((language) => (
@@ -860,8 +868,8 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     }}
                     className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 ${
                       selectedLanguage === language.code
-                        ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg scale-105'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-105'
+                        ? 'bg-primary text-primary-foreground dark:bg-white dark:text-black shadow-lg scale-105'
+                        : 'bg-secondary dark:bg-gray-800 text-foreground dark:text-white hover:scale-105'
                     }`}
                   >
                     <FlagIcon code={language.code} size={32} />
@@ -898,20 +906,20 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
+              className="relative bg-background dark:bg-gray-900 rounded-3xl p-8 shadow-2xl max-w-md w-full"
             >
               {/* Close button */}
               <button
                 onClick={() => setShowThankYouModal(false)}
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-secondary dark:hover:bg-gray-800 transition-colors"
               >
-                <X className="w-6 h-6 text-gray-900 dark:text-white" />
+                <X className="w-6 h-6 text-foreground dark:text-white" />
               </button>
 
               <div className="text-center space-y-6">
                 {/* Thank you message */}
                 <div>
-                  <h3 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+                  <h3 className="text-3xl font-bold mb-4 text-foreground dark:text-white">
                     {selectedLanguage === 'en' && 'Thank You!'}
                     {selectedLanguage === 'ru' && 'Спасибо!'}
                     {selectedLanguage === 'id' && 'Terima Kasih!'}
@@ -924,7 +932,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 </div>
 
                 {/* Website link */}
-                <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
+                <div className="p-4 bg-secondary dark:bg-gray-800 rounded-2xl">
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                     {selectedLanguage === 'en' && 'Visit our website:'}
                     {selectedLanguage === 'ru' && 'Посетите наш сайт:'}
@@ -934,7 +942,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     href="https://nuanu.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-lg font-bold text-black dark:text-white hover:underline"
+                    className="text-lg font-bold text-foreground dark:text-white hover:underline"
                   >
                     nuanu.com
                   </a>
@@ -943,7 +951,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                 {/* Start Over button */}
                 <button
                   onClick={resetBooking}
-                  className="w-full py-4 px-6 rounded-2xl font-medium bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                  className="w-full py-4 px-6 rounded-2xl font-medium bg-secondary dark:bg-gray-800 text-foreground dark:text-white hover:bg-secondary/80 dark:hover:bg-gray-700 transition-all"
                 >
                   {selectedLanguage === 'en' && 'Start Over'}
                   {selectedLanguage === 'ru' && 'Начать заново'}
