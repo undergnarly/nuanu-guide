@@ -378,14 +378,17 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
       {/* Top spacing - minimal */}
       <div className="h-6" />
 
-      {/* Header title - two lines */}
+      {/* Header title - three lines, left aligned */}
       <div className="container px-4 max-w-xl mx-auto mb-3">
-        <h1 className="font-serif text-foreground dark:text-white text-center">
+        <h1 className="font-serif text-foreground dark:text-white text-left">
+          <div className="text-lg font-bold leading-tight">
+            Design your perfect journey in
+          </div>
           <div className="text-lg font-bold leading-tight mb-1">
-            Design your perfect journey in Nuanu Creative City
+            Nuanu Creative City
           </div>
           <div className="text-base font-medium opacity-80">
-            choose your vibe
+            Choose your vibe
           </div>
         </h1>
       </div>
@@ -418,8 +421,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     loop
                     muted
                     playsInline
-                    preload="metadata"
-                    poster={category.posterUrl}
+                    preload="auto"
                   >
                     <source src={category.videoUrl} type="video/mp4" />
                   </video>
