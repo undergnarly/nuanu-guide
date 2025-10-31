@@ -378,13 +378,16 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
       {/* Top spacing - minimal */}
       <div className="h-6" />
 
-      {/* Nuanu Experience title - aligned with language button */}
-      <div className="container px-4 max-w-xl mx-auto flex items-center justify-between mb-2">
-        <h1 className="font-serif text-foreground dark:text-white" style={{ fontSize: '1.6rem', lineHeight: '2rem', fontWeight: 700 }}>
-          Nuanu Experience
+      {/* Header title - two lines */}
+      <div className="container px-4 max-w-xl mx-auto mb-3">
+        <h1 className="font-serif text-foreground dark:text-white text-center">
+          <div className="text-lg font-bold leading-tight mb-1">
+            Design your perfect journey in Nuanu Creative City
+          </div>
+          <div className="text-base font-medium opacity-80">
+            choose your vibe
+          </div>
         </h1>
-        {/* Spacer to balance the language button on the right */}
-        <div className="w-12 h-12" />
       </div>
 
       {/* Compact Experience Cards - all three visible */}
