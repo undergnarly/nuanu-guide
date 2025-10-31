@@ -418,7 +418,8 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
                     loop
                     muted
                     playsInline
-                    preload="auto"
+                    preload="metadata"
+                    poster={category.posterUrl}
                   >
                     <source src={category.videoUrl} type="video/mp4" />
                   </video>
