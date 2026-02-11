@@ -26,7 +26,7 @@ export const AUDIO_GUIDE_OBJECTS: AudioGuideObject[] = [
     id: '1',
     slug: 'jungle-kids-center',
     coordinates: { lat: -8.3410, lng: 115.0918 },
-    image: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=600',
     card_color: '#402822',
     audio_url: '/audio/guides/jungle-kids.mp3',
     video: {
@@ -237,7 +237,7 @@ Is opened every day! Welcome to Pacha Alpaca`,
     id: '5',
     slug: 'sol-dance-studio',
     coordinates: { lat: -8.3405, lng: 115.0942 },
-    image: '/images/guides/sol.png',
+    image: 'https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?q=80&w=600',
     card_color: '#9b6e34',
     audio_url: '/audio/guides/sol.mp3',
     video: {

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Calendar, Sparkles, Users } from "lucide-react"
+import { Calendar, Sparkles, Users, User } from "lucide-react"
 import Image from "next/image"
 import ThemeToggle from "@/components/theme-toggle"
 import { useRef, useState } from "react"
@@ -34,6 +34,7 @@ export default function HomeSection() {
       <div className="relative w-full" style={{ aspectRatio: '9/14', minHeight: '70vh', maxHeight: '100vh' }}>
         <video
           src="/Nuanu.mp4"
+          poster="/nuanu-poster.webp"
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           loop
@@ -45,7 +46,7 @@ export default function HomeSection() {
           <span className="text-lg md:text-xl font-bold text-white drop-shadow-lg">Nuanu Guide</span>
           <button className="flex items-center gap-3 group focus:outline-none" onClick={() => setProfileOpen(true)}>
             <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center border-2 border-white group-hover:ring-2 group-hover:ring-black transition-all">
-              <img src="/placeholder-user.jpg" alt="User" className="object-cover w-full h-full" />
+              <User className="w-5 h-5 text-gray-500" />
             </div>
             <span className="text-white font-medium group-hover:underline">User Name</span>
           </button>
@@ -54,7 +55,7 @@ export default function HomeSection() {
               <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 min-w-[320px] flex flex-col items-center relative">
                 <button className="absolute top-3 right-3 text-gray-400 hover:text-black dark:hover:text-white text-2xl" onClick={() => setProfileOpen(false)}>&times;</button>
                 <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center mb-3">
-                  <img src="/placeholder-user.jpg" alt="User" className="object-cover w-full h-full" />
+                  <User className="w-5 h-5 text-gray-500" />
                 </div>
                 <div className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">User Name</div>
                 <ThemeToggle />

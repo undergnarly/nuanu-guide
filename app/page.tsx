@@ -18,7 +18,14 @@ function AppContent() {
 
   useEffect(() => {
     const path = window.location.pathname
-    const slug = path.substring(1)
+    let slug = path.substring(1)
+
+    // Support /guide/slug and /audio-guide/slug URL formats
+    if (slug.startsWith('guide/')) {
+      slug = slug.replace('guide/', '')
+    } else if (slug.startsWith('audio-guide/')) {
+      slug = slug.replace('audio-guide/', '')
+    }
 
     if (slug) {
       const guideExists = AUDIO_GUIDE_OBJECTS.some(g => g.slug === slug)
@@ -28,14 +35,15 @@ function AppContent() {
     }
   }, [])
 
-  const handleOpenAudioGuide = (slug: string, lang: string) => {
+  const handleOpenAudioGuide = (slug: string) => {
     setAudioGuideSlug(slug)
-    setAudioGuideLang(lang)
+    setAudioGuideLang('en')
     window.history.pushState({}, '', `/${slug}`)
   }
 
   const handleCloseAudioGuide = () => {
     setAudioGuideSlug(null)
+    setActiveTab("guides")
     window.history.pushState({}, '', '/')
   }
 
@@ -45,7 +53,6 @@ function AppContent() {
     window.history.pushState({}, '', '/')
   }
 
-  // If an audio guide is open, show it on top of everything
   if (audioGuideSlug) {
     const audioGuideObject = AUDIO_GUIDE_OBJECTS.find(obj => obj.slug === audioGuideSlug)
 
@@ -57,7 +64,7 @@ function AppContent() {
             <p className="text-gray-600 mb-4">The requested audio guide could not be found.</p>
             <button
               onClick={handleCloseAudioGuide}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="px-4 py-2 bg-black text-white rounded-full hover:bg-neutral-800"
             >
               Go Back
             </button>
@@ -91,7 +98,7 @@ function AppContent() {
           {activeTab === "map" && <MapContent />}
           {activeTab === "chat" && <ChatContent />}
           {activeTab === "events" && <EventsContent />}
-          {activeTab === "guides" && <ExploreContent onOpenGuide={(slug) => handleOpenAudioGuide(slug, 'en')} />}
+          {activeTab === "guides" && <ExploreContent onOpenGuide={handleOpenAudioGuide} />}
         </motion.div>
       </AnimatePresence>
       <BottomNavigation active={activeTab} onNavigate={handleNavigate} />
