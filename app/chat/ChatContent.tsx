@@ -56,6 +56,8 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
   const [activeTab, setActiveTab] = useState<"ai" | "community">("ai")
   const [inputFocused, setInputFocused] = useState(false)
   const [input, setInput] = useState("")
+  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 0,
@@ -74,6 +76,13 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
   const handleSend = async () => {
     const text = input.trim()
     if (!text || isLoading) return
+
+    // Cancel pending blur so nav stays hidden while typing
+    if (blurTimeoutRef.current) {
+      clearTimeout(blurTimeoutRef.current)
+      blurTimeoutRef.current = null
+    }
+    inputRef.current?.focus()
 
     const userMessage: ChatMessage = {
       id: Date.now(),
@@ -125,13 +134,20 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
   }
 
   const handleInputFocus = () => {
+    if (blurTimeoutRef.current) {
+      clearTimeout(blurTimeoutRef.current)
+      blurTimeoutRef.current = null
+    }
     setInputFocused(true)
     onInputFocus?.(true)
   }
 
   const handleInputBlur = () => {
-    setInputFocused(false)
-    onInputFocus?.(false)
+    blurTimeoutRef.current = setTimeout(() => {
+      setInputFocused(false)
+      onInputFocus?.(false)
+      blurTimeoutRef.current = null
+    }, 150)
   }
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -293,6 +309,7 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
       <div className={`fixed left-0 right-0 z-50 bg-background border-t border-gray-200 dark:border-gray-800 p-4 transition-[bottom] duration-200 ${inputFocused ? "bottom-0" : "bottom-24"}`}>
         <div className="max-w-4xl mx-auto flex gap-2">
           <input
+            ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -309,7 +326,6 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
           />
           <button
             className="p-3 rounded-full bg-black text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
-            onMouseDown={(e) => e.preventDefault()}
             onClick={handleSend}
             disabled={isLoading && activeTab === "ai"}
           >
