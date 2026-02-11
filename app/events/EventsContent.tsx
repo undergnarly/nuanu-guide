@@ -200,19 +200,20 @@ export default function EventsContent() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
               onClick={() => openEvent(event)}
-              className="group relative rounded-2xl overflow-hidden bg-white shadow-md cursor-pointer active:scale-[0.98] transition-transform"
+              className="group relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition-transform"
             >
-              <div className="aspect-[16/9] relative">
-                <Image
-                  src={event.image}
-                  alt={event.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-3 left-3 right-3">
-                  <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
+              <Image
+                src={event.image}
+                alt={event.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 400px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
+                <p className="text-sm text-white/70 line-clamp-2 mb-2">{event.description}</p>
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 text-sm text-white/80">
                     <span>{event.date} &middot; {event.time}</span>
                     <div className="flex items-center gap-1">
@@ -220,17 +221,7 @@ export default function EventsContent() {
                       <span>{event.rating}</span>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="p-3">
-                <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-sm font-semibold text-gray-900">{event.price}</span>
-                  {event.location && (
-                    <span className="text-xs text-gray-500 flex items-center gap-1">
-                      <MapPin className="w-3 h-3" /> {event.location}
-                    </span>
-                  )}
+                  <span className="text-sm font-semibold text-white">{event.price}</span>
                 </div>
               </div>
             </motion.div>

@@ -21,19 +21,20 @@ function GuideCard({ guide, onOpen }: { guide: AudioGuideObject; onOpen?: (slug:
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       onClick={() => onOpen?.(guide.slug)}
-      className="group relative rounded-2xl overflow-hidden bg-white shadow-md cursor-pointer active:scale-[0.98] transition-transform"
+      className="group relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition-transform"
     >
-      <div className="aspect-[16/9] relative">
-        <Image
-          src={guide.image}
-          alt={content.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 400px"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-        <div className="absolute bottom-3 left-3 right-3">
-          <h3 className="text-lg font-bold text-white mb-1">{content.title}</h3>
+      <Image
+        src={guide.image}
+        alt={content.title}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, 400px"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <h3 className="text-lg font-bold text-white mb-1">{content.title}</h3>
+        <p className="text-sm text-white/70 line-clamp-2 mb-2">{content.description}</p>
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-sm text-white/80">
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" />
@@ -41,16 +42,8 @@ function GuideCard({ guide, onOpen }: { guide: AudioGuideObject; onOpen?: (slug:
             </span>
             <span className="capitalize">{guide.category}</span>
           </div>
-        </div>
-      </div>
-      <div className="p-3">
-        <p className="text-sm text-gray-600 line-clamp-2">{content.description}</p>
-        <div className="flex items-center justify-between mt-2">
-          <span className="text-xs text-gray-500 flex items-center gap-1">
-            <Headphones className="w-3 h-3" /> Audio Guide
-          </span>
-          <span className="text-xs font-medium px-3 py-1 bg-black text-white rounded-full">
-            Listen
+          <span className="text-xs font-medium px-3 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full flex items-center gap-1">
+            <Headphones className="w-3 h-3" /> Listen
           </span>
         </div>
       </div>
