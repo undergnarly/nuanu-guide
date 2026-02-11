@@ -20,11 +20,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'admin.cockpit.nuanu.com' },
-      { protocol: 'https', hostname: 'img.youtube.com' },
-    ],
+    unoptimized: true,
   },
   experimental: {
     webpackBuildWorker: true,
