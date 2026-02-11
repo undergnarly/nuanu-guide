@@ -127,9 +127,9 @@ export default function ChatContent() {
   }
 
   return (
-    <div className="min-h-screen pb-16 bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen pb-16 bg-background flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
         <div className="flex justify-center gap-2 p-4">
           <button
             onClick={() => setActiveTab("ai")}
@@ -275,7 +275,7 @@ export default function ChatContent() {
       </div>
 
       {/* Input */}
-      <div className="fixed left-0 right-0 bottom-24 z-50 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 p-4">
+      <div className="fixed left-0 right-0 bottom-24 z-50 bg-background border-t border-gray-200 dark:border-gray-800 p-4">
         <div className="max-w-4xl mx-auto flex gap-2">
           <input
             type="text"

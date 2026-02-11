@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
 import OpenAI from "openai"
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+function getOpenAI() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY || "",
+  })
+}
 
 const NUANU_SYSTEM_PROMPT = `You are Nuanu AI — a friendly and knowledgeable assistant for Nuanu Creative City in Bali, Indonesia. You help visitors discover experiences, find information, and plan their visit.
 
@@ -114,7 +116,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: NUANU_SYSTEM_PROMPT },

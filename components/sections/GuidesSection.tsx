@@ -271,7 +271,7 @@ export default function GuidesSection({ onOpenAudioGuide }: GuidesSectionProps) 
   }, [])
 
   useEffect(() => {
-    // Управление воспроизведением видео - только последняя выбранная карточка
+    // Video playback control - only the last selected card
     Object.keys(videoRefs.current).forEach((key) => {
       const video = videoRefs.current[key]
       if (video) {

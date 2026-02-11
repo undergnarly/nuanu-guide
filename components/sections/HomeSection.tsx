@@ -1,67 +1,14 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Calendar, Sparkles, TrendingUp, Users } from "lucide-react"
+import { Calendar, Sparkles, Users } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, MapPin, Headphones, Smartphone, Compass } from "lucide-react"
 import ThemeToggle from "@/components/theme-toggle"
 import { useRef, useState } from "react"
+import { EVENTS } from "@/lib/event-data"
 
-const featuredEvents = [
-  {
-    id: 1,
-    title: "Contemporary Art Exhibition",
-    description: "Immerse yourself in the world of contemporary art at our new exhibition.",
-    image: "https://images.unsplash.com/photo-1561488111-5d800fd56b8a?q=80&w=1000",
-    date: "March 24",
-    time: "19:00",
-    price: "Free",
-    category: "art",
-    rating: 4.8,
-    reviews: 47
-  },
-  {
-    id: 2,
-    title: "Open-Air Jazz Evening",
-    description: "Live jazz music in the cozy atmosphere of our garden.",
-    image: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?q=80&w=1000",
-    date: "March 26",
-    time: "20:00",
-    price: "350.000 IDR",
-    category: "music",
-    rating: 4.9,
-    reviews: 89
-  }
-]
-
-const trendingEvents = [
-  {
-    id: 3,
-    title: "Balinese Cooking Masterclass",
-    description: "Learn to cook authentic Balinese dishes.",
-    image: "https://images.unsplash.com/photo-1540648639573-8c848de23f0a?q=80&w=1000",
-    date: "March 28",
-    price: "500.000 IDR",
-    category: "food",
-    rating: 4.7,
-    reviews: 124
-  },
-  {
-    id: 4,
-    title: "Pottery Workshop",
-    description: "Create your own unique ceramic piece.",
-    image: "https://images.unsplash.com/photo-1532570204726-d10d25a9ce47?q=80&w=1000",
-    date: "March 30",
-    price: "400.000 IDR",
-    category: "workshops",
-    rating: 4.9,
-    reviews: 67
-  }
-]
+const featuredEvents = EVENTS.slice(0, 2)
+const trendingEvents = EVENTS.slice(2, 5)
 
 const stats = [
   { label: "Events", value: "150+", icon: Calendar },
@@ -78,7 +25,7 @@ export default function HomeSection() {
     }
   }
   const handleLogout = () => {
-    alert('Выход выполнен')
+    alert('Logged out successfully')
     setProfileOpen(false)
   }
 
@@ -93,10 +40,7 @@ export default function HomeSection() {
           muted
           playsInline
         />
-        {/* Top black gradient overlay for hero background (без blur) */}
         <div className="absolute top-0 left-0 w-full h-[15vh] pointer-events-none z-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.0) 100%)'}} />
-        {/* Верхний blur удалён */}
-        {/* Шапка hero */}
         <div className="sticky top-0 left-0 w-full flex items-center justify-between px-4 pt-3 z-50 bg-transparent" style={{backdropFilter: 'none', WebkitBackdropFilter: 'none'}}>
           <span className="text-lg md:text-xl font-bold text-white drop-shadow-lg">Nuanu Guide</span>
           <button className="flex items-center gap-3 group focus:outline-none" onClick={() => setProfileOpen(true)}>
@@ -120,7 +64,6 @@ export default function HomeSection() {
           )}
         </div>
         <div className="pt-14" />
-        {/* Кликабельная стрелочка вниз */}
         <button type="button" onClick={handleScrollDown} className="absolute bottom-6 left-0 w-full flex justify-center z-10 focus:outline-none group bg-transparent pointer-events-auto">
           <span className="animate-bounce text-white/90 text-4xl drop-shadow-lg group-hover:scale-110 transition-transform">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-down">
@@ -129,15 +72,15 @@ export default function HomeSection() {
           </span>
         </button>
       </div>
-      <div ref={infoRef} className="relative z-10 min-h-screen pb-16 bg-gray-50 dark:bg-gray-900 overflow-x-hidden" style={{background: 'transparent'}}>
-        {/* Статистика */}
+      <div ref={infoRef} className="relative z-10 min-h-screen pb-16 bg-background overflow-x-hidden" style={{backgroundColor: 'hsl(38, 33%, 96%)'}}>
+        {/* Statistics */}
         <div className="bg-white dark:bg-gray-800 py-10 sm:py-14">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex flex-col items-center text-center mb-8 sm:mb-12">
               <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl">
-                Nuanu is a creative space where unique events happen every day.
-                Here you will find contemporary art exhibitions, music evenings, cooking masterclasses,
-                and many other interesting activities.
+                Nuanu is a 44-hectare creative oceanfront community in Bali.
+                Discover cultural events, art exhibitions, sound healing, immersive performances,
+                and many other unique experiences.
               </p>
             </div>
             <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-16">
@@ -160,25 +103,18 @@ export default function HomeSection() {
           </div>
         </div>
 
-        {/* События сегодня */}
+        {/* Upcoming Events */}
         <div className="py-16 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-serif font-bold text-gray-900 dark:text-white">
-                Today's Events
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+                Upcoming Events
               </h2>
-              <Link 
-                href="/events" 
-                className="text-black hover:text-black transition-colors flex items-center gap-2"
-              >
-                All events
-                <ArrowRight className="w-4 h-4" />
-              </Link>
             </div>
             <div className="relative">
               <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
                 {featuredEvents.map((event) => (
-                  <Link key={event.id} href={`/events/${event.id}`} className="flex-none w-[350px] snap-start">
+                  <div key={event.id} className="flex-none w-[350px] snap-start">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -208,32 +144,32 @@ export default function HomeSection() {
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                           {event.title}
                         </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4">
+                        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
                           {event.description}
                         </p>
                         <div className="flex items-center justify-between">
-                          <span className="text-black font-medium">{event.price}</span>
+                          <span className="text-black dark:text-white font-medium">{event.price}</span>
                           <span className="text-sm text-gray-500">{event.time}</span>
                         </div>
                       </div>
                     </motion.div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Популярные события */}
-        <div className="py-16 px-4 bg-gray-100 dark:bg-gray-800/50">
+        {/* More Events */}
+        <div className="py-16 px-4 bg-white/60 dark:bg-gray-800/50">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-serif font-bold text-gray-900 dark:text-white mb-8">
-              Popular Events
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+              More Experiences
             </h2>
             <div className="relative">
               <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
                 {trendingEvents.map((event) => (
-                  <Link key={event.id} href={`/events/${event.id}`} className="flex-none w-[350px] snap-start">
+                  <div key={event.id} className="flex-none w-[350px] snap-start">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -263,15 +199,16 @@ export default function HomeSection() {
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                           {event.title}
                         </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4">
+                        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
                           {event.description}
                         </p>
                         <div className="flex items-center justify-between">
-                          <span className="text-black font-medium">{event.price}</span>
+                          <span className="text-black dark:text-white font-medium">{event.price}</span>
+                          <span className="text-sm text-gray-500">{event.time}</span>
                         </div>
                       </div>
                     </motion.div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             </div>
@@ -280,4 +217,4 @@ export default function HomeSection() {
       </div>
     </div>
   )
-} 
+}

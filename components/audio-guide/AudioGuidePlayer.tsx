@@ -51,7 +51,7 @@ export function AudioGuidePlayer({
   const transcript = content?.audio?.transcript || []
   const currentTranscript = transcript[playerState.currentTranscriptIndex]
 
-  // Инициализация аудио
+  // Audio initialization
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -70,7 +70,7 @@ export function AudioGuidePlayer({
         currentTime
       }))
 
-      // Обновляем индекс текущего транскрипта
+      // Update current transcript index
       const transcriptIndex = transcript.findIndex((t, index) => {
         const nextTranscript = transcript[index + 1]
         return currentTime >= t.start_time && 
@@ -85,7 +85,7 @@ export function AudioGuidePlayer({
         }))
       }
 
-      // Обновляем индекс текущего слова
+      // Update current word index
       if (currentTranscript?.word_timings) {
         const wordIndex = currentTranscript.word_timings.findIndex((w, index) => {
           const nextWord = currentTranscript.word_timings[index + 1]

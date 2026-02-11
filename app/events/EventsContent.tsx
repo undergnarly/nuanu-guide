@@ -7,12 +7,11 @@ import { Sparkles, MapPin, Users, X } from "lucide-react"
 import { EVENTS, type EventCard } from "@/lib/event-data"
 
 const CATEGORIES = [
-  { key: "all", label: "Все" },
-  { key: "art", label: "Искусство" },
-  { key: "music", label: "Музыка" },
-  { key: "food", label: "Еда" },
-  { key: "workshops", label: "Мастер-классы" },
-  { key: "kids", label: "Детям" },
+  { key: "all", label: "All" },
+  { key: "cultural", label: "Cultural" },
+  { key: "art", label: "Art" },
+  { key: "music", label: "Music" },
+  { key: "wellness", label: "Wellness" },
 ]
 
 export default function EventsContent() {
@@ -24,9 +23,9 @@ export default function EventsContent() {
     : EVENTS.filter(e => e.category === activeCategory)
 
   return (
-    <div className="min-h-screen pb-24 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen pb-24 bg-background">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
         <div className="px-4 pt-6 pb-3">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Events</h1>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
@@ -147,7 +146,7 @@ export default function EventsContent() {
                 {selectedEvent.capacity && (
                   <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-4">
                     <Users className="w-4 h-4" />
-                    {selectedEvent.registered || 0} / {selectedEvent.capacity} зарегистрировано
+                    {selectedEvent.registered || 0} / {selectedEvent.capacity} registered
                   </div>
                 )}
                 <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-line mb-5">
@@ -155,9 +154,20 @@ export default function EventsContent() {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-lg font-bold text-gray-900 dark:text-white">{selectedEvent.price}</span>
-                  <button className="px-6 py-2.5 bg-black text-white rounded-full font-medium hover:bg-neutral-800 transition-colors">
-                    Записаться
-                  </button>
+                  {selectedEvent.ticketUrl ? (
+                    <a
+                      href={selectedEvent.ticketUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-6 py-2.5 bg-black text-white rounded-full font-medium hover:bg-neutral-800 transition-colors inline-block"
+                    >
+                      Get Tickets
+                    </a>
+                  ) : (
+                    <span className="px-6 py-2.5 bg-gray-200 text-gray-600 rounded-full font-medium">
+                      Included
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.div>

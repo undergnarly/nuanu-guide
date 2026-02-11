@@ -33,7 +33,7 @@ export default function AudioGuidePage() {
   const [largeFonts, setLargeFonts] = useState(false)
 
   useEffect(() => {
-    // Получаем язык из URL параметров или используем браузерный язык
+    // Get language from URL params or use browser language
     const langFromUrl = searchParams.get('lang')
     const browserLang = navigator.language.split('-')[0]
     
@@ -43,7 +43,7 @@ export default function AudioGuidePage() {
       setCurrentLanguage(browserLang)
     }
 
-    // Загружаем объект аудиогида
+    // Load audio guide object
     const slug = params.slug as string
     const foundObject = AUDIO_GUIDE_OBJECTS.find(obj => obj.slug === slug)
     
@@ -51,14 +51,14 @@ export default function AudioGuidePage() {
       setAudioGuideObject(foundObject)
       setIsLoading(false)
     } else {
-      // Если объект не найден, перенаправляем на главную
+      // If object not found, redirect to home
       router.push('/guides')
     }
   }, [params.slug, searchParams, router])
 
   const handleLanguageChange = (langCode: string) => {
     setCurrentLanguage(langCode)
-    // Обновляем URL с новым языком
+    // Update URL with new language
     const newUrl = new URL(window.location.href)
     newUrl.searchParams.set('lang', langCode)
     window.history.replaceState({}, '', newUrl.toString())
@@ -76,7 +76,7 @@ export default function AudioGuidePage() {
         console.log('Error sharing:', err)
       }
     } else {
-      // Fallback для браузеров без Web Share API
+      // Fallback for browsers without Web Share API
       navigator.clipboard.writeText(window.location.href)
       alert('Link copied to clipboard!')
     }

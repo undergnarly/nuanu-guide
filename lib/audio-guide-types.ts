@@ -1,4 +1,4 @@
-// Типы для системы аудиогида
+// Types for the audio guide system
 export interface AudioGuideObject {
   id: string
   slug: string
@@ -18,7 +18,7 @@ export interface AudioGuideObject {
     [languageCode: string]: AudioGuideContent
   }
   category: 'art' | 'history' | 'architecture' | 'nature' | 'culture'
-  duration: number // в секундах
+  duration: number // in seconds
   featured: boolean
   accessibility: {
     wheelchair_accessible: boolean
@@ -47,8 +47,8 @@ export interface AudioGuideContent {
 }
 
 export interface AudioTranscript {
-  start_time: number // время начала в секундах
-  end_time: number // время окончания в секундах
+  start_time: number // start time in seconds
+  end_time: number // end time in seconds
   text: string
   word_timings?: WordTiming[]
 }

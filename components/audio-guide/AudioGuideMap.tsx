@@ -27,7 +27,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
   const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null)
   const [distance, setDistance] = useState<number | null>(null)
 
-  // Получаем местоположение пользователя
+  // Get user location
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -38,7 +38,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
           }
           setUserLocation(userPos)
           
-          // Вычисляем расстояние
+          // Calculate distance
           const dist = calculateDistance(
             userPos.lat, 
             userPos.lng, 
@@ -55,9 +55,9 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
     }
   }, [coordinates])
 
-  // Функция для вычисления расстояния между двумя точками
+  // Function to calculate distance between two points
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    const R = 6371 // Радиус Земли в км
+    const R = 6371 // Earth radius in km
     const dLat = (lat2 - lat1) * Math.PI / 180
     const dLon = (lon2 - lon1) * Math.PI / 180
     const a = 

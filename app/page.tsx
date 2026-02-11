@@ -45,7 +45,7 @@ function AppContent() {
     window.history.pushState({}, '', '/')
   }
 
-  // Если открыт аудиогид — показываем его поверх всего
+  // If an audio guide is open, show it on top of everything
   if (audioGuideSlug) {
     const audioGuideObject = AUDIO_GUIDE_OBJECTS.find(obj => obj.slug === audioGuideSlug)
 
