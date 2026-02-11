@@ -237,12 +237,12 @@ Is opened every day! Welcome to Pacha Alpaca`,
     id: '5',
     slug: 'sol-dance-studio',
     coordinates: { lat: -8.3405, lng: 115.0942 },
-    image: 'https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?q=80&w=600',
+    image: 'https://img.youtube.com/vi/KN9d1sx8nKo/maxresdefault.jpg',
     card_color: '#9b6e34',
     audio_url: '/audio/guides/sol.mp3',
     video: {
-      youtube_id: 'your_youtube_id_here',
-      thumbnail: 'https://img.youtube.com/vi/your_youtube_id_here/maxresdefault.jpg'
+      youtube_id: 'KN9d1sx8nKo',
+      thumbnail: 'https://img.youtube.com/vi/KN9d1sx8nKo/maxresdefault.jpg'
     },
     category: 'culture',
     duration: 300,

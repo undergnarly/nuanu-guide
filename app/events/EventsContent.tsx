@@ -66,6 +66,7 @@ export default function EventsContent() {
                   alt={event.title}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3">
@@ -119,6 +120,7 @@ export default function EventsContent() {
                   alt={selectedEvent.title}
                   fill
                   className="object-cover rounded-t-3xl"
+                  sizes="(max-width: 768px) 100vw, 500px"
                 />
                 <button
                   onClick={() => setSelectedEvent(null)}

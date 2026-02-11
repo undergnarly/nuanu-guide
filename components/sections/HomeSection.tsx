@@ -128,6 +128,7 @@ export default function HomeSection() {
                           alt={event.title}
                           fill
                           className="object-cover"
+                          sizes="350px"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       </div>
@@ -183,6 +184,7 @@ export default function HomeSection() {
                           alt={event.title}
                           fill
                           className="object-cover"
+                          sizes="350px"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       </div>
