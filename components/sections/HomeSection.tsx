@@ -136,7 +136,7 @@ export default function HomeSection() {
         />
         <div className="absolute top-0 left-0 w-full h-[15vh] pointer-events-none z-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.0) 100%)'}} />
         <div className="absolute bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0" style={{background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.0) 100%)'}} />
-        <div className="absolute bottom-20 left-0 right-0 px-5 z-10 pointer-events-none">
+        <div className="absolute bottom-20 left-0 right-0 px-5 z-10 pointer-events-none text-center flex flex-col items-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-lg leading-tight">Welcome to Nuanu!</h2>
           <p className="text-sm sm:text-base text-white/80 mt-2 drop-shadow-md max-w-sm">Explore Bali&apos;s creative oceanfront city with us</p>
         </div>
@@ -204,15 +204,14 @@ export default function HomeSection() {
                       <div className="absolute bottom-0 left-0 right-0 p-4">
                         <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
                         <p className="text-sm text-white/70 line-clamp-2 mb-2">{event.description}</p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 text-sm text-white/80">
-                            <span>{event.date} &middot; {event.time}</span>
-                            <div className="flex items-center gap-1">
-                              <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-                              <span>{event.rating}</span>
-                            </div>
+                        <div className="flex items-center justify-between text-sm text-white/80">
+                          <span>{event.date}</span>
+                          <span>{event.time}</span>
+                          <div className="flex items-center gap-1">
+                            <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                            <span>{event.rating}</span>
                           </div>
-                          <span className="text-sm font-semibold text-white">{event.price}</span>
+                          <span className="font-semibold text-white">{event.price}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -248,15 +247,14 @@ export default function HomeSection() {
                       <div className="absolute bottom-0 left-0 right-0 p-4">
                         <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
                         <p className="text-sm text-white/70 line-clamp-2 mb-2">{event.description}</p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 text-sm text-white/80">
-                            <span>{event.date} &middot; {event.time}</span>
-                            <div className="flex items-center gap-1">
-                              <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-                              <span>{event.rating}</span>
-                            </div>
+                        <div className="flex items-center justify-between text-sm text-white/80">
+                          <span>{event.date}</span>
+                          <span>{event.time}</span>
+                          <div className="flex items-center gap-1">
+                            <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                            <span>{event.rating}</span>
                           </div>
-                          <span className="text-sm font-semibold text-white">{event.price}</span>
+                          <span className="font-semibold text-white">{event.price}</span>
                         </div>
                       </div>
                     </motion.div>

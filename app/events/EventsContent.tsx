@@ -213,15 +213,14 @@ export default function EventsContent() {
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
                 <p className="text-sm text-white/70 line-clamp-2 mb-2">{event.description}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-sm text-white/80">
-                    <span>{event.date} &middot; {event.time}</span>
-                    <div className="flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-                      <span>{event.rating}</span>
-                    </div>
+                <div className="flex items-center justify-between text-sm text-white/80">
+                  <span>{event.date}</span>
+                  <span>{event.time}</span>
+                  <div className="flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                    <span>{event.rating}</span>
                   </div>
-                  <span className="text-sm font-semibold text-white">{event.price}</span>
+                  <span className="font-semibold text-white">{event.price}</span>
                 </div>
               </div>
             </motion.div>
