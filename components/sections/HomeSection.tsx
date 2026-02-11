@@ -135,6 +135,11 @@ export default function HomeSection() {
           playsInline
         />
         <div className="absolute top-0 left-0 w-full h-[15vh] pointer-events-none z-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.0) 100%)'}} />
+        <div className="absolute bottom-0 left-0 w-full h-[35vh] pointer-events-none z-0" style={{background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.0) 100%)'}} />
+        <div className="absolute bottom-20 left-0 right-0 px-5 z-10 pointer-events-none">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-lg leading-tight">Welcome to Nuanu!</h2>
+          <p className="text-sm sm:text-base text-white/80 mt-2 drop-shadow-md max-w-sm">Explore Bali&apos;s creative oceanfront city with us</p>
+        </div>
         <button type="button" onClick={handleScrollDown} className="absolute bottom-6 left-0 w-full flex justify-center z-10 focus:outline-none group bg-transparent pointer-events-auto">
           <span className="animate-bounce text-white/90 text-4xl drop-shadow-lg group-hover:scale-110 transition-transform">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-down">

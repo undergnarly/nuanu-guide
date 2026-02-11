@@ -54,10 +54,10 @@ type ChatContentProps = {
 
 export default function ChatContent({ onInputFocus }: ChatContentProps) {
   const [activeTab, setActiveTab] = useState<"ai" | "community">("ai")
-  const [inputFocused, setInputFocused] = useState(false)
+  const [keyboardOpen, setKeyboardOpen] = useState(false)
   const [input, setInput] = useState("")
-  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const initialHeightRef = useRef(0)
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 0,
@@ -73,15 +73,28 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, isLoading])
 
+  // Detect keyboard via visualViewport (reliable on mobile)
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+
+    initialHeightRef.current = vv.height
+
+    const onResize = () => {
+      // keyboard is open when viewport shrinks by >25%
+      const isOpen = vv.height < initialHeightRef.current * 0.75
+      setKeyboardOpen(isOpen)
+      onInputFocus?.(isOpen)
+    }
+
+    vv.addEventListener("resize", onResize)
+    return () => vv.removeEventListener("resize", onResize)
+  }, [onInputFocus])
+
   const handleSend = async () => {
     const text = input.trim()
     if (!text || isLoading) return
 
-    // Cancel pending blur so nav stays hidden while typing
-    if (blurTimeoutRef.current) {
-      clearTimeout(blurTimeoutRef.current)
-      blurTimeoutRef.current = null
-    }
     inputRef.current?.focus()
 
     const userMessage: ChatMessage = {
@@ -133,23 +146,6 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
     }
   }
 
-  const handleInputFocus = () => {
-    if (blurTimeoutRef.current) {
-      clearTimeout(blurTimeoutRef.current)
-      blurTimeoutRef.current = null
-    }
-    setInputFocused(true)
-    onInputFocus?.(true)
-  }
-
-  const handleInputBlur = () => {
-    blurTimeoutRef.current = setTimeout(() => {
-      setInputFocused(false)
-      onInputFocus?.(false)
-      blurTimeoutRef.current = null
-    }, 150)
-  }
-
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault()
@@ -188,7 +184,7 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
       </div>
 
       {/* Chat */}
-      <div className={`flex-1 overflow-y-auto p-4 space-y-4 ${inputFocused ? "pb-20" : "pb-40"}`}>
+      <div className={`flex-1 overflow-y-auto p-4 space-y-4 ${keyboardOpen ? "pb-20" : "pb-40"}`}>
         <AnimatePresence mode="wait">
           {activeTab === "ai" ? (
             <motion.div
@@ -306,7 +302,7 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
       </div>
 
       {/* Input */}
-      <div className={`fixed left-0 right-0 z-50 bg-background border-t border-gray-200 dark:border-gray-800 p-4 transition-[bottom] duration-200 ${inputFocused ? "bottom-0" : "bottom-24"}`}>
+      <div className={`fixed left-0 right-0 z-50 bg-background border-t border-gray-200 dark:border-gray-800 p-4 transition-[bottom] duration-200 ${keyboardOpen ? "bottom-0" : "bottom-24"}`}>
         <div className="max-w-4xl mx-auto flex gap-2">
           <input
             ref={inputRef}
@@ -314,8 +310,6 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleInputKeyDown}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
             placeholder={
               activeTab === "ai"
                 ? "Ask about Nuanu..."
