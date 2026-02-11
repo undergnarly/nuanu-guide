@@ -48,8 +48,13 @@ type ChatMessage = {
   time: string
 }
 
-export default function ChatContent() {
+type ChatContentProps = {
+  onInputFocus?: (focused: boolean) => void
+}
+
+export default function ChatContent({ onInputFocus }: ChatContentProps) {
   const [activeTab, setActiveTab] = useState<"ai" | "community">("ai")
+  const [inputFocused, setInputFocused] = useState(false)
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -119,6 +124,16 @@ export default function ChatContent() {
     }
   }
 
+  const handleInputFocus = () => {
+    setInputFocused(true)
+    onInputFocus?.(true)
+  }
+
+  const handleInputBlur = () => {
+    setInputFocused(false)
+    onInputFocus?.(false)
+  }
+
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault()
@@ -127,7 +142,7 @@ export default function ChatContent() {
   }
 
   return (
-    <div className="min-h-screen pb-16 bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
         <div className="flex justify-center gap-2 p-4">
@@ -157,7 +172,7 @@ export default function ChatContent() {
       </div>
 
       {/* Chat */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className={`flex-1 overflow-y-auto p-4 space-y-4 ${inputFocused ? "pb-20" : "pb-40"}`}>
         <AnimatePresence mode="wait">
           {activeTab === "ai" ? (
             <motion.div
@@ -275,13 +290,15 @@ export default function ChatContent() {
       </div>
 
       {/* Input */}
-      <div className="fixed left-0 right-0 bottom-24 z-50 bg-background border-t border-gray-200 dark:border-gray-800 p-4">
+      <div className={`fixed left-0 right-0 z-50 bg-background border-t border-gray-200 dark:border-gray-800 p-4 transition-[bottom] duration-200 ${inputFocused ? "bottom-0" : "bottom-24"}`}>
         <div className="max-w-4xl mx-auto flex gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleInputKeyDown}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
             placeholder={
               activeTab === "ai"
                 ? "Ask about Nuanu..."

@@ -29,26 +29,9 @@ export default function MapContent() {
   }
 
   return (
-    <div className="min-h-screen h-screen w-full flex flex-col flex-1 overflow-hidden">
-      {/* Tab selector */}
-      <div className="flex justify-center pt-6 pb-2 bg-transparent">
-        <div className="inline-flex bg-gray-100 dark:bg-gray-800 rounded-full p-1 shadow-sm">
-          {TABS.map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key as 'map' | 'tour')}
-              className={`px-6 py-2 rounded-full font-medium transition-all text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
-                activeTab === tab.key
-                  ? "bg-black text-white shadow-sm"
-                  : "bg-transparent text-gray-700 dark:text-gray-200"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="flex-1 relative">
+    <div className="min-h-screen h-screen w-full relative overflow-hidden">
+      {/* Map / Tour content */}
+      <div className="absolute inset-0">
         {activeTab === 'map' ? (
           <>
             <iframe
@@ -119,6 +102,24 @@ export default function MapContent() {
             title="3D Tour"
           />
         )}
+      </div>
+      {/* Floating tab selector */}
+      <div className="absolute top-6 left-0 right-0 flex justify-center z-10 pointer-events-none">
+        <div className="pointer-events-auto inline-flex bg-black/20 backdrop-blur-md rounded-full p-1 shadow-lg">
+          {TABS.map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key as 'map' | 'tour')}
+              className={`px-6 py-2 rounded-full font-medium transition-all text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 ${
+                activeTab === tab.key
+                  ? "bg-black text-white shadow-sm"
+                  : "bg-transparent text-white/80 hover:text-white"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

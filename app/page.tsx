@@ -15,6 +15,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState("home")
   const [audioGuideSlug, setAudioGuideSlug] = useState<string | null>(null)
   const [audioGuideLang, setAudioGuideLang] = useState<string>("en")
+  const [chatInputFocused, setChatInputFocused] = useState(false)
 
   useEffect(() => {
     const path = window.location.pathname
@@ -96,12 +97,12 @@ function AppContent() {
         >
           {activeTab === "home" && <HomeSection />}
           {activeTab === "map" && <MapContent />}
-          {activeTab === "chat" && <ChatContent />}
+          {activeTab === "chat" && <ChatContent onInputFocus={setChatInputFocused} />}
           {activeTab === "events" && <EventsContent />}
           {activeTab === "guides" && <ExploreContent onOpenGuide={handleOpenAudioGuide} />}
         </motion.div>
       </AnimatePresence>
-      <BottomNavigation active={activeTab} onNavigate={handleNavigate} />
+      {!chatInputFocused && <BottomNavigation active={activeTab} onNavigate={handleNavigate} />}
     </div>
   )
 }

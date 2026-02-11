@@ -1,10 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Calendar, Sparkles, Users, User } from "lucide-react"
+import { Calendar, Sparkles, Users, User, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
 import ThemeToggle from "@/components/theme-toggle"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import { EVENTS } from "@/lib/event-data"
 
 const featuredEvents = EVENTS.slice(0, 2)
@@ -16,9 +16,67 @@ const stats = [
   { label: "Rating", value: "4.9", icon: Sparkles },
 ]
 
+function useScrollIndicators(ref: React.RefObject<HTMLDivElement | null>) {
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
+
+  const update = useCallback(() => {
+    const el = ref.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 4)
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+  }, [ref])
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    update()
+    el.addEventListener("scroll", update, { passive: true })
+    window.addEventListener("resize", update)
+    return () => {
+      el.removeEventListener("scroll", update)
+      window.removeEventListener("resize", update)
+    }
+  }, [ref, update])
+
+  const scrollBy = (dir: number) => {
+    ref.current?.scrollBy({ left: dir * 300, behavior: "smooth" })
+  }
+
+  return { canScrollLeft, canScrollRight, scrollBy }
+}
+
+function ScrollArrows({ canLeft, canRight, onScroll }: { canLeft: boolean; canRight: boolean; onScroll: (dir: number) => void }) {
+  if (!canLeft && !canRight) return null
+  return (
+    <>
+      {canLeft && (
+        <button
+          onClick={() => onScroll(-1)}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white shadow-md hover:bg-black/70 transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+      )}
+      {canRight && (
+        <button
+          onClick={() => onScroll(1)}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white shadow-md hover:bg-black/70 transition-colors"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      )}
+    </>
+  )
+}
+
 export default function HomeSection() {
   const infoRef = useRef<HTMLDivElement>(null)
   const [profileOpen, setProfileOpen] = useState(false)
+  const upcomingRef = useRef<HTMLDivElement>(null)
+  const moreRef = useRef<HTMLDivElement>(null)
+  const upcoming = useScrollIndicators(upcomingRef)
+  const more = useScrollIndicators(moreRef)
   const handleScrollDown = () => {
     if (infoRef.current) {
       infoRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -113,7 +171,8 @@ export default function HomeSection() {
               </h2>
             </div>
             <div className="relative">
-              <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
+              <ScrollArrows canLeft={upcoming.canScrollLeft} canRight={upcoming.canScrollRight} onScroll={upcoming.scrollBy} />
+              <div ref={upcomingRef} className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
                 {featuredEvents.map((event) => (
                   <div key={event.id} className="flex-none w-[350px] snap-start">
                     <motion.div
@@ -169,7 +228,8 @@ export default function HomeSection() {
               More Experiences
             </h2>
             <div className="relative">
-              <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
+              <ScrollArrows canLeft={more.canScrollLeft} canRight={more.canScrollRight} onScroll={more.scrollBy} />
+              <div ref={moreRef} className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
                 {trendingEvents.map((event) => (
                   <div key={event.id} className="flex-none w-[350px] snap-start">
                     <motion.div
