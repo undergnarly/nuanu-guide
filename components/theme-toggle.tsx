@@ -19,7 +19,7 @@ export default function ThemeToggle() {
       <button
         onClick={() => setTheme("dark")}
         className={`relative inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
-          theme === "dark" ? "text-purple-500" : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+          theme === "dark" ? "text-black dark:text-white" : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         }`}
       >
         <Moon className="h-5 w-5" />

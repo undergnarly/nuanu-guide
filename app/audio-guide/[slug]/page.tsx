@@ -84,9 +84,9 @@ export default function AudioGuidePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-pink-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
           <p className="text-gray-600">Loading audio guide...</p>
         </div>
       </div>
@@ -95,12 +95,12 @@ export default function AudioGuidePage() {
 
   if (!audioGuideObject) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-pink-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-100">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">Audio Guide Not Found</h1>
           <p className="text-gray-600 mb-6">The requested audio guide could not be found.</p>
           <Link href="/guides">
-            <Button className="bg-purple-600 hover:bg-purple-700">
+            <Button className="bg-black hover:bg-neutral-800">
               Back to Guides
             </Button>
           </Link>
@@ -111,7 +111,7 @@ export default function AudioGuidePage() {
 
   const content = audioGuideObject.content[currentLanguage]
   const categoryColors = {
-    art: 'bg-purple-100 text-purple-800',
+    art: 'bg-neutral-100 text-neutral-800',
     history: 'bg-blue-100 text-blue-800',
     architecture: 'bg-green-100 text-green-800',
     nature: 'bg-emerald-100 text-emerald-800',
@@ -119,7 +119,7 @@ export default function AudioGuidePage() {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 ${highContrast ? 'contrast-125' : ''} ${largeFonts ? 'text-lg' : ''}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 ${highContrast ? 'contrast-125' : ''} ${largeFonts ? 'text-lg' : ''}`}>
       {/* Header */}
       <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
@@ -295,7 +295,7 @@ export default function AudioGuidePage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {content?.highlights?.map((highlight, index) => (
                         <div key={index} className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full flex-shrink-0" />
+                          <div className="w-2 h-2 bg-black rounded-full flex-shrink-0" />
                           <span className="text-sm">{highlight}</span>
                         </div>
                       ))}
@@ -310,7 +310,7 @@ export default function AudioGuidePage() {
                     <div className="space-y-3">
                       {content?.fun_facts?.map((fact, index) => (
                         <div key={index} className="flex items-start space-x-3">
-                          <div className="w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+                          <div className="w-6 h-6 bg-neutral-100 text-black dark:text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
                             {index + 1}
                           </div>
                           <span className="text-sm">{fact}</span>

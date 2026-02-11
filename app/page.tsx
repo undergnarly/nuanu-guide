@@ -1,25 +1,29 @@
 "use client"
 
 import { useState, useEffect, Suspense } from "react"
-import GuidesSection from "@/components/sections/GuidesSection"
+import { AnimatePresence, motion } from "framer-motion"
+import HomeSection from "@/components/sections/HomeSection"
 import AudioGuideSection from "@/components/sections/AudioGuideSection"
+import BottomNavigation from "@/components/bottom-navigation"
+import MapContent from "@/app/map/MapContent"
+import ChatContent from "@/app/chat/ChatContent"
+import ExploreContent from "@/app/explore/ExploreContent"
+import EventsContent from "@/app/events/EventsContent"
 import { AUDIO_GUIDE_OBJECTS } from "@/lib/audio-guide-data"
 
 function AppContent() {
+  const [activeTab, setActiveTab] = useState("home")
   const [audioGuideSlug, setAudioGuideSlug] = useState<string | null>(null)
   const [audioGuideLang, setAudioGuideLang] = useState<string>("en")
 
   useEffect(() => {
     const path = window.location.pathname
-    const slug = path.substring(1) // Убираем / в начале
+    const slug = path.substring(1)
 
     if (slug) {
       const guideExists = AUDIO_GUIDE_OBJECTS.some(g => g.slug === slug)
       if (guideExists) {
         setAudioGuideSlug(slug)
-        // Можно также установить язык, если он передается, например, в query-параметрах
-        // const lang = new URLSearchParams(window.location.search).get('lang');
-        // if (lang) setAudioGuideLang(lang);
       }
     }
   }, [])
@@ -35,7 +39,13 @@ function AppContent() {
     window.history.pushState({}, '', '/')
   }
 
-  // Если открыт аудиогид, показываем его
+  const handleNavigate = (key: string) => {
+    setActiveTab(key)
+    setAudioGuideSlug(null)
+    window.history.pushState({}, '', '/')
+  }
+
+  // Если открыт аудиогид — показываем его поверх всего
   if (audioGuideSlug) {
     const audioGuideObject = AUDIO_GUIDE_OBJECTS.find(obj => obj.slug === audioGuideSlug)
 
@@ -69,7 +79,22 @@ function AppContent() {
 
   return (
     <div className="min-h-screen">
-      <GuidesSection onOpenAudioGuide={handleOpenAudioGuide} />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {activeTab === "home" && <HomeSection />}
+          {activeTab === "map" && <MapContent />}
+          {activeTab === "chat" && <ChatContent />}
+          {activeTab === "events" && <EventsContent />}
+          {activeTab === "guides" && <ExploreContent />}
+        </motion.div>
+      </AnimatePresence>
+      <BottomNavigation active={activeTab} onNavigate={handleNavigate} />
     </div>
   )
 }

@@ -211,7 +211,7 @@ export function AudioGuidePlayer({
               key={index}
               className={`inline-block mx-1 px-1 py-0.5 rounded transition-all duration-200 ${
                 index === playerState.currentWordIndex
-                  ? 'bg-purple-200 text-purple-800 font-semibold scale-105'
+                  ? 'bg-neutral-200 text-neutral-800 font-semibold scale-105'
                   : index < playerState.currentWordIndex
                   ? 'text-gray-600'
                   : 'text-gray-800'
@@ -226,7 +226,7 @@ export function AudioGuidePlayer({
 
     return (
       <div className="text-center">
-        <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded">
+        <span className="bg-neutral-100 text-neutral-800 px-2 py-1 rounded">
           {currentTranscript.text}
         </span>
       </div>
@@ -319,7 +319,7 @@ export function AudioGuidePlayer({
                         size="icon"
                         onClick={togglePlayPause}
                         disabled={isLoading}
-                        className="h-16 w-16 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
+                        className="h-16 w-16 rounded-full bg-black hover:bg-neutral-800 text-white shadow-lg"
                         aria-label={playerState.isPlaying ? 'Pause' : 'Play'}
                       >
                         {isLoading ? (
@@ -474,7 +474,7 @@ export function AudioGuidePlayer({
                     size="icon"
                     onClick={togglePlayPause}
                     disabled={isLoading}
-                    className="h-10 w-10 rounded-full bg-purple-600 hover:bg-purple-700 text-white"
+                    className="h-10 w-10 rounded-full bg-black hover:bg-neutral-800 text-white"
                     aria-label={playerState.isPlaying ? 'Pause' : 'Play'}
                   >
                     {isLoading ? (

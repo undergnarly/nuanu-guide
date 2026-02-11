@@ -99,7 +99,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
   }
 
   const categoryColors = {
-    art: 'bg-purple-100 text-purple-800',
+    art: 'bg-neutral-100 text-neutral-800',
     history: 'bg-blue-100 text-blue-800',
     architecture: 'bg-green-100 text-green-800',
     nature: 'bg-emerald-100 text-emerald-800',
@@ -170,7 +170,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
             {!mapLoaded && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-2"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto mb-2"></div>
                   <p className="text-sm text-gray-600">Loading map...</p>
                 </div>
               </div>
@@ -247,7 +247,7 @@ export function AudioGuideMap({ coordinates, title, category }: AudioGuideMapPro
       <Card className="bg-white/80 backdrop-blur-sm border-none shadow-lg">
         <CardHeader className="pb-3">
           <div className="flex items-center space-x-2">
-            <Compass className="h-5 w-5 text-purple-600" />
+            <Compass className="h-5 w-5 text-black dark:text-white" />
             <CardTitle className="text-lg">Nearby Audio Guides</CardTitle>
           </div>
         </CardHeader>

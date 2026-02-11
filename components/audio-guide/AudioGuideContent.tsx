@@ -65,7 +65,7 @@ export function AudioGuideContent({
         <CardContent className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <BookOpen className="h-5 w-5 text-purple-600" />
+              <BookOpen className="h-5 w-5 text-black dark:text-white" />
               <h3 className="font-semibold text-lg">Description</h3>
             </div>
             <Button
@@ -93,7 +93,7 @@ export function AudioGuideContent({
         <CardContent className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <BookOpen className="h-5 w-5 text-purple-600" />
+              <BookOpen className="h-5 w-5 text-black dark:text-white" />
               <h3 className="font-semibold text-lg">Full Story</h3>
             </div>
             <div className="flex items-center space-x-2">
@@ -146,7 +146,7 @@ export function AudioGuideContent({
             <Button
               variant="ghost"
               onClick={() => setIsFullTextExpanded(true)}
-              className="mt-4 w-full text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+              className="mt-4 w-full text-black dark:text-white hover:text-neutral-800 hover:bg-neutral-50"
             >
               Read More
               <ChevronDown className="h-4 w-4 ml-1" />
@@ -189,9 +189,9 @@ export function AudioGuideContent({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="flex items-center space-x-3 p-3 rounded-lg bg-purple-50 hover:bg-purple-100 transition-colors"
+                    className="flex items-center space-x-3 p-3 rounded-lg bg-neutral-50 hover:bg-neutral-100 transition-colors"
                   >
-                    <div className="w-2 h-2 bg-purple-500 rounded-full flex-shrink-0" />
+                    <div className="w-2 h-2 bg-black rounded-full flex-shrink-0" />
                     <span className={`${textSizeClasses.body} text-gray-700`}>
                       {highlight}
                     </span>

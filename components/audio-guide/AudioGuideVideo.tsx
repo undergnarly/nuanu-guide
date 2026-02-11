@@ -318,8 +318,8 @@ export function AudioGuideVideo({ video, title }: AudioGuideVideoProps) {
               </div>
             </div>
             
-            <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-              <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+            <div className="flex items-center space-x-3 p-3 bg-neutral-50 rounded-lg">
+              <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
                 <Settings className="h-4 w-4 text-white" />
               </div>
               <div>

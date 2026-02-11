@@ -169,7 +169,7 @@ export default function HomeSection() {
               </h2>
               <Link 
                 href="/events" 
-                className="text-black hover:text-purple-600 transition-colors flex items-center gap-2"
+                className="text-black hover:text-black transition-colors flex items-center gap-2"
               >
                 All events
                 <ArrowRight className="w-4 h-4" />

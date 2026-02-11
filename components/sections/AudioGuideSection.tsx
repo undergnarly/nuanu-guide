@@ -31,7 +31,7 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
   const [showQrModal, setShowQrModal] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
   const categoryColors = {
-    art: 'bg-purple-100 text-purple-800',
+    art: 'bg-neutral-100 text-neutral-800',
     history: 'bg-blue-100 text-blue-800',
     architecture: 'bg-green-100 text-green-800',
     nature: 'bg-emerald-100 text-emerald-800',
@@ -355,7 +355,7 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
               <ul className="space-y-2 sm:space-y-3">
                 {content.highlights.map((highlight, index) => (
                   <li key={index} className="flex items-start space-x-2 sm:space-x-3">
-                    <span className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mt-1.5 sm:mt-2"></span>
+                    <span className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-black to-neutral-600 rounded-full mt-1.5 sm:mt-2"></span>
                     <span className="text-gray-700 text-sm sm:text-base">{highlight}</span>
                   </li>
                 ))}
@@ -387,7 +387,7 @@ export default function AudioGuideSection({ audioGuide, language, onClose }: Aud
               <CardContent className="p-3 sm:p-4 lg:p-6 pt-0">
                 <div className="space-y-4 sm:space-y-6">
                   {audioGuide.pricing.services.map((service, index) => (
-                    <div key={service.id} className="border-l-4 border-gradient-to-b from-purple-600 to-pink-600 pl-3 sm:pl-4">
+                    <div key={service.id} className="border-l-4 border-gradient-to-b from-black to-neutral-600 pl-3 sm:pl-4">
                       <div className="flex flex-col sm:flex-row items-start justify-between space-y-2 sm:space-y-0">
                         <div className="flex-1">
                           <h3 className="font-semibold text-base sm:text-lg text-gray-900 mb-1">
