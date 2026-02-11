@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Sparkles, MapPin, Users, ArrowLeft, Calendar, Clock } from "lucide-react"
@@ -131,12 +131,37 @@ export default function EventsContent() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [selectedEvent, setSelectedEvent] = useState<EventCard | null>(null)
 
+  const closeEvent = useCallback(() => {
+    setSelectedEvent(null)
+  }, [])
+
+  const openEvent = (event: EventCard) => {
+    setSelectedEvent(event)
+    window.history.pushState({ eventOpen: true }, "")
+  }
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (selectedEvent) {
+        setSelectedEvent(null)
+      }
+    }
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
+  }, [selectedEvent])
+
+  const handleClose = () => {
+    if (selectedEvent) {
+      window.history.back()
+    }
+  }
+
   const filteredEvents = activeCategory === "all"
     ? EVENTS
     : EVENTS.filter(e => e.category === activeCategory)
 
   if (selectedEvent) {
-    return <EventDetail event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+    return <EventDetail event={selectedEvent} onClose={handleClose} />
   }
 
   return (
@@ -174,7 +199,7 @@ export default function EventsContent() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              onClick={() => setSelectedEvent(event)}
+              onClick={() => openEvent(event)}
               className="group relative rounded-2xl overflow-hidden bg-white shadow-md cursor-pointer active:scale-[0.98] transition-transform"
             >
               <div className="aspect-[16/9] relative">

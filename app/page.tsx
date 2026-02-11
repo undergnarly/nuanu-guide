@@ -39,19 +39,27 @@ function AppContent() {
   const handleOpenAudioGuide = (slug: string) => {
     setAudioGuideSlug(slug)
     setAudioGuideLang('en')
-    window.history.pushState({}, '', `/${slug}`)
+    window.history.pushState({ guideOpen: true }, '', `/${slug}`)
   }
 
   const handleCloseAudioGuide = () => {
-    setActiveTab("guides")
-    setAudioGuideSlug(null)
-    window.history.replaceState({}, '', '/')
+    window.history.back()
   }
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (audioGuideSlug) {
+        setActiveTab("guides")
+        setAudioGuideSlug(null)
+      }
+    }
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
+  }, [audioGuideSlug])
 
   const handleNavigate = (key: string) => {
     setActiveTab(key)
     setAudioGuideSlug(null)
-    window.history.pushState({}, '', '/')
   }
 
   if (audioGuideSlug) {

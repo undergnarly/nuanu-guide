@@ -73,10 +73,18 @@ function ScrollArrows({ canLeft, canRight, onScroll }: { canLeft: boolean; canRi
 export default function HomeSection() {
   const infoRef = useRef<HTMLDivElement>(null)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const upcomingRef = useRef<HTMLDivElement>(null)
   const moreRef = useRef<HTMLDivElement>(null)
   const upcoming = useScrollIndicators(upcomingRef)
   const more = useScrollIndicators(moreRef)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
   const handleScrollDown = () => {
     if (infoRef.current) {
       infoRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -89,6 +97,33 @@ export default function HomeSection() {
 
   return (
     <div>
+      {/* Fixed header */}
+      <div
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 pt-3 pb-3 transition-colors duration-300"
+        style={{ background: scrolled ? 'rgba(0,0,0,0.7)' : 'transparent', backdropFilter: scrolled ? 'blur(12px)' : 'none', WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none' }}
+      >
+        <span className="text-lg md:text-xl font-bold text-white drop-shadow-lg">Nuanu Guide</span>
+        <button className="flex items-center gap-3 group focus:outline-none" onClick={() => setProfileOpen(true)}>
+          <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center border-2 border-white group-hover:ring-2 group-hover:ring-black transition-all">
+            <User className="w-5 h-5 text-gray-500" />
+          </div>
+          <span className="text-white font-medium group-hover:underline drop-shadow-lg">User Name</span>
+        </button>
+      </div>
+      {profileOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 min-w-[320px] flex flex-col items-center relative">
+            <button className="absolute top-3 right-3 text-gray-400 hover:text-black dark:hover:text-white text-2xl" onClick={() => setProfileOpen(false)}>&times;</button>
+            <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center mb-3">
+              <User className="w-5 h-5 text-gray-500" />
+            </div>
+            <div className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">User Name</div>
+            <ThemeToggle />
+            <button onClick={handleLogout} className="mt-6 w-full bg-black text-white rounded-full py-2 font-medium hover:bg-neutral-800 transition-colors">Log out</button>
+          </div>
+        </div>
+      )}
+
       <div className="relative w-full" style={{ aspectRatio: '9/14', minHeight: '70vh', maxHeight: '100vh' }}>
         <video
           src="/Nuanu.mp4"
@@ -100,29 +135,6 @@ export default function HomeSection() {
           playsInline
         />
         <div className="absolute top-0 left-0 w-full h-[15vh] pointer-events-none z-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.0) 100%)'}} />
-        <div className="sticky top-0 left-0 w-full flex items-center justify-between px-4 pt-3 z-50 bg-transparent" style={{backdropFilter: 'none', WebkitBackdropFilter: 'none'}}>
-          <span className="text-lg md:text-xl font-bold text-white drop-shadow-lg">Nuanu Guide</span>
-          <button className="flex items-center gap-3 group focus:outline-none" onClick={() => setProfileOpen(true)}>
-            <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center border-2 border-white group-hover:ring-2 group-hover:ring-black transition-all">
-              <User className="w-5 h-5 text-gray-500" />
-            </div>
-            <span className="text-white font-medium group-hover:underline">User Name</span>
-          </button>
-          {profileOpen && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 min-w-[320px] flex flex-col items-center relative">
-                <button className="absolute top-3 right-3 text-gray-400 hover:text-black dark:hover:text-white text-2xl" onClick={() => setProfileOpen(false)}>&times;</button>
-                <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center mb-3">
-                  <User className="w-5 h-5 text-gray-500" />
-                </div>
-                <div className="font-semibold text-lg mb-4 text-gray-900 dark:text-white">User Name</div>
-                <ThemeToggle />
-                <button onClick={handleLogout} className="mt-6 w-full bg-black text-white rounded-full py-2 font-medium hover:bg-neutral-800 transition-colors">Log out</button>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="pt-14" />
         <button type="button" onClick={handleScrollDown} className="absolute bottom-6 left-0 w-full flex justify-center z-10 focus:outline-none group bg-transparent pointer-events-auto">
           <span className="animate-bounce text-white/90 text-4xl drop-shadow-lg group-hover:scale-110 transition-transform">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-down">

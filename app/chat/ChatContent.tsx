@@ -309,6 +309,7 @@ export default function ChatContent({ onInputFocus }: ChatContentProps) {
           />
           <button
             className="p-3 rounded-full bg-black text-white hover:bg-neutral-800 transition-colors disabled:opacity-50"
+            onMouseDown={(e) => e.preventDefault()}
             onClick={handleSend}
             disabled={isLoading && activeTab === "ai"}
           >
