@@ -42,9 +42,9 @@ function AppContent() {
   }
 
   const handleCloseAudioGuide = () => {
-    setAudioGuideSlug(null)
     setActiveTab("guides")
-    window.history.pushState({}, '', '/')
+    setAudioGuideSlug(null)
+    window.history.replaceState({}, '', '/')
   }
 
   const handleNavigate = (key: string) => {
