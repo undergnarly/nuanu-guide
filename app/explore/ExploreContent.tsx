@@ -21,7 +21,7 @@ function GuideCard({ guide, onOpen }: { guide: AudioGuideObject; onOpen?: (slug:
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       onClick={() => onOpen?.(guide.slug)}
-      className="group relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition-transform"
+      className="group relative aspect-[4/5] rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition-transform"
     >
       <Image
         src={guide.image}
