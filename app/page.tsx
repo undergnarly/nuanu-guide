@@ -91,7 +91,7 @@ function AppContent() {
           {activeTab === "map" && <MapContent />}
           {activeTab === "chat" && <ChatContent />}
           {activeTab === "events" && <EventsContent />}
-          {activeTab === "guides" && <ExploreContent />}
+          {activeTab === "guides" && <ExploreContent onOpenGuide={(slug) => handleOpenAudioGuide(slug, 'en')} />}
         </motion.div>
       </AnimatePresence>
       <BottomNavigation active={activeTab} onNavigate={handleNavigate} />

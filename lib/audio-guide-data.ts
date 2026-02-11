@@ -26,7 +26,7 @@ export const AUDIO_GUIDE_OBJECTS: AudioGuideObject[] = [
     id: '1',
     slug: 'jungle-kids-center',
     coordinates: { lat: -8.3410, lng: 115.0918 },
-    image: '/images/guides/jungle_kids.jpg',
+    image: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=800',
     card_color: '#402822',
     audio_url: '/audio/guides/jungle-kids.mp3',
     video: {
@@ -81,7 +81,7 @@ export const AUDIO_GUIDE_OBJECTS: AudioGuideObject[] = [
     id: '2',
     slug: 'art-village',
     coordinates: { lat: -8.3425, lng: 115.0930 },
-    image: '/images/guides/art_village.jpg',
+    image: '/images/guides/art_village.webp',
     card_color: '#233f24',
     audio_url: '/audio/guides/art-village.mp3',
     video: {
@@ -127,7 +127,7 @@ export const AUDIO_GUIDE_OBJECTS: AudioGuideObject[] = [
     id: '3',
     slug: 'horizon-glassworks',
     coordinates: { lat: -8.3431, lng: 115.0935 },
-    image: '/images/guides/horizon.jpg',
+    image: '/images/guides/horizon.webp',
     card_color: '#8a3400',
     audio_url: '/audio/guides/horizon-glassworks.mp3',
     video: {
@@ -177,7 +177,7 @@ Come by the studio today and expand your knowledge on the world of glass art!`,
     id: '4',
     slug: 'pacha-alpaca',
     coordinates: { lat: -8.3418, lng: 115.0925 },
-    image: '/images/guides/pacha-alpaca-new.jpg',
+    image: '/images/guides/pacha-alpaca-new.webp',
     card_color: '#2d1d0b',
     audio_url: '/audio/guides/pacha-alpaca.mp3',
     video: {

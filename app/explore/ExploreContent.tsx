@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,7 +9,7 @@ import { AUDIO_GUIDE_OBJECTS } from "@/lib/audio-guide-data"
 import { AudioGuideObject } from "@/lib/audio-guide-types"
 
 const categoryColors: Record<string, string> = {
-  culture: "bg-purple-600",
+  culture: "bg-black",
   art: "bg-emerald-600",
   nature: "bg-amber-600",
   history: "bg-blue-600",
@@ -22,12 +21,18 @@ function formatDuration(seconds: number): string {
   return `${minutes} min`
 }
 
-function GuideCard({ guide }: { guide: AudioGuideObject }) {
+function GuideCard({ guide, onOpen }: { guide: AudioGuideObject; onOpen?: (slug: string) => void }) {
   const content = guide.content.en
   const categoryColor = categoryColors[guide.category] || "bg-gray-600"
 
+  const handleClick = () => {
+    if (onOpen) {
+      onOpen(guide.slug)
+    }
+  }
+
   return (
-    <Link href={`/guide/${guide.slug}`}>
+    <div onClick={handleClick} className="cursor-pointer">
       <Card className="overflow-hidden border-none shadow-md active:scale-[0.98] transition-transform">
         <div className="flex">
           <div className="relative w-1/3 min-h-[140px]">
@@ -69,18 +74,22 @@ function GuideCard({ guide }: { guide: AudioGuideObject }) {
           </CardContent>
         </div>
       </Card>
-    </Link>
+    </div>
   )
 }
 
-export default function ExploreContent() {
+type ExploreContentProps = {
+  onOpenGuide?: (slug: string) => void
+}
+
+export default function ExploreContent({ onOpenGuide }: ExploreContentProps) {
   return (
     <div className="container p-4 pb-24">
       <h1 className="text-2xl font-bold mb-4">Audio Guides</h1>
 
       <div className="grid gap-4">
         {AUDIO_GUIDE_OBJECTS.map((guide) => (
-          <GuideCard key={guide.id} guide={guide} />
+          <GuideCard key={guide.id} guide={guide} onOpen={onOpenGuide} />
         ))}
       </div>
     </div>
