@@ -180,23 +180,18 @@ export default function HomeSection() {
         </div>
 
         {/* Upcoming Events */}
-        <div className="py-16 px-4">
+        <div className="py-10 px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Upcoming Events
-              </h2>
-            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Upcoming Events</h2>
             <div className="relative">
               <ScrollArrows canLeft={upcoming.canScrollLeft} canRight={upcoming.canScrollRight} onScroll={upcoming.scrollBy} />
-              <div ref={upcomingRef} className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
+              <div ref={upcomingRef} className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide">
                 {featuredEvents.map((event) => (
-                  <div key={event.id} className="flex-none w-[350px] snap-start">
+                  <div key={event.id} className="flex-none w-[320px] snap-start">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="group relative rounded-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg h-full"
+                      className="group relative rounded-2xl overflow-hidden bg-white shadow-md cursor-pointer active:scale-[0.98] transition-transform"
                     >
                       <div className="aspect-[16/9] relative">
                         <Image
@@ -204,30 +199,25 @@ export default function HomeSection() {
                           alt={event.title}
                           fill
                           className="object-cover"
-                          sizes="350px"
+                          sizes="320px"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      </div>
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-black">
-                            {event.date}
-                          </span>
-                          <div className="flex items-center gap-1 text-yellow-500">
-                            <Sparkles className="w-4 h-4" />
-                            <span className="text-sm">{event.rating}</span>
-                            <span className="text-sm text-gray-500">({event.reviews})</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
+                          <div className="flex items-center gap-3 text-sm text-white/80">
+                            <span>{event.date} &middot; {event.time}</span>
+                            <div className="flex items-center gap-1">
+                              <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                              <span>{event.rating}</span>
+                            </div>
                           </div>
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                          {event.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                          {event.description}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-black dark:text-white font-medium">{event.price}</span>
-                          <span className="text-sm text-gray-500">{event.time}</span>
+                      </div>
+                      <div className="p-3">
+                        <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="text-sm font-semibold text-gray-900">{event.price}</span>
+                          <span className="text-xs text-gray-500">{event.time}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -239,21 +229,18 @@ export default function HomeSection() {
         </div>
 
         {/* More Events */}
-        <div className="py-16 px-4 bg-white/60 dark:bg-gray-800/50">
+        <div className="py-10 px-4">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-              More Experiences
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">More Experiences</h2>
             <div className="relative">
               <ScrollArrows canLeft={more.canScrollLeft} canRight={more.canScrollRight} onScroll={more.scrollBy} />
-              <div ref={moreRef} className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide">
+              <div ref={moreRef} className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide">
                 {trendingEvents.map((event) => (
-                  <div key={event.id} className="flex-none w-[350px] snap-start">
+                  <div key={event.id} className="flex-none w-[320px] snap-start">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="group relative rounded-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg h-full"
+                      className="group relative rounded-2xl overflow-hidden bg-white shadow-md cursor-pointer active:scale-[0.98] transition-transform"
                     >
                       <div className="aspect-[16/9] relative">
                         <Image
@@ -261,30 +248,25 @@ export default function HomeSection() {
                           alt={event.title}
                           fill
                           className="object-cover"
-                          sizes="350px"
+                          sizes="320px"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      </div>
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="text-sm text-white/90 px-3 py-1 rounded-full bg-black">
-                            {event.date}
-                          </span>
-                          <div className="flex items-center gap-1 text-yellow-500">
-                            <Sparkles className="w-4 h-4" />
-                            <span className="text-sm">{event.rating}</span>
-                            <span className="text-sm text-gray-500">({event.reviews})</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
+                          <div className="flex items-center gap-3 text-sm text-white/80">
+                            <span>{event.date} &middot; {event.time}</span>
+                            <div className="flex items-center gap-1">
+                              <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                              <span>{event.rating}</span>
+                            </div>
                           </div>
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                          {event.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                          {event.description}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-black dark:text-white font-medium">{event.price}</span>
-                          <span className="text-sm text-gray-500">{event.time}</span>
+                      </div>
+                      <div className="p-3">
+                        <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="text-sm font-semibold text-gray-900">{event.price}</span>
+                          <span className="text-xs text-gray-500">{event.time}</span>
                         </div>
                       </div>
                     </motion.div>
